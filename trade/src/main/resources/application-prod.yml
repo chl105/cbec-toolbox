@@ -1,0 +1,6 @@
+logistics:
+  yw56:
+    enable: true
+    priceUrl: https://price.yw56.com.cn/busHalOnline/getChargePriceExt.htm
+    userId: 100000
+    apkToken: D6140AA383FD8515B09028C586493DDB

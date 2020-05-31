@@ -1,0 +1,94 @@
+server:
+  port: 28888
+
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 100MB
+      max-file-size:  100MB
+      file-size-threshold:  0
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+          enabled: true
+          predicates:
+            - Path='/' + serviceId + '/**'
+          filters:
+            - StripPrefix=1
+      httpclient:
+        pool:
+          max-connections: ${MAX_CONNECTIONS:500}
+        connect-timeout: ${CONNECT_TIMEOUT:10000}
+        response-timeout: ${RESPONSE_TIMEOUT:50s}
+      metrics:
+        enabled: true
+      default-filters:
+        - name: Hystrix
+          args:
+            name: fallback
+            fallbackUri: 'forward:/fallback'
+        - name: Retry
+          args:
+            retries: 3
+            series:
+              - SERVER_ERROR
+            statuses:
+              - INTERNAL_SERVER_ERROR
+              - BAD_GATEWAY
+            methods:
+              - GET
+            exceptions:
+              - java.io.IOException
+              - java.util.concurrent.TimeoutException
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/gateway/routes
+  client:
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://registry:29000/eureka/
+
+###actuator监控点 start####
+endpoints:
+  health:
+    sensitive: false
+    enabled: true
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+ribbon:
+  ReadTimeout: 50000
+  ConnectTimeout: 10000
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000

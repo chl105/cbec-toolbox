@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.7.RELEASE</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.lzk90s.fttb</groupId>
+    <artifactId>parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
+        <docker.repostory.namespace>gosun</docker.repostory.namespace>
+        <docker.release_tag>${project.version}</docker.release_tag>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.lzk90s.trade</groupId>
+                <artifactId>bom</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>bom</module>
+        <module>common</module>
+        <module>trade</module>
+        <module>web</module>
+        <module>auth</module>
+        <module>registry</module>
+        <module>gateway</module>
+        <module>dbbackup</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus-aliyun</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <release>11</release>
+                        <source>11</source>
+                        <target>11</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>1.18.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>delombok</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>1.2.2</version>
+                    <configuration>
+                        <serverId>registry.cn-hangzhou.aliyuncs.com</serverId>
+                        <imageName>
+                            ${docker.registry}/${docker.repostory.namespace}/${project.groupId}.${project.artifactId}:${project.version}
+                        </imageName>
+                        <imageTags>
+                            <imageTag>${docker.release_tag}</imageTag>
+                        </imageTags>
+                        <baseImage>${docker.registry}/${docker.repostory.namespace}/alpine-java:jre11
+                        </baseImage>
+                        <maintainer>gosun@hzgosun.com</maintainer>
+                        <entryPoint>java -Dspring.profiles.active=prod $PARAMS -jar /${project.build.finalName}.jar
+                        </entryPoint>
+                        <resources>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <directory>${project.build.directory}</directory>
+                                <include>${project.build.finalName}.jar</include>
+                            </resource>
+                        </resources>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>build-image</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.shalousun</groupId>
+                    <artifactId>smart-doc-maven-plugin</artifactId>
+                    <version>1.0.2</version>
+                    <configuration>
+                        <!--指定生成文档的使用的配置文件,配置文件放在自己的项目中-->
+                        <configFile>./src/main/resources/smart-doc.json</configFile>
+                        <!--指定项目名称-->
+                        <projectName>测试</projectName>
+                        <!--smart-doc实现自动分析依赖树加载第三方依赖的源码，如果一些框架依赖库加载不到导致报错，这时请使用excludes排除掉-->
+                        <excludes>
+                            <!--格式为：groupId:artifactId;参考如下-->
+                            <exclude>com.alibaba:fastjson</exclude>
+                            <exclude>com.google.code.findbugs:jsr305</exclude>
+                            <exclude>org.springframework.boot:spring-boot-starter-validation</exclude>
+                            <exclude>com.gosun.basic:common-api</exclude>
+                            <exclude>cn.hutool:hutool-core</exclude>
+                            <exclude>org.springframework.boot:spring-boot-starter-jdbc</exclude>
+                            <exclude>org.apache.poi:poi-ooxml-schemas</exclude>
+                            <exclude>org.apache.xmlbeans:xmlbeans</exclude>
+                            <exclude>stax:stax-api</exclude>
+                            <exclude>com.baomidou:mybatis-plus-core</exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <!--如果不需要在执行编译时启动smart-doc，则将phase注释掉-->
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>html</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

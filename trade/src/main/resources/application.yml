@@ -1,0 +1,37 @@
+server:
+  port: 22333
+
+spring:
+  application:
+    name: trade
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://mysql:3306/trade?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+logistics:
+  yw56:
+    enable: true
+    vendor: 燕文物流
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/gateway/routes
+  client:
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://registry:29000/eureka/
+
+security:
+  oauth2:
+    resource:
+      loadBalanced: true
+      prefer-token-info: false
+      user-info-uri: http://auth/user

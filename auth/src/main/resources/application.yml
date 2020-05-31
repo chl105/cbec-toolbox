@@ -1,0 +1,42 @@
+server:
+  port: 29060
+  max-http-header-size: 4048576
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: auth
+  datasource:
+    url: jdbc:mysql://mysql:3306/auth?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/gateway/routes
+  client:
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://registry:29000/eureka/
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
+        #驼峰下划线转换
+      column-underline: true
+        #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: mysql
+    refresh: false
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false

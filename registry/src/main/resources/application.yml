@@ -1,0 +1,26 @@
+server:
+  port: 29000
+
+spring:
+  application:
+    name: registry
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation: false
+
+endpoints:
+  health:
+    sensitive: false
+    enabled: true
+
+management:
+  security:
+    enabled: false

@@ -1,0 +1,39 @@
+{
+  "serverUrl": "http://{{gateway}}:22333/",
+  "isStrict": false,
+  "allInOne": true,
+  "outPath": "src/main/resources/static",
+  "coverOld": true,
+  "packageFilters": "",
+  "md5EncryptedHtmlName": false,
+  "projectName": "贸易成本计算器",
+  "skipTransientField": true,
+  "dataDictionaries": [],
+  "errorCodeDictionaries": [],
+  "revisionLogs": [
+    {
+      "version": "0.1",
+      "status": "use",
+      "author": "lzk90s",
+      "revisionTime": "2020-02-20",
+      "remarks": "内部试用版本"
+    }
+  ],
+  "errorCodes": [
+    {
+      "value": "0",
+      "type": "string",
+      "desc": "成功"
+    }
+  ],
+  "customResponseFields": [],
+  "requestHeaders": [
+    {
+      "name": "Authorization",
+      "type": "string",
+      "desc": "bearer token",
+      "required": true,
+      "since": "-"
+    }
+  ]
+}

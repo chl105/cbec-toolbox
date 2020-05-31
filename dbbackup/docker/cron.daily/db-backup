@@ -1,0 +1,132 @@
+#!/bin/bash
+
+set -euo pipefail
+
+BACKUP_LOG=/var/log/backup.log
+BACKUP_HOME=/backup
+BACKUP_DATE=$(date +%Y%m%d)
+TODAY_BACKUP_DIR=$BACKUP_HOME/$BACKUP_DATE
+BACKUP_FILE_NUM=${BACKUP_DAYS:-10}
+MYSQL=mysql
+MYSQL_DUMP=mysqldump
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+DB_USER=root
+PASSWORD_FILE=/tmp/.pass
+DB_PASSWORD=$(cat $PASSWORD_FILE)
+BACKUP_HOME=/backup
+INIT_DB_SQL_FILE=/docker-entrypoint-initdb.d/0-init_database.sql
+
+_is_sourced() {
+  # https://unix.stackexchange.com/a/215279
+  test "${#FUNCNAME[@]}" -ge 2 && [ "${FUNCNAME[0]}" = '_is_sourced' ] && [ "${FUNCNAME[1]}" = 'source' ]
+}
+
+log_info() {
+  local date=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "$date [info] $@" | tee -a $BACKUP_LOG
+}
+
+log_error() {
+  local date=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\033[31m$date [error] $@ \033[0m" | tee -a $BACKUP_LOG
+}
+
+########################################
+# 数据库备份
+# param1: db 数据库名称
+# return:
+########################################
+database_backup() {
+  local db=$1
+
+  log_info "Begin to backup database $db..."
+  $MYSQL_DUMP -h$MYSQL_HOST -P$MYSQL_PORT -u$DB_USER -p$DB_PASSWORD $db | gzip >$TODAY_BACKUP_DIR/${db}_$(date +%Y%m%d_%H%M%S).sql.gz
+  if test $? -eq 0; then
+    log_info "backup $db ok"
+  else
+    log_error "backup $db err"
+  fi
+}
+
+########################################
+# 删除过期的备份
+# param1:
+# return:
+########################################
+remove_expire_backup() {
+  dump_files=$(find $BACKUP_HOME -type d | sort | wc -l)
+  if test $dump_files -gt $BACKUP_FILE_NUM; then
+    for file_delete in $(find -type d $BACKUP_HOME); do
+      delete_dump=$(find -type d $BACKUP_HOME -mtime +$BACKUP_FILE_NUM | sort | head -n 1)
+      rm -rf $delete_dump
+      log_info "$delete_dump deleted"
+    done
+  fi
+}
+
+########################################
+# 执行sql文件
+#
+########################################
+process_sql() {
+  local db=$1
+  local file=$2
+  log_info "Execute sql file $file for database $db"
+  $MYSQL -h$MYSQL_HOST -P$MYSQL_PORT -u$DB_USER -p$DB_PASSWORD $db <$file
+}
+
+########################################
+# 导入数据库文件
+########################################
+import_database_files() {
+  local files=$@
+  for f in $files; do
+    local file_name=$(basename $f)
+    local db=$(
+      tmp=${file_name%_*}
+      echo ${tmp%_*}
+    )
+
+    log_info "Import file $f, database is $db"
+
+    case "$f" in
+    *.sql)
+      process_sql $db $f
+      ;;
+    *.sql.gz)
+      tmp_file=/tmp/$RANDOM.sql
+      gunzip -c $f >$tmp_file
+      process_sql $db $tmp_file
+      rm -rf $tmp_file
+      ;;
+    *.sql.xz)
+      tmp_file=/tmp/$RANDOM.sql
+      xzcat $f >$tmp_file
+      process_sql $db $tmp_file
+      rm -rf $tmp_file
+      ;;
+    *)
+      log_error "$0: ignoring $f"
+      ;;
+    esac
+  done
+}
+
+main0() {
+  if test -d $TODAY_BACKUP_DIR; then
+    rm -rf $TODAY_BACKUP_DIR
+  fi
+  mkdir -p $TODAY_BACKUP_DIR
+
+  DBS=$(cat $INIT_DB_SQL_FILE | cut -d' ' -f6)
+  for db in $DBS; do
+    database_backup $db
+  done
+
+  remove_expire_backup
+}
+
+if ! _is_sourced; then
+  main0 "$@"
+fi

@@ -1,0 +1,85 @@
+version: "3"
+
+services:
+
+  registry:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.registry:1.0.0-SNAPSHOT
+    environment:
+      - PARAMS = -Xmx256m
+    networks:
+      - toolbox
+
+  gateway:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.gateway:1.0.0-SNAPSHOT
+    environment:
+      - PARAMS = -Xmx256m
+    networks:
+      - toolbox
+
+  mysql:
+    restart: always
+    image: mysql:8
+    networks:
+      - toolbox
+    environment:
+      - MYSQL_ROOT_PASSWORD
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  dbbackup:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.dbbackup:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - PARAMS = -Xmx256m
+    depends_on:
+      - mysql
+    volumes:
+      - mysql_backup:/backup
+
+  auth:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.auth:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+    depends_on:
+      - redis
+      - mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - PARAMS = -Xmx256m
+
+  trade:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.trade:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - PARAMS = -Xmx256m
+
+networks:
+  toolbox:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/data
+      o: bind
+  mysql_backup:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/backup
+      o: bind
