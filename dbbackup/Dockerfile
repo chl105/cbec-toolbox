@@ -3,7 +3,6 @@ FROM alpine:latest
 ADD docker-entrypoint-initdb.d /docker-entrypoint-initdb.d/
 ADD cron.daily /etc/periodic/daily/
 ADD entrypoint.sh /
-ADD dbbackup-*.jar /app.jar
 
 RUN  sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
      apk add --update mysql-client tzdata bash && \

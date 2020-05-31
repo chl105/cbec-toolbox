@@ -11,13 +11,13 @@ module.exports = {
     proxy: {
       '/admin': {
         // target: 'http://band.gosuncs.com:7756',
-        target: 'http://127.0.0.1:28888',
+        target: 'http://gateway:28888',
         ws: true,
         changeOrigin: true
       },
       '/': {
         // target: 'http://band.gosuncs.com:7756',
-        target: 'http://127.0.0.1:28888',
+        target: 'http://gateway:28888',
         ws: true,
         changeOrigin: true
       }

@@ -25,7 +25,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.github.lzk90s.trade</groupId>
+                <groupId>com.github.lzk90s.fttb</groupId>
                 <artifactId>bom</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <type>pom</type>
@@ -115,38 +115,49 @@
 
                 <plugin>
                     <groupId>com.spotify</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>1.2.2</version>
-                    <configuration>
-                        <serverId>registry.cn-hangzhou.aliyuncs.com</serverId>
-                        <imageName>
-                            ${docker.registry}/${docker.repostory.namespace}/${project.groupId}.${project.artifactId}:${project.version}
-                        </imageName>
-                        <imageTags>
-                            <imageTag>${docker.release_tag}</imageTag>
-                        </imageTags>
-                        <baseImage>${docker.registry}/${docker.repostory.namespace}/alpine-java:jre11
-                        </baseImage>
-                        <maintainer>gosun@hzgosun.com</maintainer>
-                        <entryPoint>java -Dspring.profiles.active=prod $PARAMS -jar /${project.build.finalName}.jar
-                        </entryPoint>
-                        <resources>
-                            <resource>
-                                <targetPath>/</targetPath>
-                                <directory>${project.build.directory}</directory>
-                                <include>${project.build.finalName}.jar</include>
-                            </resource>
-                        </resources>
-                    </configuration>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>1.4.10</version>
                     <executions>
                         <execution>
-                            <id>build-image</id>
+                            <id>tag-latest</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>tag</goal>
+                                <goal>push</goal>
+                            </goals>
+                            <configuration>
+                                <tag>${docker.release_tag}</tag>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>tag-version</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>tag</goal>
+                                <goal>push</goal>
+                            </goals>
+                            <configuration>
+                                <tag>${project.version}</tag>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>package</id>
                             <phase>package</phase>
                             <goals>
                                 <goal>build</goal>
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <repository>
+                            ${docker.registry}/${docker.repostory.namespace}/${project.groupId}.${project.artifactId}
+                        </repository>
+                        <tag>${docker.release_tag}</tag>
+                        <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                        <buildArgs>
+                            <JAR_FILE_NAME>${project.build.finalName}.jar</JAR_FILE_NAME>
+                        </buildArgs>
+                    </configuration>
                 </plugin>
 
                 <plugin>

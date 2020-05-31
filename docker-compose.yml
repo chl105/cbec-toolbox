@@ -9,6 +9,8 @@ services:
       - PARAMS = -Xmx256m
     networks:
       - toolbox
+    ports:
+      - 29000:29000
 
   gateway:
     restart: always
@@ -20,15 +22,15 @@ services:
 
   mysql:
     restart: always
-    image: mysql:8
+    image: mariadb:10
     networks:
       - toolbox
     environment:
       - MYSQL_ROOT_PASSWORD
     volumes:
-      - mysql_data:/var/lib/mysql
-    ports:
-      - 3306:3306
+      - ./data/mysql:/var/lib/mysql
+  #    ports:
+  #      - 3306:3306
 
   dbbackup:
     restart: always
@@ -41,7 +43,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - mysql_backup:/backup
+      - ./data/dbbackup:/backup
 
   auth:
     restart: always
@@ -49,11 +51,10 @@ services:
     networks:
       - toolbox
     depends_on:
-      - redis
       - mysql
     environment:
       - MYSQL_ROOT_PASSWORD
-      - PARAMS = -Xmx256m
+      - PARAMS=-Xmx256m
 
   trade:
     restart: always
@@ -64,22 +65,16 @@ services:
       - mysql
     environment:
       - MYSQL_ROOT_PASSWORD
-      - PARAMS = -Xmx256m
+      - PARAMS=-Xmx256m
+
+  web:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.web:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+    ports:
+      - 28080:80
 
 networks:
   toolbox:
     driver: bridge
-
-volumes:
-  mysql_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: $PWD/data
-      o: bind
-  mysql_backup:
-    driver: local
-    driver_opts:
-      type: none
-      device: $PWD/backup
-      o: bind
