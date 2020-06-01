@@ -6,7 +6,7 @@ services:
     restart: always
     image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.registry:1.0.0-SNAPSHOT
     environment:
-      - PARAMS = -Xmx256m
+      - PARAMS
     networks:
       - toolbox
     ports:
@@ -16,7 +16,7 @@ services:
     restart: always
     image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.gateway:1.0.0-SNAPSHOT
     environment:
-      - PARAMS = -Xmx256m
+      - PARAMS
     networks:
       - toolbox
 
@@ -39,7 +39,6 @@ services:
       - toolbox
     environment:
       - MYSQL_ROOT_PASSWORD
-      - PARAMS = -Xmx256m
     depends_on:
       - mysql
     volumes:
@@ -54,7 +53,7 @@ services:
       - mysql
     environment:
       - MYSQL_ROOT_PASSWORD
-      - PARAMS=-Xmx256m
+      - PARAMS
 
   trade:
     restart: always
@@ -65,7 +64,7 @@ services:
       - mysql
     environment:
       - MYSQL_ROOT_PASSWORD
-      - PARAMS=-Xmx256m
+      - PARAMS
 
   web:
     restart: always
