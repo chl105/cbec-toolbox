@@ -8,7 +8,9 @@
 2. 执行编译命令:
 
 ```shell script
-docker build -t builder -v /var/run/docker.sock:/var/run/docker.sock
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/work  -it  maven:3-openjdk-11 bash
+
+cd /work && mvn package
 ```
 
 ## 运行方法
