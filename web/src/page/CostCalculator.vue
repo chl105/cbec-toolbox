@@ -15,23 +15,13 @@
       :rules="ratioModelFormRules"
     >
       <form-item label="汇率(￥/$)：" prop="exchangeRate">
-        <InputNumber
-          :active-change="false"
-          v-model="ratioModelForm.exchangeRate"
-          class="input-content"
-        />
+        <InputNumber v-model="ratioModelForm.exchangeRate" class="input-content" />
       </form-item>
       <form-item label="佣金点数($)：" prop="commission">
-        <InputNumber
-          v-model="ratioModelForm.commission"
-          class="input-content"
-        />
+        <InputNumber v-model="ratioModelForm.commission" class="input-content" />
       </form-item>
       <form-item label="转账手续费($)：" prop="bankCharge">
-        <InputNumber
-          v-model="ratioModelForm.bankCharge"
-          class="input-content"
-        />
+        <InputNumber v-model="ratioModelForm.bankCharge" class="input-content" />
       </form-item>
     </Form>
 
@@ -44,27 +34,12 @@
       :rules="productModelFormRules"
     >
       <form-item label="折后价($)：" prop="salePrice">
-        <InputNumber
-          :active-change="false"
-          v-model="productModelForm.salePrice"
-          class="input-content"
-          clearable
-          @on-change="
-            () => {
-              totalCost.commission =
-                productModelForm.salePrice * ratioModelForm.commission;
-              totalCost.bankCharge =
-                productModelForm.salePrice * ratioModelForm.bankCharge;
-            }
-          "
-        />
+        <InputNumber v-model="productModelForm.salePrice" class="input-content" clearable />
       </form-item>
       <form-item label="进价(￥)：" prop="inputPriceRMB">
         <InputNumber
-          :active-change="false"
           v-model="productModelForm.inputPriceRMB"
           class="input-content"
-          clearable
           @on-change="
             () => {
               productModelForm.inputPrice = exchangeRmb2Dollor(
@@ -76,31 +51,10 @@
         />
       </form-item>
       <form-item label="单重(g)：" prop="weight">
-        <InputNumber
-          :active-change="false"
-          v-model="productModelForm.weight"
-          class="input-content"
-          clearable
-          @on-change="
-            () => {
-              logisticsModelForm.weight =
-                productModelForm.weight * productModelForm.num;
-            }
-          "
-        />
+        <InputNumber v-model="productModelForm.weight" class="input-content" />
       </form-item>
       <form-item label="数量：" prop="num">
-        <InputNumber
-          :active-change="false"
-          v-model="productModelForm.num"
-          class="input-content"
-          @on-change="
-            () => {
-              logisticsModelForm.weight =
-                productModelForm.weight * productModelForm.num;
-            }
-          "
-        />
+        <InputNumber v-model="productModelForm.num" class="input-content" />
       </form-item>
     </Form>
     <Form
@@ -114,18 +68,14 @@
       <div class="form-group">
         <form-item label="物流：" prop="vendor">
           <Select v-model="logisticsModelForm.vendor" class="input-content">
-            <Option
-              v-for="item in vendorList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+            <Option v-for="item in vendorList" :value="item.value" :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
         <form-item label="出发地：" prop="srcAddress">
           <InputSelect
             label-name="name"
             v-bind:options="srcAddressList"
+            v-bind:searchFunc="searchCityList"
             @onSelected="
               (v) => {
                 logisticsModelForm.srcAddress = v.id;
@@ -145,46 +95,22 @@
             "
           ></InputSelect>
         </form-item>
-        <!--form-item label="重量(g)" prop="weight">
-          <Input
-            v-model="logisticsModelForm.weight"
-            class="input-content"
-            readonly
-          />
-        </form-item-->
         <form-item label="产品类型" prop="types">
-          <Select
-            v-model="logisticsModelForm.types"
-            multiple
-            class="input-content"
-            clearable
-          >
-            <Option
-              v-for="item in typeList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+          <Select v-model="logisticsModelForm.types" multiple class="input-content" clearable>
+            <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
         <form-item label="货品属性" prop="goodsAttr">
-          <Select
-            v-model="logisticsModelForm.goodsAttr"
-            class="input-content"
-            clearable
-          >
+          <Select v-model="logisticsModelForm.goodsAttr" class="input-content" clearable>
             <Option
               v-for="item in goodsAttrList"
               :value="item.value"
               :key="item.value"
-              >{{ item.name }}</Option
-            >
+            >{{ item.name }}</Option>
           </Select>
         </form-item>
         <form-item :label-width="50">
-          <Button icon="ios-search" style="margin-left:10px" @click="search"
-            >搜索</Button
-          >
+          <Button icon="ios-search" style="margin-left:10px" @click="search">搜索</Button>
         </form-item>
       </div>
     </Form>
@@ -207,13 +133,9 @@ export default {
       total: 0,
       pageSize: 12,
       loading: true,
-      totalCost: {
-        commission: 0.0,
-        bankCharge: 0.0,
-      },
       ratioModelForm: {
         exchangeRate: 7.02,
-        commission: 0.7975,
+        commission: 0.145,
         bankCharge: 0.009,
       },
       productModelForm: {
@@ -224,7 +146,6 @@ export default {
         weight: 0,
       },
       logisticsModelForm: {
-        weight: 0,
         srcAddress: "",
         dstAddress: "",
         vendor: "",
@@ -234,59 +155,59 @@ export default {
       ratioModelFormRules: {
         exchangeRate: {
           required: true,
-          message: " ",
-          type: "float",
+          message: "数据错误",
+          type: "number",
         },
         commission: {
           required: true,
-          message: " ",
+          message: "数据错误",
           type: "number",
         },
         bankCharge: {
           required: true,
-          message: " ",
+          message: "数据错误",
           type: "number",
         },
       },
       productModelFormRules: {
         num: {
           required: true,
-          message: " ",
+          message: "数据错误",
           type: "number",
           min: 1,
         },
         salePrice: {
           required: true,
-          message: " ",
+          message: "数据错误",
           type: "number",
           min: 0.1,
         },
         inputPriceRMB: {
           required: true,
-          message: " ",
+          message: "数据错误",
           type: "number",
           min: 0.1,
         },
         weight: {
           required: true,
-          message: " ",
+          message: "数据错误",
           type: "number",
           min: 1,
         },
       },
       logisticsModelFormRules: {
-        srcAddress: [{ required: true, message: " ", type: "string" }],
-        dstAddress: [{ required: true, message: " ", type: "string" }],
+        srcAddress: [{ required: true, message: "数据错误", type: "string" }],
+        dstAddress: [{ required: true, message: "数据错误", type: "string" }],
         weight: [
           {
             required: true,
-            message: " ",
+            message: "数据错误",
             type: "number",
             min: 1,
           },
         ],
-        goodsAttr: [{ required: true, message: " ", type: "string" }],
-        types: [{ required: true, message: " ", type: "array" }],
+        goodsAttr: [{ required: true, message: "数据错误", type: "string" }],
+        types: [{ required: true, message: "数据错误", type: "array" }],
       },
       vendorList: [
         {
@@ -394,18 +315,6 @@ export default {
         }
       );
     },
-    changePage(page) {
-      let params = this.buildQueryParam(this);
-      params.start = (page - 1) * this.pageSize;
-      params.limit = this.pageSize;
-      this.getLogisticsPrice(params, this);
-    },
-    exchangeRmb2Dollor(rmb, exchangeRate) {
-      return rmb / exchangeRate;
-    },
-    exchangeDollor2Rmb(dollor, exchangeRate) {
-      return dollor * exchangeRate;
-    },
     search() {
       let validateSucceed = true;
       this.$refs["ratioModelForm"].validate((v) => {
@@ -434,17 +343,29 @@ export default {
         params,
         (total, data) => {
           that.loading = false;
+
+          // 计算佣金和银行转帐手续费
+          var commissionTotal =
+            this.productModelForm.salePrice * this.ratioModelForm.commission;
+          var bankChargeTotal =
+            this.productModelForm.salePrice * this.ratioModelForm.bankCharge;
+
           for (var idx in data) {
+            //把物流价格转换为美元
+            var logisticsPrice = this.exchangeRmb2Dollor(
+              data[idx].expense,
+              this.ratioModelForm.exchangeRate
+            );
+
+            //利润 = 售价-进价-物流价格-佣金-银行手续费
             var profit =
               this.productModelForm.salePrice -
               this.productModelForm.inputPrice -
-              this.exchangeRmb2Dollor(
-                data[idx].expense,
-                this.ratioModelForm.exchangeRate
-              ) -
-              this.totalCost.commission -
-              this.totalCost.bankCharge;
+              logisticsPrice -
+              commissionTotal -
+              bankChargeTotal;
 
+            //利润率 = (利润 / 售卖价格)  * 100
             var profitRate = (profit / this.productModelForm.salePrice) * 100;
 
             data[idx].profit = profit.toFixed(2);
@@ -471,8 +392,14 @@ export default {
       params.dstCityCode = "0";
       params.types = form.types.toString();
       params.goodsAttr = form.goodsAttr.toString();
-      params.weight = form.weight;
+      params.weight = that.productModelForm.weight * that.productModelForm.num;
       return params;
+    },
+    exchangeRmb2Dollor(rmb, exchangeRate) {
+      return rmb / exchangeRate;
+    },
+    exchangeDollor2Rmb(dollor, exchangeRate) {
+      return dollor * exchangeRate;
     },
   },
 };

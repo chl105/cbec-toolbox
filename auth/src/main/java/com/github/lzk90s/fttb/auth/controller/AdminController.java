@@ -28,7 +28,7 @@ public class AdminController {
             @RequestParam(required = false, defaultValue = "0") Integer start,
             @RequestParam(required = false, defaultValue = "100") Integer limit) {
         Page<UserEntity> page = new Page<>(start, limit);
-        var result = userInfoService.selectPage(page, null);
+        Page<UserEntity> result = userInfoService.selectPage(page, null);
         return Result.ok(result.getRecords()).total(result.getTotal());
     }
 

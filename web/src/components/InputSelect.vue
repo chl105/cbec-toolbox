@@ -1,14 +1,12 @@
 <template>
-  <div
-    v-bind:id="componentId"
-    class="cw-input-select_wrap"
-    onselectstart="return false"
-  >
+  <div v-bind:id="componentId" class="cw-input-select_wrap" onselectstart="return false">
     <div class="cw-input-select">
       <div class="cw-input-select_box" v-on:click="selectHandle">
-        <span v-if="typeof selectedValue == 'object'">{{
+        <span v-if="typeof selectedValue == 'object'">
+          {{
           selectedValue[labelName]
-        }}</span>
+          }}
+        </span>
         <span v-else>{{ selectedValue || "请选择" }}</span>
         <i class="cw-arrow" v-bind:class="{ up: isShowPop }"></i>
       </div>
@@ -36,24 +34,22 @@
                 d="M509.866667 32C245.333333 32 32 247.466667 32 512s213.333333 480 477.866667 480S987.733333 776.533333 987.733333 512 774.4 32 509.866667 32z m0 896C281.6 928 96 742.4 96 512S281.6 96 509.866667 96 923.733333 281.6 923.733333 512s-185.6 416-413.866666 416z"
                 fill="#8a8a8a"
                 p-id="2469"
-              ></path>
+              />
               <path
                 d="M693.333333 330.666667c-12.8-12.8-32-12.8-44.8 0L512 467.2l-136.533333-136.533333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l136.533333 136.533333-136.533333 136.533333c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533334s17.066667-2.133333 23.466667-8.533334l136.533333-136.533333 136.533334 136.533333c6.4 6.4 14.933333 8.533333 23.466666 8.533334s17.066667-2.133333 23.466667-8.533334c12.8-12.8 12.8-32 0-44.8L556.8 512l136.533333-136.533333c12.8-12.8 12.8-32 0-44.8z"
                 fill="#8a8a8a"
                 p-id="2470"
-              ></path>
+              />
             </svg>
           </span>
         </div>
         <ul class="cw-input-select_options">
-          <li
-            v-for="(option, index) in optionsList"
-            v-on:click="selected(option)"
-            :key="index"
-          >
-            <span v-if="typeof option == 'object'">{{
+          <li v-for="(option, index) in optionsList" v-on:click="selected(option)" :key="index">
+            <span v-if="typeof option == 'object'">
+              {{
               option[labelName]
-            }}</span>
+              }}
+            </span>
             <span v-else>{{ option }}</span>
           </li>
         </ul>
@@ -67,7 +63,7 @@
 export default {
   name: "InputSelect",
   props: ["componentId", "options", "labelName", "searchFunc"],
-  data: function() {
+  data: function () {
     return {
       optionsList: [],
       isShowPop: false,
@@ -75,7 +71,7 @@ export default {
       searchTxt: "", // 搜索词
     };
   },
-  created: function() {
+  created: function () {
     // 深拷贝一份源数据
     this.optionsList = JSON.parse(JSON.stringify(this.options));
     // 点全局范围收起下拉框
@@ -92,15 +88,16 @@ export default {
   },
   methods: {
     // 显示或隐藏选项列表盒子
-    selectHandle: function() {
+    selectHandle: function () {
       this.isShowPop = !this.isShowPop;
+      this.optionsList = JSON.parse(JSON.stringify(this.options));
     },
     // 隐藏选项列表盒子
-    hidePop: function() {
+    hidePop: function () {
       this.isShowPop = false;
     },
     // 点击选项
-    selected: function(val) {
+    selected: function (val) {
       // 根据选项类型给名称赋值
       this.selectedValue = val;
       this.isShowPop = false;

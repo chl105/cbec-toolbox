@@ -10,10 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -69,7 +66,7 @@ public class Yw56LogisticsProviderImpl implements LogisticsProvider {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entity = new HttpEntity<>(JsonUtil.obj2json(request), headers);
 
-        var resEntity = restTemplate.postForEntity(yw56Properties.getPriceUrl(), entity, String.class);
+        ResponseEntity<String> resEntity = restTemplate.postForEntity(yw56Properties.getPriceUrl(), entity, String.class);
         if (resEntity.getStatusCode() != HttpStatus.OK || !resEntity.hasBody()) {
             log.error("yw56 http error, status is {}", resEntity.getStatusCodeValue());
             return Collections.emptyList();

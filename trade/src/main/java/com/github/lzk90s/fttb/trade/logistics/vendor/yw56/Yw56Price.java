@@ -26,7 +26,7 @@ public class Yw56Price {
 
     public float getAllExpense() {
         float sum = 0;
-        for (var exp : expenseItems) {
+        for (Yw56Expense exp : expenseItems) {
             sum += exp.getMoneyOfOriginal();
         }
         return sum;

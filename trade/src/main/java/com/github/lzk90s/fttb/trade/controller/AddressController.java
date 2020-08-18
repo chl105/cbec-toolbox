@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.github.lzk90s.fttb.common.rest.Result;
 import com.github.lzk90s.fttb.trade.dao.entity.CityEntity;
 import com.github.lzk90s.fttb.trade.dao.entity.CountryEntity;
-import com.github.lzk90s.fttb.trade.model.Label;
 import com.github.lzk90s.fttb.trade.service.CityService;
 import com.github.lzk90s.fttb.trade.service.CountryService;
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/address")
@@ -30,12 +28,14 @@ public class AddressController {
     Result<List<CountryEntity>> getCountryList(@RequestParam(required = false) String fuzzy,
                                                @RequestParam(required = false, defaultValue = "0") Integer page,
                                                @RequestParam(required = false, defaultValue = "50") Integer pageSize) {
-        fuzzy = Optional.ofNullable(fuzzy).filter(StringUtils::isNotBlank).orElse("");
-        var result = countryService.selectPage(new Page<>(page, pageSize),
-                new EntityWrapper<>(new CountryEntity())
-                        .like("name", fuzzy).or()
-                        .like("bcode", fuzzy).or()
-                        .like("english_name", fuzzy));
+        EntityWrapper<CountryEntity> entityWrapper = new EntityWrapper<>(new CountryEntity());
+        if (!StringUtils.isEmpty(fuzzy)) {
+            entityWrapper.like("name", fuzzy).or()
+                    .like("bcode", fuzzy).or()
+                    .like("english_name", fuzzy);
+        }
+
+        Page<CountryEntity> result = countryService.selectPage(new Page<>(page, pageSize), entityWrapper);
         return Result.ok(result.getRecords()).total(result.getTotal());
     }
 
@@ -43,10 +43,11 @@ public class AddressController {
     Result<List<CityEntity>> getCityList(@RequestParam(required = false) String fuzzy,
                                          @RequestParam(required = false, defaultValue = "0") Integer page,
                                          @RequestParam(required = false, defaultValue = "50") Integer pageSize) {
-        fuzzy = Optional.ofNullable(fuzzy).filter(StringUtils::isNotBlank).orElse("");
-        var result = cityService.selectPage(new Page<>(page, pageSize),
-                new EntityWrapper<>(new CityEntity())
-                        .like("name", fuzzy));
+        var entityWrapper = new EntityWrapper<>(new CityEntity());
+        if (!StringUtils.isEmpty(fuzzy)) {
+            entityWrapper.like("name", fuzzy);
+        }
+        Page<CityEntity> result = cityService.selectPage(new Page<>(page, pageSize), entityWrapper);
         return Result.ok(result.getRecords()).total(result.getTotal());
     }
 }

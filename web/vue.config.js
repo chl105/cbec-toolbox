@@ -1,26 +1,25 @@
-const path = require('path')
-const resolve = dir => path.join(__dirname, dir)
+const path = require("path");
+const resolve = (dir) => path.join(__dirname, dir);
 
 module.exports = {
   runtimeCompiler: true,
-  chainWebpack: config => {
-    config.resolve.alias
-      .set('@', resolve('src'))
+  chainWebpack: (config) => {
+    config.resolve.alias.set("@", resolve("src"));
   },
   devServer: {
     proxy: {
-      '/admin': {
+      "/admin": {
         // target: 'http://band.gosuncs.com:7756',
-        target: 'http://gateway:28888',
+        target: "http://localhost:28888",
         ws: true,
-        changeOrigin: true
+        changeOrigin: true,
       },
-      '/': {
+      "/": {
         // target: 'http://band.gosuncs.com:7756',
-        target: 'http://gateway:28888',
+        target: "http://localhost:28888",
         ws: true,
-        changeOrigin: true
-      }
-    }
-  }
-}
+        changeOrigin: true,
+      },
+    },
+  },
+};
