@@ -29,3 +29,5 @@ target/
 dist/
 node_modules/
 data/
+
+venv/
