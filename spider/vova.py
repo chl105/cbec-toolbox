@@ -5,6 +5,7 @@ import logging
 
 import requests
 from bs4 import BeautifulSoup
+import exception
 
 VOVA_BASE_URL = "https://merchant.vova.com.hk"
 
@@ -34,14 +35,16 @@ def build_url(uri):
 
 def check_response(resp):
     if not resp.ok:
-        raise Exception("Http response error".format(resp.status))
+        raise exception.BizException("Http response error".format(resp.status))
     result = resp.json()
     if result["code"] != "SUCCESS":
-        raise Exception("Biz response error, code={}, msg={}".format(result["code"], result["msg"]))
+        raise exception.BizException(result["msg"])
 
 
 def login(user, password):
     uri = "/index.php?q=admin/main/index/login"
+
+    logging.info("Login with user {}".format(user))
 
     data = {
         'acct': user,
@@ -51,18 +54,13 @@ def login(user, password):
         'equipment': ""
     }
 
-    logging.info("Login with user {}".format(user))
-
-    try:
-        resp = requests.post(build_url(uri), data=data, verify=False, timeout=20)
-        check_response(resp)
-        cookies = requests.utils.dict_from_cookiejar(resp.cookies)
-        cookie = ""
-        for name, value in cookies.items():
-            cookie += '{0}={1};'.format(name, value)
-        return cookie
-    except Exception as err:
-        logging.error("获取cookie失败: {}".format(err))
+    resp = requests.post(build_url(uri), data=data, verify=False, timeout=20)
+    check_response(resp)
+    cookies = requests.utils.dict_from_cookiejar(resp.cookies)
+    cookie = ""
+    for name, value in cookies.items():
+        cookie += '{0}={1};'.format(name, value)
+    return cookie
 
 
 def get_unhandled_order(cookie):
