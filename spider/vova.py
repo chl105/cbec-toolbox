@@ -1,28 +1,43 @@
 #!/usr/bin/python
 
-import requests
 import json
 import logging
+
+import requests
 from bs4 import BeautifulSoup
 
-
-_COOKIE = ""
 VOVA_BASE_URL = "https://merchant.vova.com.hk"
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
+
+class Order:
+    def __init__(self, id, type, confirm_time, sn, delivery_count_down, order_cancel_count_down,
+                 order_collection_count_down, num, price, total_price, pay_status):
+        self.id = id
+        self.type = type
+        self.confirm_time = confirm_time
+        self.sn = sn
+        self.delivery_count_down = delivery_count_down
+        self.order_cancel_count_down = order_cancel_count_down
+        self.order_collection_count_down = order_collection_count_down
+        self.num = num
+        self.price = price
+        self.total_price = total_price
+        self.pay_status = pay_status
+
+    def __str__(self):
+        return json.dumps(self)
 
 
-def build_vova_url(uri):
+def build_url(uri):
     return VOVA_BASE_URL + uri
 
 
 def check_response(resp):
     if not resp.ok:
-        raise Exception(print("Http response error".format(resp.status)))
+        raise Exception("Http response error".format(resp.status))
     result = resp.json()
     if result["code"] != "SUCCESS":
-        raise Exception(print("Biz response error, code={}, msg={}".format(result["code"], result["msg"])))
+        raise Exception("Biz response error, code={}, msg={}".format(result["code"], result["msg"]))
 
 
 def login(user, password):
@@ -36,30 +51,56 @@ def login(user, password):
         'equipment': ""
     }
 
-    global _COOKIE
+    logging.info("Login with user {}".format(user))
+
     try:
-        resp = requests.post(build_vova_url(uri), data=data, verify=False, timeout=20)
+        resp = requests.post(build_url(uri), data=data, verify=False, timeout=20)
         check_response(resp)
         cookies = requests.utils.dict_from_cookiejar(resp.cookies)
+        cookie = ""
         for name, value in cookies.items():
-            _COOKIE += '{0}={1};'.format(name, value)
-        return _COOKIE
+            cookie += '{0}={1};'.format(name, value)
+        return cookie
     except Exception as err:
-        print("获取cookie失败: {}".format(err))
+        logging.error("获取cookie失败: {}".format(err))
 
 
-def get_unhandled_order():
+def get_unhandled_order(cookie):
     uri = "/index.php?q=admin/main/unhandledOrder/index&perPage=100"
-    response = requests.get(build_vova_url(uri), headers={"cookie": _COOKIE})
+    response = requests.get(build_url(uri), headers={"cookie": cookie})
     soup = BeautifulSoup(response.text)
-    aa = soup.find_all("table", class_="order-list-table")
+    order_list = []
+    '''
+        def __init__(self, id, type, confirm_time, sn, delivery_count_down, order_cancel_count_down,
+                 order_collection_count_down, num, price, total_price, pay_status):
+    '''
+    order_list_tag = soup.find_all(lambda tag: tag.has_attr('data-order-goods-sn'))
+    for order_tag in order_list_tag:
+        td_tags = order_tag.find_all("td")
+
+        order = Order(td_tags[6].a.string,
+                      td_tags[0].a.string,
+                      td_tags[1].string,
+                      td_tags[2].a.string,
+                      td_tags[3].attrs["data-time"],
+                      td_tags[4].attrs["data-time"],
+                      td_tags[5].attrs["data-time"],
+                      td_tags[11].string,
+                      td_tags[12].string,
+                      td_tags[13].string,
+                      td_tags[14].a.string)
+        order_list.append(order)
+
+    return order_list
+
+
+def main():
+    user = "jianggangjiav"
+    password = "Zhuanghe11"
+    cookie = login(user, password)
+    aa = get_unhandled_order(cookie)
     print(aa)
 
 
 if __name__ == '__main__':
-    user = "jianggangjiav"
-    password = "Zhuanghe11"
-    login(user, password)
-    get_unhandled_order()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
