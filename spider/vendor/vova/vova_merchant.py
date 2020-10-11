@@ -1,36 +1,21 @@
 #!/usr/bin/python
 
-import json
 import logging
 
 import requests
 from bs4 import BeautifulSoup
-import exception
 
-VOVA_BASE_URL = "https://merchant.vova.com.hk"
+from common import exception
+from model import order_model
 
+_BASE_URL = "https://merchant.vova.com.hk"
 
-class Order:
-    def __init__(self, id, type, confirm_time, sn, delivery_count_down, order_cancel_count_down,
-                 order_collection_count_down, num, price, total_price, pay_status):
-        self.id = id
-        self.type = type
-        self.confirm_time = confirm_time
-        self.sn = sn
-        self.delivery_count_down = delivery_count_down
-        self.order_cancel_count_down = order_cancel_count_down
-        self.order_collection_count_down = order_collection_count_down
-        self.num = num
-        self.price = price
-        self.total_price = total_price
-        self.pay_status = pay_status
-
-    def __str__(self):
-        return json.dumps(self)
-
+'''
+VOVA商家
+'''
 
 def build_url(uri):
-    return VOVA_BASE_URL + uri
+    return _BASE_URL + uri
 
 
 def check_response(resp):
@@ -76,17 +61,17 @@ def get_unhandled_order(cookie):
     for order_tag in order_list_tag:
         td_tags = order_tag.find_all("td")
 
-        order = Order(td_tags[6].a.string,
-                      td_tags[0].a.string,
-                      td_tags[1].string,
-                      td_tags[2].a.string,
-                      td_tags[3].attrs["data-time"],
-                      td_tags[4].attrs["data-time"],
-                      td_tags[5].attrs["data-time"],
-                      td_tags[11].string,
-                      td_tags[12].string,
-                      td_tags[13].string,
-                      td_tags[14].a.string)
+        order = order_model.Order(td_tags[6].a.string,
+                                  td_tags[0].a.string,
+                                  td_tags[1].string,
+                                  td_tags[2].a.string,
+                                  td_tags[3].attrs["data-time"],
+                                  td_tags[4].attrs["data-time"],
+                                  td_tags[5].attrs["data-time"],
+                                  td_tags[11].string,
+                                  td_tags[12].string,
+                                  td_tags[13].string,
+                                  td_tags[14].a.string)
         order_list.append(order)
 
     return order_list

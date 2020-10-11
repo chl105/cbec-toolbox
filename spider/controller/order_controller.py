@@ -2,10 +2,11 @@ import json
 
 from flask import request, Blueprint
 
-import exception
-import vova
+from vendor.vova import vova_merchant
+from common import exception
+from util import json_util
 
-order = Blueprint('', __name__)
+order = Blueprint('order', __name__)
 
 
 @order.route('/list_unhandled_order', methods=['GET'])
@@ -15,6 +16,6 @@ def list_unhandled_order():
     if not user or not password:
         raise exception.BizException("用户或者密码不存在")
 
-    cookie = vova.login(user, password)
-    order_list = vova.get_unhandled_order(cookie)
-    return json.dumps(order_list, default=lambda o: o.__dict__, sort_keys=True, indent=4, ensure_ascii=False)
+    cookie = vova_merchant.login(user, password)
+    order_list = vova_merchant.get_unhandled_order(cookie)
+    return json_util.obj2json(order_list)

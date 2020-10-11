@@ -1,7 +1,8 @@
 import logging
 import flask
 
-from order_controller import *
+from controller.order_controller import *
+from controller.goods_controller import *
 
 app = flask.Flask(__name__)
 
@@ -11,7 +12,8 @@ logging.basicConfig(level=logging.INFO,
 
 def main():
     app.register_blueprint(order, url_prefix='/order')
-    app.run(port=33023, debug=True)
+    app.register_blueprint(goods, url_prefix='/goods')
+    app.run(port=33023, debug=False)
 
 
 if __name__ == '__main__':
