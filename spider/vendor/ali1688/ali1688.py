@@ -7,8 +7,11 @@ _BASE_URL = "https://s.1688.com"
 
 
 def search_goods_by_image(image_url):
-    result = alibaba_lib.Alibaba().search(image_url, need_products=True)
+    alibaba_client = alibaba_lib.Alibaba()
+    alibaba_client.set_search_page_size(200)
+    result = alibaba_client.search(image_url, need_products=True)
     _check_result(result)
+
     data = result["data"]
     if not data:
         return None
@@ -26,10 +29,15 @@ def search_goods_by_image(image_url):
         company_obj = dict_util.dict2obj(goods["company"])
         price_obj = dict_util.dict2obj(goods["tradePrice"])
         trade_quantity_obj = dict_util.dict2obj(goods["tradeQuantity"])
-        res_goods_list.append(goods_model.GoodsPurchaseInfo(information_obj.subject, information_obj.detailUrl,
-                                                            price_obj.offerPrice.valueString, image_obj.imgUrl,
-                                                            company_obj.name, company_obj.url,
-                                                            trade_quantity_obj.number))
+        res_goods_list.append(goods_model.GoodsInfo(
+            "", information_obj.subject,
+            information_obj.detailUrl,
+            price_obj.offerPrice.valueString,
+            image_obj.imgUrl,
+            company_obj.name,
+            company_obj.url,
+            trade_quantity_obj.number
+        ))
     return res_goods_list
 
 

@@ -1,4 +1,3 @@
-
 class Order:
     def __init__(self, id, type, confirm_time, sn, delivery_count_down, order_cancel_count_down,
                  order_collection_count_down, num, price, total_price, pay_status):

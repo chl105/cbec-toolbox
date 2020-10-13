@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
+import contextlib
 import random
 import string
+
 import requests
-import contextlib
 
 
 def request_post(url, data=None, files={}, headers={}, timeout=10):

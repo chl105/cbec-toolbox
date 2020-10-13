@@ -1,12 +1,8 @@
-import tempfile, os
-
-
 from flask import Blueprint, request
 
-from util import json_util, dict_util
-
-from vendor.vova import vova
+from util import json_util
 from vendor.ali1688 import ali1688
+from vendor.vova import vova
 
 goods = Blueprint('goods', __name__)
 

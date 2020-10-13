@@ -14,6 +14,7 @@ _BASE_URL = "https://merchant.vova.com.hk"
 VOVA商家
 '''
 
+
 def build_url(uri):
     return _BASE_URL + uri
 
@@ -78,8 +79,8 @@ def get_unhandled_order(cookie):
 
 
 def main():
-    user = "jianggangjiav"
-    password = "Zhuanghe11"
+    user = "test"
+    password = "11"
     cookie = login(user, password)
     aa = get_unhandled_order(cookie)
     print(aa)

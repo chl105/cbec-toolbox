@@ -1,8 +1,9 @@
 import logging
+
 import flask
 
-from controller.order_controller import *
 from controller.goods_controller import *
+from controller.order_controller import *
 
 app = flask.Flask(__name__)
 

@@ -26,7 +26,7 @@ class Alibaba(object):
         self._headers()
         self.search_page_size = 40
 
-    def setSearchPageSize(self, pageSize):
+    def set_search_page_size(self, pageSize):
         self.search_page_size = pageSize
 
     def _headers(self):
@@ -161,7 +161,8 @@ class Alibaba(object):
         status, key = self.upload_img(filename, signature, policy, accessid)
         # 上传成功后，拼接生成的 查询 URL
         if status == "succ":
-            url_res = 'https://s.1688.com/youyuan/index.htm?tab=imageSearch&imageType=oss&sortField=sold_quantity&sortType=desc#sm-filtbar&imageAddress={}&spm='.format(key)
+            url_res = 'https://s.1688.com/youyuan/index.htm?tab=imageSearch&imageType=oss&sortField=sold_quantity&sortType=desc#sm-filtbar&imageAddress={}&spm='.format(
+                key)
             if not need_products:
                 return url_res
             else:
