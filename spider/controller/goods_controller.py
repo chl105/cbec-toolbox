@@ -1,9 +1,9 @@
 from flask import Blueprint, request
 
+from common import exception
 from util import json_util
 from vendor.ali1688 import ali1688
 from vendor.vova import vova
-from common import exception
 
 goods = Blueprint('goods', __name__)
 
@@ -38,9 +38,20 @@ def search_goods_by_image():
     if not image_url or not max_price:
         raise ValueError("无效参数")
 
-    goods_list = ali1688.search_goods_by_image(image_url)
+    return json_util.obj2json(ali1688.search_goods_by_image(image_url, max_price))
 
-    filtered_goods_list = []
-    filtered_goods_list.extend([g for g in goods_list if float(g.price) <= float(max_price)])
 
-    return json_util.obj2json(filtered_goods_list)
+if __name__ == '__main__':
+    category = vova.get_category_by_name("bags-watches-accessories")
+    goods_list = vova.get_category_goods(category, sort="most-popular")
+    for goods in goods_list:
+        print("----------------------------------------------")
+        print(json_util.obj2json(goods))
+        print("##############################################")
+        sum = 0
+        ali_goods_list = ali1688.search_goods_by_image(goods.image_url, goods.price * 3)
+        for g in ali_goods_list:
+            print(json_util.obj2json(g))
+            sum = sum + float(g.price)
+        if len(ali_goods_list) > 0:
+            print("$$$$$$$$$$$$$$- {} -$$$$$$$$$$$$$$$$$$$$".format(sum / len(ali_goods_list)))

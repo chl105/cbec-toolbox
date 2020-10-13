@@ -42,6 +42,7 @@ def get_category_by_name(name):
             return i
     return None
 
+
 def get_all_category():
     return [
         _CATEGORY_BAG_WATCHES
