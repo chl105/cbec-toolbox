@@ -35,13 +35,20 @@ _CATEGORY_HOME_GARDEN = Category("home-garden", _build_vova_url("Home-Garden-r98
 _CATEGORY_ELECTRONICS = Category("electronics", _build_vova_url("Electronics-r9874"), "电子产品")
 
 
+def get_category_by_name(name):
+    all_category = get_all_category()
+    for i in all_category:
+        if str(i.name).strip() == str(name).strip():
+            return i
+    return None
+
 def get_all_category():
     return [
         _CATEGORY_BAG_WATCHES
     ]
 
 
-def get_recommended_goods(category, max_page=5):
+def get_category_goods(category, sort="recommended", max_page=5):
     assert isinstance(category, Category)
 
     next_page_cursor = None
@@ -51,7 +58,7 @@ def get_recommended_goods(category, max_page=5):
         url = category.url + "?limit=60&is_ajax=1"
         if next_page_cursor:
             url += "&after=" + next_page_cursor
-        res = requests.get(url + "/recommended")
+        res = requests.get(url + "/" + sort)
         _check_response(res)
 
         res_dict = json_util.json2dict(res.text)
@@ -89,7 +96,7 @@ def _check_response(response):
 
 
 def main():
-    goods_list = get_recommended_goods(_CATEGORY_BAG_WATCHES)
+    goods_list = get_category_goods(_CATEGORY_BAG_WATCHES)
     print(json_util.obj2json(goods_list))
 
 

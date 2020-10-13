@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from util import json_util
 from vendor.ali1688 import ali1688
 from vendor.vova import vova
+from common import exception
 
 goods = Blueprint('goods', __name__)
 
@@ -13,14 +14,24 @@ def list_all_category():
     return json_util.obj2json(category_list)
 
 
-@goods.route('/list_recommended_goods', methods=['GET'])
-def list_recommended_goods():
-    category_list = vova.get_all_category()
-    category_goods_list = []
-    for category in category_list:
-        goods_list = vova.get_recommended_goods(category)
-        category_goods_list.append(goods_list)
-    return json_util.obj2json(category_goods_list)
+@goods.route('/list_category_goods', methods=['GET'])
+def list_category_goods():
+    category_list = []
+    category_name = request.args.get("category")
+    if not category_name:
+        raise exception.BizException("类目不能为空")
+
+    sort = request.args.get("sort")
+    if not sort:
+        sort = "recommended"
+
+    category = vova.get_category_by_name(category_name)
+    if category:
+        category_list.append(category)
+    else:
+        raise exception.BizException("无效的类目")
+
+    return json_util.obj2json(vova.get_category_goods(category, sort))
 
 
 @goods.route('/search_goods_by_image', methods=['GET'])
