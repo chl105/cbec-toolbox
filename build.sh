@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cd /work && mvn deploy -Dmaven.test.skip=true -B
+cd /work && mvn install -Dmaven.test.skip=true -B
