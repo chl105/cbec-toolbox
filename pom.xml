@@ -16,26 +16,7 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
-    <properties>
-        <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
-        <docker.repostory.namespace>lzk90s</docker.repostory.namespace>
-        <docker.release_tag>${project.version}</docker.release_tag>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.github.lzk90s.fttb</groupId>
-                <artifactId>bom</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <modules>
-        <module>bom</module>
         <module>common</module>
         <module>trade</module>
         <module>web</module>
@@ -44,6 +25,59 @@
         <module>gateway</module>
         <module>dbbackup</module>
     </modules>
+
+    <properties>
+        <jaxb.version>2.3.0</jaxb.version>
+        <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
+        <docker.repostory.namespace>lzk90s</docker.repostory.namespace>
+        <docker.release_tag>${project.version}</docker.release_tag>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Hoxton.SR4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.22</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>
@@ -70,7 +104,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 
     <build>
         <pluginManagement>
