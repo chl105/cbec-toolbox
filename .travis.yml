@@ -17,7 +17,7 @@ install: true
 before_script:
   - sed -i "s/{{DOCKER_USER}}/$DOCKER_USER/g" mvn-setting-template.xml
   - sed -i "s/{{DOCKER_PASSWORD}}/$DOCKER_PASSWORD/g" mvn-setting-template.xml
-  - cp -rf mvn-setting-template.xml $HOME/.m2/
+  - cp -rf mvn-setting-template.xml $HOME/.m2/settings.xml
 
 script:
   - mvn install -Dmaven.test.skip=true -B
