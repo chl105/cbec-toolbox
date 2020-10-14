@@ -55,6 +55,12 @@ services:
       - MYSQL_ROOT_PASSWORD
       - PARAMS
 
+  spider:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.spider:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+
   trade:
     restart: always
     image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.trade:1.0.0-SNAPSHOT
