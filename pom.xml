@@ -24,6 +24,7 @@
         <module>registry</module>
         <module>gateway</module>
         <module>dbbackup</module>
+        <module>spider</module>
     </modules>
 
     <properties>

@@ -9,15 +9,13 @@
 - [x] 自动选品(vova)
 
 
-## 编译方法
+## 手动编译方法
 
 1. 安装好 docker
 2. 执行编译命令:
 
 ```shell script
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/work  -it  maven:3-openjdk-11 bash
-
-cd /work && mvn package
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/work  -it  maven:3-openjdk-11 bash /work/build.sh
 ```
 
 ## 运行方法
