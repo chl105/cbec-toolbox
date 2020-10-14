@@ -15,7 +15,7 @@ install: true
 
 script:
   - docker login registry.cn-hangzhou.aliyuncs.com -u $DOCKER_USER -p $DOCKER_PASSWORD
-  - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.m2:/root/.m2 -v `pwd`:/work  -it  maven:3-openjdk-11 bash /work/build.sh
+  - mvn install -Dmaven.test.skip=true -B
 
 after_success:
 #  - bash <(curl -s https://codecov.io/bash)
