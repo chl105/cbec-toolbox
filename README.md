@@ -1,6 +1,13 @@
-# foreign-trade-toolbox
+# 外贸工具箱
 
-外贸工具箱，vova 平台自动计算发货成本，目前只支持燕文物流。
+[![Build Status](https://travis-ci.org/lzk90s/foreign-trade-toolbox.svg?branch=master)](https://travis-ci.org/lzk90s/foreign-trade-toolbox)
+
+
+## 功能特性
+
+- [x] 成本预估
+- [x] 自动选品(vova)
+
 
 ## 编译方法
 
@@ -18,11 +25,3 @@ cd /work && mvn package
 ```shell script
 docker-compose up -d
 ```
-
-## 模块说明
-
-### auth
-
-### logistics
-
-### trade

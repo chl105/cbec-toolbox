@@ -18,7 +18,7 @@
 
     <properties>
         <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
-        <docker.repostory.namespace>gosun</docker.repostory.namespace>
+        <docker.repostory.namespace>lzk90s</docker.repostory.namespace>
         <docker.release_tag>${project.version}</docker.release_tag>
     </properties>
 

@@ -4,7 +4,7 @@ services:
 
   registry:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.registry:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.registry:1.0.0-SNAPSHOT
     environment:
       - PARAMS
     networks:
@@ -14,7 +14,7 @@ services:
 
   gateway:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.gateway:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.gateway:1.0.0-SNAPSHOT
     environment:
       - PARAMS
     networks:
@@ -34,7 +34,7 @@ services:
 
   dbbackup:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.dbbackup:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.dbbackup:1.0.0-SNAPSHOT
     networks:
       - toolbox
     environment:
@@ -46,7 +46,7 @@ services:
 
   auth:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.auth:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.auth:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
@@ -57,7 +57,7 @@ services:
 
   trade:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.trade:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.trade:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
@@ -68,7 +68,7 @@ services:
 
   web:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/gosun/com.github.lzk90s.fttb.web:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.web:1.0.0-SNAPSHOT
     networks:
       - toolbox
     ports:
