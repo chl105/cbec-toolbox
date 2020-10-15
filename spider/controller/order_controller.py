@@ -1,8 +1,8 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, Response
 
 from common import exception
 from util import json_util
-from vendor.vova import vova_merchant
+from platform.vova import vova_merchant
 
 order = Blueprint('order', __name__)
 
@@ -16,4 +16,5 @@ def list_unhandled_order():
 
     cookie = vova_merchant.login(user, password)
     order_list = vova_merchant.get_unhandled_order(cookie)
-    return json_util.obj2json(order_list)
+    response = json_util.obj2json(order_list)
+    return Response(response, mimetype='application/json')

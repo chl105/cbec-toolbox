@@ -51,7 +51,7 @@ function name(key) {
       return "成本计算";
     case "logistics":
       return "物流查询";
-    case "auto-select-product":
+    case "select-goods":
       return "自动选品";
     case "address-manage":
       return "地址管理";
@@ -97,8 +97,8 @@ export default {
         },
         {
           name: "自动选品",
-          index: "auto-select-product",
-          path: "/trade/auto-select-product",
+          index: "select-goods",
+          path: "/trade/select-goods",
         },
         // {
         //   name: "地址管理",

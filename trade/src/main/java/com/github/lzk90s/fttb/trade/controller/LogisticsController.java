@@ -1,10 +1,10 @@
 package com.github.lzk90s.fttb.trade.controller;
 
 import com.github.lzk90s.fttb.common.rest.Result;
+import com.github.lzk90s.fttb.trade.logistics.LogisticsProvider;
 import com.github.lzk90s.fttb.trade.model.Address;
 import com.github.lzk90s.fttb.trade.model.Label;
 import com.github.lzk90s.fttb.trade.model.Price;
-import com.github.lzk90s.fttb.trade.logistics.LogisticsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 物流controller
+ *
  * @author liuzhikun
  */
 @RestController

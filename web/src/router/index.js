@@ -7,7 +7,8 @@ import store from "@/store/index";
 
 Vue.use(Router);
 
-const routes = [{
+const routes = [
+  {
     path: "/login",
     component: Login,
   },
@@ -18,7 +19,8 @@ const routes = [{
   {
     path: "/trade",
     component: Trade,
-    children: [{
+    children: [
+      {
         path: "",
         redirects: "cost-calculator",
       },
@@ -37,18 +39,19 @@ const routes = [{
         component: () => import("@/page/Logistics"),
       },
       {
-        path: "auto-select-product",
+        path: "select-goods",
         meta: {
-          key: "auto-select-product"
+          key: "select-goods",
         },
-        component: () => import("@/page/AutoSelectProduct")
+        component: () => import("@/page/SelectGoods"),
       },
     ],
   },
   {
     path: "/admin",
     component: Admin,
-    children: [{
+    children: [
+      {
         path: "/",
         redirects: "user-manage",
       },

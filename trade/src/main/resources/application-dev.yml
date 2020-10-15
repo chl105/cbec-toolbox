@@ -19,3 +19,5 @@ eureka:
     registry-fetch-interval-seconds: 10
     service-url:
       defaultZone: http://localhost:29000/eureka/
+
+SPIDER_HOST: http://localhost:33023

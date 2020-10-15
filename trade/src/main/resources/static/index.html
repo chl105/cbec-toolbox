@@ -1,10 +1,451 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="smart-doc"><title>API Reference</title><link rel="stylesheet"          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"><link rel="stylesheet" href="AllInOne.css?v=1590635693442"/><script src="https://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script></head><body class="book toc2 toc-left"><div id="header"><h1>贸易成本计算器</h1><div id="toc" class="toc2"><div id="toctitle"><span>API Reference</span></div><ul id="accordion" class="sectlevel1"><li class="open"><a class="dd" href="#_">1.&nbsp;</a><ul class="sectlevel2" style="display: block"><li><a href="#_1_1_">1.1.&nbsp;</a></li><li><a href="#_1_2_">1.2.&nbsp;</a></li><li><a href="#_1_3_">1.3.&nbsp;</a></li></ul></li><li><a class="dd" href="#_">2.&nbsp;</a><ul class="sectlevel2"><li><a href="#_2_1_">2.1.&nbsp;</a></li></ul></li><li><a class="dd" href="#_">3.&nbsp;</a><ul class="sectlevel2"></ul></li><li><a href="#_error_code_list">4.错误码列表</a></li></ul></div></div><div id="content"><div id="preamble"><div class="sectionbody"><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Version</th><th class="tableblock halign-left valign-top">Update Time</th><th class="tableblock halign-left valign-top">Status</th><th class="tableblock halign-left valign-top">Author</th><th class="tableblock halign-left valign-top">Description</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">0.1</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2020-02-20</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">use</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">lzk90s</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">内部试用版本</p></td></tr></tbody></table></div></div><div class="sect1"><h2 id="_"><a class="anchor" href="#_"></a><a class="link"                                                                                           href="#_">1.&nbsp;</a></h2><div class="sectionbody"><div class="sect2"><h3 id="_1_1_"><a class="anchor"                                                                                  href="#_1_1_"></a><a class="link"                                                                            href="#_1_1_">1.1.&nbsp;</a></h3><div class="paragraph"><p><strong>URL:</strong><a href="http://{{gateway}}:22333/swagger-resources/configuration/security" class="bare">&nbsp;http://{{gateway}}:22333/swagger-resources/configuration/security</a></p></div><div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div><div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8</p></div><div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div><div class="paragraph"><p><strong>Request-headers:</strong></p></div><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Header</th><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Description</th><th class="tableblock halign-left valign-top">Required</th><th class="tableblock halign-left valign-top">Since</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr></tbody></table><div class="paragraph"><p><strong>Request-example:</strong></p></div><div class="listingblock"><div class="content"><pre>http://{{gateway}}:22333/swagger-resources/configuration/security</pre></div></div><div class="paragraph"><p><strong>Response-example:</strong></p></div><div class="listingblock"><div class="content"><pre>{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="smart-doc" name="generator">
+    <title>API Reference</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"
+          rel="stylesheet">
+    <link href="AllInOne.css?v=1590635693442" rel="stylesheet"/>
+    <script src="https://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script>
+</head>
+<body class="book toc2 toc-left">
+<div id="header"><h1>贸易成本计算器</h1>
+    <div class="toc2" id="toc">
+        <div id="toctitle"><span>API Reference</span></div>
+        <ul class="sectlevel1" id="accordion">
+            <li class="open"><a class="dd" href="#_">1.&nbsp;</a>
+                <ul class="sectlevel2" style="display: block">
+                    <li><a href="#_1_1_">1.1.&nbsp;</a></li>
+                    <li><a href="#_1_2_">1.2.&nbsp;</a></li>
+                    <li><a href="#_1_3_">1.3.&nbsp;</a></li>
+                </ul>
+            </li>
+            <li><a class="dd" href="#_">2.&nbsp;</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_2_1_">2.1.&nbsp;</a></li>
+                </ul>
+            </li>
+            <li><a class="dd" href="#_">3.&nbsp;</a>
+                <ul class="sectlevel2"></ul>
+            </li>
+            <li><a href="#_error_code_list">4.错误码列表</a></li>
+        </ul>
+    </div>
+</div>
+<div id="content">
+    <div id="preamble">
+        <div class="sectionbody">
+            <table class="tableblock frame-all grid-all spread">
+                <colgroup>
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th class="tableblock halign-left valign-top">Version</th>
+                    <th class="tableblock halign-left valign-top">Update Time</th>
+                    <th class="tableblock halign-left valign-top">Status</th>
+                    <th class="tableblock halign-left valign-top">Author</th>
+                    <th class="tableblock halign-left valign-top">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">0.1</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">2020-02-20</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">use</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">lzk90s</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">内部试用版本</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="sect1"><h2 id="_"><a class="anchor" href="#_"></a><a class="link" href="#_">1.&nbsp;</a></h2>
+        <div class="sectionbody">
+            <div class="sect2"><h3 id="_1_1_"><a class="anchor" href="#_1_1_"></a><a class="link" href="#_1_1_">1.1.&nbsp;</a>
+            </h3>
+                <div class="paragraph"><p><strong>URL:</strong><a
+                        class="bare" href="http://{{gateway}}:22333/swagger-resources/configuration/security">&nbsp;http://{{gateway}}:22333/swagger-resources/configuration/security</a>
+                </p></div>
+                <div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div>
+                <div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8
+                </p></div>
+                <div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div>
+                <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
+                <table class="tableblock frame-all grid-all spread">
+                    <colgroup>
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="tableblock halign-left valign-top">Header</th>
+                        <th class="tableblock halign-left valign-top">Type</th>
+                        <th class="tableblock halign-left valign-top">Description</th>
+                        <th class="tableblock halign-left valign-top">Required</th>
+                        <th class="tableblock halign-left valign-top">Since</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="paragraph"><p><strong>Request-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre>http://{{gateway}}:22333/swagger-resources/configuration/security</pre>
+                    </div>
+                </div>
+                <div class="paragraph"><p><strong>Response-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content"><pre>{
 	
-}</pre></div></div></div><div class="sect2"><h3 id="_1_2_"><a class="anchor"                                                                                  href="#_1_2_"></a><a class="link"                                                                            href="#_1_2_">1.2.&nbsp;</a></h3><div class="paragraph"><p><strong>URL:</strong><a href="http://{{gateway}}:22333/swagger-resources/configuration/ui" class="bare">&nbsp;http://{{gateway}}:22333/swagger-resources/configuration/ui</a></p></div><div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div><div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8</p></div><div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div><div class="paragraph"><p><strong>Request-headers:</strong></p></div><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Header</th><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Description</th><th class="tableblock halign-left valign-top">Required</th><th class="tableblock halign-left valign-top">Since</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr></tbody></table><div class="paragraph"><p><strong>Request-example:</strong></p></div><div class="listingblock"><div class="content"><pre>http://{{gateway}}:22333/swagger-resources/configuration/ui</pre></div></div><div class="paragraph"><p><strong>Response-example:</strong></p></div><div class="listingblock"><div class="content"><pre>{
+}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2"><h3 id="_1_2_"><a class="anchor" href="#_1_2_"></a><a class="link" href="#_1_2_">1.2.&nbsp;</a>
+            </h3>
+                <div class="paragraph"><p><strong>URL:</strong><a
+                        class="bare" href="http://{{gateway}}:22333/swagger-resources/configuration/ui">&nbsp;http://{{gateway}}:22333/swagger-resources/configuration/ui</a>
+                </p></div>
+                <div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div>
+                <div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8
+                </p></div>
+                <div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div>
+                <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
+                <table class="tableblock frame-all grid-all spread">
+                    <colgroup>
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="tableblock halign-left valign-top">Header</th>
+                        <th class="tableblock halign-left valign-top">Type</th>
+                        <th class="tableblock halign-left valign-top">Description</th>
+                        <th class="tableblock halign-left valign-top">Required</th>
+                        <th class="tableblock halign-left valign-top">Since</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="paragraph"><p><strong>Request-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre>http://{{gateway}}:22333/swagger-resources/configuration/ui</pre>
+                    </div>
+                </div>
+                <div class="paragraph"><p><strong>Response-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content"><pre>{
 	
-}</pre></div></div></div><div class="sect2"><h3 id="_1_3_"><a class="anchor"                                                                                  href="#_1_3_"></a><a class="link"                                                                            href="#_1_3_">1.3.&nbsp;</a></h3><div class="paragraph"><p><strong>URL:</strong><a href="http://{{gateway}}:22333/swagger-resources/" class="bare">&nbsp;http://{{gateway}}:22333/swagger-resources/</a></p></div><div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div><div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8</p></div><div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div><div class="paragraph"><p><strong>Request-headers:</strong></p></div><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Header</th><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Description</th><th class="tableblock halign-left valign-top">Required</th><th class="tableblock halign-left valign-top">Since</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr></tbody></table><div class="paragraph"><p><strong>Request-example:</strong></p></div><div class="listingblock"><div class="content"><pre>http://{{gateway}}:22333/swagger-resources/</pre></div></div><div class="paragraph"><p><strong>Response-example:</strong></p></div><div class="listingblock"><div class="content"><pre>{
+}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2"><h3 id="_1_3_"><a class="anchor" href="#_1_3_"></a><a class="link" href="#_1_3_">1.3.&nbsp;</a>
+            </h3>
+                <div class="paragraph"><p><strong>URL:</strong><a class="bare"
+                                                                  href="http://{{gateway}}:22333/swagger-resources/">&nbsp;http://{{gateway}}:22333/swagger-resources/</a>
+                </p></div>
+                <div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div>
+                <div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8
+                </p></div>
+                <div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div>
+                <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
+                <table class="tableblock frame-all grid-all spread">
+                    <colgroup>
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="tableblock halign-left valign-top">Header</th>
+                        <th class="tableblock halign-left valign-top">Type</th>
+                        <th class="tableblock halign-left valign-top">Description</th>
+                        <th class="tableblock halign-left valign-top">Required</th>
+                        <th class="tableblock halign-left valign-top">Since</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="paragraph"><p><strong>Request-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre>http://{{gateway}}:22333/swagger-resources/</pre>
+                    </div>
+                </div>
+                <div class="paragraph"><p><strong>Response-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content"><pre>{
 	
-}</pre></div></div></div></div></div><div class="sect1"><h2 id="_"><a class="anchor" href="#_"></a><a class="link"                                                                                           href="#_">2.&nbsp;</a></h2><div class="sectionbody"><div class="sect2"><h3 id="_2_1_"><a class="anchor"                                                                                  href="#_2_1_"></a><a class="link"                                                                            href="#_2_1_">2.1.&nbsp;</a></h3><div class="paragraph"><p><strong>URL:</strong><a href="http://{{gateway}}:22333/logistics/price" class="bare">&nbsp;http://{{gateway}}:22333/logistics/price</a></p></div><div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div><div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8</p></div><div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div><div class="paragraph"><p><strong>Request-headers:</strong></p></div><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Header</th><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Description</th><th class="tableblock halign-left valign-top">Required</th><th class="tableblock halign-left valign-top">Since</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr></tbody></table><div class="paragraph"><p><strong>Request-parameters:</strong></p></div><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"><col style="width: 20%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Parameter</th><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Description</th><th class="tableblock halign-left valign-top">Required</th><th class="tableblock halign-left valign-top">Since</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">srcCountryCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">srcAreaCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">srcCityCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">dstCountryCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">dstAreaCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">dstCityCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">types</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">attrs</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">weight</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr></tbody></table><div class="paragraph"><p><strong>Request-example:</strong></p></div><div class="listingblock"><div class="content"><pre>curl -X GET -i http://{{gateway}}:22333/logistics/price?srcCountryCode=89204&srcAreaCode=89204&srcCityCode=89204&dstCountryCode=89204&dstAreaCode=89204&dstCityCode=89204&types=29etu1&attrs=mh2em8&weight=48.37</pre></div></div><div class="paragraph"><p><strong>Response-fields:</strong></p></div><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 25%;"><col style="width: 25%;"><col style="width: 25%;"><col style="width: 25%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Field</th><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Description</th><th class="tableblock halign-left valign-top">Since</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">timestamp</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">时间戳</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">int32</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">message</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">消息</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">data</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">数据</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">└─priceCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">└─productCode</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">└─expense</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">└─productName</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">total</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">数组总条数（仅分页查询使用）</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">row</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">当前页数据条数（仅分页查询使用）</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">extend</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">map</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">扩展字段</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">└─any object</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">any object.</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td></tr></tbody></table><div class="paragraph"><p><strong>Response-example:</strong></p></div><div class="listingblock"><div class="content"><pre>{
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1"><h2 id="_"><a class="anchor" href="#_"></a><a class="link" href="#_">2.&nbsp;</a></h2>
+        <div class="sectionbody">
+            <div class="sect2"><h3 id="_2_1_"><a class="anchor" href="#_2_1_"></a><a class="link" href="#_2_1_">2.1.&nbsp;</a>
+            </h3>
+                <div class="paragraph"><p><strong>URL:</strong><a class="bare"
+                                                                  href="http://{{gateway}}:22333/logistics/price">&nbsp;http://{{gateway}}:22333/logistics/price</a>
+                </p></div>
+                <div class="paragraph"><p><strong>Type:</strong>&nbsp;GET</p></div>
+                <div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;application/x-www-form-urlencoded;charset=utf-8
+                </p></div>
+                <div class="paragraph"><p><strong>Description:</strong>&nbsp;</p></div>
+                <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
+                <table class="tableblock frame-all grid-all spread">
+                    <colgroup>
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="tableblock halign-left valign-top">Header</th>
+                        <th class="tableblock halign-left valign-top">Type</th>
+                        <th class="tableblock halign-left valign-top">Description</th>
+                        <th class="tableblock halign-left valign-top">Required</th>
+                        <th class="tableblock halign-left valign-top">Since</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">Authorization</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">bearer token</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="paragraph"><p><strong>Request-parameters:</strong></p></div>
+                <table class="tableblock frame-all grid-all spread">
+                    <colgroup>
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                        <col style="width: 20%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="tableblock halign-left valign-top">Parameter</th>
+                        <th class="tableblock halign-left valign-top">Type</th>
+                        <th class="tableblock halign-left valign-top">Description</th>
+                        <th class="tableblock halign-left valign-top">Required</th>
+                        <th class="tableblock halign-left valign-top">Since</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">srcCountryCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">srcAreaCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">srcCityCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">dstCountryCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">dstAreaCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">dstCityCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">types</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">attrs</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">weight</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="paragraph"><p><strong>Request-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre>curl -X GET -i http://{{gateway}}:22333/logistics/price?srcCountryCode=89204&srcAreaCode=89204&srcCityCode=89204&dstCountryCode=89204&dstAreaCode=89204&dstCityCode=89204&types=29etu1&attrs=mh2em8&weight=48.37</pre>
+                    </div>
+                </div>
+                <div class="paragraph"><p><strong>Response-fields:</strong></p></div>
+                <table class="tableblock frame-all grid-all spread">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="tableblock halign-left valign-top">Field</th>
+                        <th class="tableblock halign-left valign-top">Type</th>
+                        <th class="tableblock halign-left valign-top">Description</th>
+                        <th class="tableblock halign-left valign-top">Since</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">timestamp</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">时间戳</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">int32</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">message</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">消息</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">data</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">数据</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">└─priceCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">└─productCode</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">└─expense</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">└─productName</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">No comments found.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">total</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">数组总条数（仅分页查询使用）</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">row</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">当前页数据条数（仅分页查询使用）</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">extend</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">map</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">扩展字段</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">└─any object</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">any object.</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="paragraph"><p><strong>Response-example:</strong></p></div>
+                <div class="listingblock">
+                    <div class="content"><pre>{
 	"timestamp":1590635695662,
 	"status":0,
 	"message":"success",
@@ -23,7 +464,44 @@
 			
 		}
 	}
-}</pre></div></div></div></div></div><div class="sect1"><h2 id="_"><a class="anchor" href="#_"></a><a class="link"                                                                                           href="#_">3.&nbsp;</a></h2><div class="sectionbody"></div></div><div class="sect1"><h2 id="_error_code_list"><a class="anchor" href="#_error_code_list"></a><a class="link"                                                                                                   href="#_error_code_list">4.&nbsp;错误码列表</a></h2><div class="sectionbody"><table class="tableblock frame-all grid-all spread"><colgroup><col style="width: 50%;"><col style="width: 50%;"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Error code</th><th class="tableblock halign-left valign-top">Description</th></tr></thead><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">成功</p></td></tr></tbody></table></div></div><footer class="page-footer"><span class="copyright">Generated by smart-doc at 2020-05-28 11:14:53</span><span            class="footer-modification">Suggestions,contact,support and error reporting on<a            href="https://gitee.com/sunyurepository/smart-doc" target="_blank">&nbsp;Gitee</a>&nbsp;or<a            href="https://github.com/shalousun/smart-doc" target="_blank">&nbsp;Github</a></span></footer></div>
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1"><h2 id="_"><a class="anchor" href="#_"></a><a class="link" href="#_">3.&nbsp;</a></h2>
+        <div class="sectionbody"></div>
+    </div>
+    <div class="sect1"><h2 id="_error_code_list"><a class="anchor" href="#_error_code_list"></a><a class="link"
+                                                                                                   href="#_error_code_list">4.&nbsp;错误码列表</a>
+    </h2>
+        <div class="sectionbody">
+            <table class="tableblock frame-all grid-all spread">
+                <colgroup>
+                    <col style="width: 50%;">
+                    <col style="width: 50%;">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th class="tableblock halign-left valign-top">Error code</th>
+                    <th class="tableblock halign-left valign-top">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">成功</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer class="page-footer"><span class="copyright">Generated by smart-doc at 2020-05-28 11:14:53</span><span
+            class="footer-modification">Suggestions,contact,support and error reporting on<a
+            href="https://gitee.com/sunyurepository/smart-doc" target="_blank">&nbsp;Gitee</a>&nbsp;or<a
+            href="https://github.com/shalousun/smart-doc" target="_blank">&nbsp;Github</a></span></footer>
+</div>
 <script>    $(function () {
     var Accordion = function (el, multiple) {
         this.el = el || {};
@@ -41,6 +519,8 @@
         }
     };
     new Accordion($('#accordion'), false);
-});</script>
+});
+
+</script>
 </body>
 </html>

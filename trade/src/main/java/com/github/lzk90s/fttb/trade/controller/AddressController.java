@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 地址controller
+ */
 @RestController
 @RequestMapping("/address")
 public class AddressController {

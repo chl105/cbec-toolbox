@@ -1,7 +1,7 @@
 from common import exception
 from model import goods_model
 from util import dict_util
-from vendor.ali1688 import alibaba_lib
+from platform.ali1688 import alibaba_lib
 
 _BASE_URL = "https://s.1688.com"
 
@@ -64,7 +64,8 @@ def search_goods_by_image(image_url, max_price=0.0, max_seller=5):
             image_obj.imgUrl,
             company_obj.name,
             company_obj.url,
-            trade_quantity_obj.number
+            trade_quantity_obj.number,
+            "1688"
         ))
 
     # 少于两个时，直接返回

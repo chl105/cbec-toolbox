@@ -17,6 +17,8 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.gateway:1.0.0-SNAPSHOT
     environment:
       - PARAMS
+    ports:
+      - 28888:28888
     networks:
       - toolbox
 
@@ -29,8 +31,8 @@ services:
       - MYSQL_ROOT_PASSWORD
     volumes:
       - ./data/mysql:/var/lib/mysql
-  #    ports:
-  #      - 3306:3306
+    ports:
+      - 3306:3306
 
   dbbackup:
     restart: always

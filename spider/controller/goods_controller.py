@@ -1,9 +1,9 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 
 from common import exception
 from util import json_util
-from vendor.ali1688 import ali1688
-from vendor.vova import vova
+from platform.ali1688 import ali1688
+from platform.vova import vova
 
 goods = Blueprint('goods', __name__)
 
@@ -11,7 +11,8 @@ goods = Blueprint('goods', __name__)
 @goods.route('/list_all_category', methods=['GET'])
 def list_all_category():
     category_list = vova.get_all_category()
-    return json_util.obj2json(category_list)
+    response = json_util.obj2json(category_list)
+    return Response(response, mimetype='application/json')
 
 
 @goods.route('/list_category_goods', methods=['GET'])
@@ -28,7 +29,8 @@ def list_category_goods():
     if not category:
         raise exception.BizException("无效的类目")
 
-    return json_util.obj2json(vova.get_category_goods(category, sort))
+    response = json_util.obj2json(vova.get_category_goods(category, sort, 1))
+    return Response(response, mimetype='application/json')
 
 
 @goods.route('/search_goods_by_image', methods=['GET'])
@@ -38,7 +40,8 @@ def search_goods_by_image():
     if not image_url or not max_price:
         raise ValueError("无效参数")
 
-    return json_util.obj2json(ali1688.search_goods_by_image(image_url, max_price))
+    response = json_util.obj2json(ali1688.search_goods_by_image(image_url, max_price))
+    return Response(response, mimetype='application/json')
 
 
 if __name__ == '__main__':

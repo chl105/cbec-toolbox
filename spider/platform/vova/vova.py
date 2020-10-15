@@ -11,28 +11,20 @@ VOVA买家
 '''
 
 
-class Category:
-    def __init__(self, name, url, description):
-        self.name = name
-        self.url = url
-        self.description = description
-        self.vendor = "vova"
-
-
 def _build_vova_url(uri):
     if uri.startswith("/"):
         return _BASE_URL + uri
     return _BASE_URL + "/" + uri
 
 
-_CATEGORY_BAG_WATCHES = Category("bags-watches-accessories", _build_vova_url("Bags-Watches-Accessories-r9876"),
+_CATEGORY_BAG_WATCHES = goods_model.Category("bags-watches-accessories", _build_vova_url("Bags-Watches-Accessories-r9876"),
                                  "包、手表、配件")
-_CATEGORY_WOMEN_CLOTHING = Category("women-s-clothing", _build_vova_url("Women-S-Clothing-r9560"), "女士衣服")
-_CATEGORY_MOBILE_PHONES = Category("mobile-phones-accessories", _build_vova_url("Mobile-Phones-Accessories-r10045"),
+_CATEGORY_WOMEN_CLOTHING = goods_model.Category("women-s-clothing", _build_vova_url("Women-S-Clothing-r9560"), "女士衣服")
+_CATEGORY_MOBILE_PHONES = goods_model.Category("mobile-phones-accessories", _build_vova_url("Mobile-Phones-Accessories-r10045"),
                                    "移动电话、配件")
-_CATEGORY_MEN_CLOTHING = Category("men-s-clothing", _build_vova_url("Men-S-Clothing-r9881"), "男士衣服")
-_CATEGORY_HOME_GARDEN = Category("home-garden", _build_vova_url("Home-Garden-r9873"), "家庭")
-_CATEGORY_ELECTRONICS = Category("electronics", _build_vova_url("Electronics-r9874"), "电子产品")
+_CATEGORY_MEN_CLOTHING = goods_model.Category("men-s-clothing", _build_vova_url("Men-S-Clothing-r9881"), "男士衣服")
+_CATEGORY_HOME_GARDEN = goods_model.Category("home-garden", _build_vova_url("Home-Garden-r9873"), "家庭")
+_CATEGORY_ELECTRONICS = goods_model.Category("electronics", _build_vova_url("Electronics-r9874"), "电子产品")
 
 
 def get_category_by_name(name):
@@ -50,7 +42,7 @@ def get_all_category():
 
 
 def get_category_goods(category, sort="recommended", max_page=5):
-    assert isinstance(category, Category)
+    assert isinstance(category, goods_model.Category)
 
     next_page_cursor = None
     goods_list = []
@@ -76,7 +68,8 @@ def get_category_goods(category, sort="recommended", max_page=5):
                 product_obj.name,
                 _build_vova_url(product_obj.url),
                 product_obj.shop_price_exchange,
-                ""
+                "",
+                platform="vova"
             ))
 
         idx = 0

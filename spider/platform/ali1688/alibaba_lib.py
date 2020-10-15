@@ -9,9 +9,9 @@ from urllib.parse import urlparse
 
 import requests
 
-from vendor.ali1688.func_txy import get_random_str
-from vendor.ali1688.func_txy import request_get
-from vendor.ali1688.func_txy import request_post
+from platform.ali1688.func_txy import get_random_str
+from platform.ali1688.func_txy import request_get
+from platform.ali1688.func_txy import request_post
 
 
 class Alibaba(object):
