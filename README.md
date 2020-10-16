@@ -6,8 +6,12 @@
 ## 功能特性
 
 - [x] 成本预估
+- [x] 新订单自动推送通知
 - [x] 自动选品(vova)
 
+## 架构
+
+![architecture](architecture/container-diagram.svg)
 
 ## 手动编译方法
 

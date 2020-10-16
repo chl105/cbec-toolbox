@@ -1,0 +1,56 @@
+@startuml container-diagram
+!include https://unpkg.com/plantuml-style-c4@latest/c4_component.puml
+' uncomment the following line and comment the first to use locally
+'!include c4_component.puml
+
+'LAYOUT_WITH_LEGEND()
+LAYOUT_AS_SKETCH()
+
+title 容器图
+
+Person(user, "用户")
+
+System_Boundary(thisSystem, "外贸系统"){
+    Container(orderContainer, "订单服务", "Java, springmvc", "未发货订单自动通知，订单处理等")
+    Container(goodsContainer, "商品服务", "Java, springmvc", "爬取商品")
+    Container(logisticsContainer,"物流服务","Java, springmvc", "物流管理")
+    Container(spiderContainer, "爬虫服务", "Python", "爬取电商平台的产品等")
+    Container(notifyRobotContainer, "通知机器人", "Python", "通知推送机器人，推送消息到用户")
+
+    Rel(goodsContainer, spiderContainer, "获取爬虫数据", "HTTPS")
+}
+
+
+System_Boundary(storage, "存储"){
+    ContainerDb(database, "数据库", "SQL Database", "存储系统中的信息")
+}
+
+
+System_Boundary(logistics, "物流"){
+    System_Ext(yw56, "燕文物流")
+}
+
+System_Ext(vova, "VOVA电商平台")
+
+System_Boundary(platform, "商品采集平台"){
+    System_Ext(ali1688, "1688电商平台")
+    System_Ext(taobao, "淘宝电商平台")
+    System_Ext(pdd, "拼多多电商平台")
+}
+
+
+Rel(user, orderContainer, "订单处理", "HTTPS")
+Rel(user, logisticsContainer, "物流查询，成本预估","HTTPS")
+Rel_Back(notifyRobotContainer, user, "推送消息", "邮件，微信等")
+
+
+Rel_L(orderContainer, vova, "查询订单")
+Rel(goodsContainer, platform, "采集商品")
+Rel_D(thisSystem, database, "存储持久化数据")
+Rel(spiderContainer, platform, "爬取数据", "html/json")
+Rel(logisticsContainer, logistics, "查询物流", "HTTPS")
+
+Lay_D(thisSystem, database)
+
+
+@enduml
