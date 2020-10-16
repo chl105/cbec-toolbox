@@ -265,7 +265,7 @@ export default {
   methods: {
     initProductTypeList() {
       getList(
-        "/trade/logistics/product_type_list",
+        "/logistics/logistics/product_type_list",
         null,
         (total, data) => {
           this.typeList = data;
@@ -277,7 +277,7 @@ export default {
     },
     initGoodsAttrbuteList() {
       getList(
-        "/trade/logistics/goods_attribute_list",
+        "/logistics/logistics/goods_attribute_list",
         null,
         (total, data) => {
           this.goodsAttrList = data;
@@ -291,7 +291,7 @@ export default {
       let params = {};
       params.fuzzy = val;
       getList(
-        "/trade/address/city_list",
+        "/logistics/address/city_list",
         params,
         (total, data) => {
           this.srcAddressList = data;
@@ -305,7 +305,7 @@ export default {
       let params = {};
       params.fuzzy = val;
       getList(
-        "/trade/address/country_list",
+        "/logistics/address/country_list",
         params,
         (total, data) => {
           this.dstAddressList = data;
@@ -339,7 +339,7 @@ export default {
     getLogisticsPrice(params, that) {
       that.loading = true;
       getList(
-        "/trade/logistics/price",
+        "/logistics/logistics/price",
         params,
         (total, data) => {
           that.loading = false;

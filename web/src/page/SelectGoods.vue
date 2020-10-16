@@ -19,10 +19,10 @@
       :rules="formRule"
     >
       <div class="form-group">
-        <form-item label="平台：" prop="vendor">
-          <Select v-model="form.vendor" class="input-content">
+        <form-item label="平台：" prop="platform">
+          <Select v-model="form.platform" class="input-content">
             <Option
-              v-for="item in vendorList"
+              v-for="item in platformList"
               :value="item.value"
               :key="item.value"
               >{{ item.name }}</Option
@@ -77,7 +77,7 @@ export default {
       pageSize: 12,
       loading: true,
       form: {
-        vendor: "",
+        platform: "",
         category: "",
         goodsAttr: [],
         types: [],
@@ -85,7 +85,7 @@ export default {
         priceFormula: "售价=进价*3",
       },
       formRule: {
-        vendor: [{ required: true, message: "数据错误", type: "string" }],
+        platform: [{ required: true, message: "数据错误", type: "string" }],
         exchangeRate: {
           required: true,
           message: "数据错误",
@@ -93,9 +93,9 @@ export default {
         },
         category: [{ required: true, message: "数据错误", type: "string" }],
       },
-      vendorList: [
+      platformList: [
         {
-          value: "0",
+          value: "vova",
           name: "VOVA",
         },
       ],
@@ -203,15 +203,14 @@ export default {
   },
   mounted() {
     this.loading = false;
-    this.form.vendor = this.vendorList[0].value;
-    this.searchCategoryList();
+    this.form.platform = this.platformList[0].value;
+    this.searchCategoryList(this.form.platform);
   },
   methods: {
-    searchCategoryList() {
-      let params = {};
+    searchCategoryList(platform) {
       getList(
-        "/trade/goods/list_all_category",
-        params,
+        "/goods/goods/list_all_category/" + platform,
+        {},
         (total, data) => {
           this.categoryList = data;
         },
@@ -241,7 +240,7 @@ export default {
     listCategoryGoods(params, that) {
       that.loading = true;
       getList(
-        "/trade/goods/list_category_goods",
+        "/goods/goods/list_category_goods",
         params,
         (total, data) => {
           that.loading = false;
@@ -270,7 +269,7 @@ export default {
       params.imageUrl = imageUrl;
       params.maxPrice = maxPrice;
       getList(
-        "/trade/goods/search_goods_by_image",
+        "/goods/goods/search_goods_by_image",
         params,
         (total, data) => {
           goods.supplier1 = data[0].subject;

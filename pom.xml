@@ -18,12 +18,15 @@
 
     <modules>
         <module>common</module>
-        <module>trade</module>
         <module>auth</module>
         <module>registry</module>
         <module>gateway</module>
         <module>dbbackup</module>
         <module>spider</module>
+        <module>notify-robot</module>
+        <module>logistics</module>
+        <module>goods</module>
+        <module>order</module>
         <module>web</module>
     </modules>
 

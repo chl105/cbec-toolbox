@@ -2,8 +2,8 @@ from flask import Blueprint, request, Response
 
 from common import exception
 from util import json_util
-from platform.ali1688 import ali1688
-from platform.vova import vova
+from ecommerce.ali1688 import ali1688
+from ecommerce.vova import vova
 
 goods = Blueprint('goods', __name__)
 
