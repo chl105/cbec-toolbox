@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.11
 
 ADD docker-entrypoint-initdb.d /docker-entrypoint-initdb.d/
 ADD cron.daily /etc/periodic/daily/
