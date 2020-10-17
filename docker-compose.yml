@@ -63,9 +63,31 @@ services:
     networks:
       - toolbox
 
-  trade:
+  goods:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.trade:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.goods:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - PARAMS
+
+  logistics:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.logistics:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - PARAMS
+
+  order:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.order:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
