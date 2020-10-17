@@ -24,7 +24,7 @@ services:
 
   mysql:
     restart: always
-    image: mariadb:10
+    image: mysql:8
     networks:
       - toolbox
     environment:
