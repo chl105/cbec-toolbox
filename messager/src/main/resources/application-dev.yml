@@ -6,3 +6,10 @@ eureka:
     registry-fetch-interval-seconds: 10
     service-url:
       defaultZone: http://localhost:29000/eureka/
+
+spring:
+  mail:
+    host: smtp.exmail.qq.com
+    username: it.alarm@hzgosun.com
+    password: Hangde1314
+    default-encoding: UTF-8

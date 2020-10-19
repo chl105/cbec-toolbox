@@ -10,6 +10,8 @@ spring:
     multipart:
       max-request-size: 20MB
       max-file-size: 20MB
+  main:
+    allow-bean-definition-overriding: true
   mail:
     host: smtp.exmail.qq.com
     username: test@163.com
@@ -32,3 +34,7 @@ security:
       loadBalanced: true
       prefer-token-info: false
       user-info-uri: http://auth/user
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000

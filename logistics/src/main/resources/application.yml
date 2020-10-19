@@ -6,6 +6,8 @@ spring:
     name: logistics
   profiles:
     active: dev
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://mysql:3306/logistics?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
@@ -35,3 +37,7 @@ security:
       loadBalanced: true
       prefer-token-info: false
       user-info-uri: http://auth/user
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000

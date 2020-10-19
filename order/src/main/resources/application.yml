@@ -6,6 +6,8 @@ spring:
     name: goods
   profiles:
     active: dev
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://mysql:3306/order?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
@@ -13,6 +15,8 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: Asia/Shanghai
+  freemarker:
+    template-loader-path: classpath:/templates/
 
 logistics:
   yw56:
@@ -35,3 +39,8 @@ security:
       loadBalanced: true
       prefer-token-info: false
       user-info-uri: http://auth/user
+
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000

@@ -32,13 +32,12 @@ CREATE TABLE `t_user`  (
   `phone` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号',
   `state` tinyint(1) NOT NULL COMMENT '状态（1：turn启用，0：false停用）',
   `email` varchar(64) NOT NULL COMMENT '邮箱',
-  `add_time` timestamp(0) NOT NULL DEFAULT '' CURRENT_TIMESTAMP COMMENT '添加时间',
+  `add_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 COMMENT = '后台用户表';
 
 INSERT INTO `t_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', 1, 'admin@test.com', '2018-09-01 00:00:00', '2018-09-01 00:00:00');
-
 
 DROP TABLE IF EXISTS `t_platform_account`;
 CREATE TABLE `t_platform_account` (
@@ -46,4 +45,4 @@ CREATE TABLE `t_platform_account` (
   `platform` varchar(32) NOT NULL COMMENT '平台名称',
   `user` varchar(64) NOT NULL COMMENT '平台用户名',
   `password` varchar(64) NOT NULL COMMENT '平台密码'
-) ENGINE = InnoDB AUTO_INCREMENT = 2 COMMENT = '平台账户表';
+) ENGINE = InnoDB COMMENT = '平台账户表';

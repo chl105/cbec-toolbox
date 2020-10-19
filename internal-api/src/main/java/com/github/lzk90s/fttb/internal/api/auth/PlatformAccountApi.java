@@ -8,6 +8,9 @@ import java.util.List;
 
 @RequestMapping("/internal/platform_account")
 public interface PlatformAccountApi {
-    @GetMapping("/list_platform_account")
+    @GetMapping("/list_platform_account_by_user")
     List<PlatformAccountDTO> listPlatformAccountByUser(@RequestParam("userName") String userName);
+
+    @GetMapping("/list_all_user_platform_account")
+    List<PlatformAccountDTO> listAllUserPlatformAccount();
 }

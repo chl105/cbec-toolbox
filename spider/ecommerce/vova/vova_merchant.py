@@ -70,9 +70,10 @@ def get_unhandled_order(cookie):
                                   td_tags[4].attrs["data-time"],
                                   td_tags[5].attrs["data-time"],
                                   td_tags[11].string,
-                                  td_tags[12].string,
+                                  str(td_tags[12].string).split(" ")[1],
                                   td_tags[13].string,
-                                  td_tags[14].a.string)
+                                  td_tags[14].a.string,
+                                  td_tags[8].a.img.attrs["src"])
         order_list.append(order)
 
     return order_list

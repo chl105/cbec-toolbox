@@ -1,6 +1,6 @@
 class Order:
     def __init__(self, id, type, confirm_time, sn, delivery_count_down, order_cancel_count_down,
-                 order_collection_count_down, num, price, total_price, pay_status):
+                 order_collection_count_down, num, price, total_price, pay_status, image_url):
         self.id = id
         self.type = type
         self.confirm_time = confirm_time
@@ -12,3 +12,4 @@ class Order:
         self.price = price
         self.total_price = total_price
         self.pay_status = pay_status
+        self.image_url = image_url

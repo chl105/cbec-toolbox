@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 @Data
 @TableName("t_platform_account")
 public class PlatformAccountEntity {
-    private Long userName;
+    private String userName;
     private String platform;
     private String user;
     private String password;

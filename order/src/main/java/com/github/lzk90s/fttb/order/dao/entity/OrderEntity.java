@@ -4,19 +4,24 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.github.lzk90s.fttb.internal.api.spider.OrderDTO;
 import com.google.common.base.Converter;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
+@Data
 @TableName("t_order")
 public class OrderEntity {
     @TableId
     private String id;
     private String platform;
+    private String user;
     private String type;
     private Date confirmTime;
     private String sn;
     private Integer num;
     private Float price;
+    private String imageUrl;
     private Date lastNotifyTime;
 
     public static ConverterImpl getConverter() {
@@ -27,12 +32,14 @@ public class OrderEntity {
 
         @Override
         public OrderDTO doForward(OrderEntity orderEntity) {
-            return null;
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public OrderEntity doBackward(OrderDTO orderDTO) {
-            return null;
+            OrderEntity orderEntity = new OrderEntity();
+            BeanUtils.copyProperties(orderDTO, orderEntity);
+            return orderEntity;
         }
     }
 }

@@ -13,11 +13,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
 
 @Component
 @Slf4j
+@RestController
+@RequestMapping("/tasks/goods_spider_task")
 public class GoodsSpiderTask {
     @Value("${maxGoodsNum:100}")
     private int maxGoodsNum;
@@ -33,8 +38,8 @@ public class GoodsSpiderTask {
     @Autowired
     private GoodsSpiderApiFeign goodsSpiderFeign;
 
-    //@Scheduled(cron = "0 0 */1 * * ?")
-    @Scheduled(fixedDelay = 300000)
+    @GetMapping("/execute")
+    @Scheduled(cron = "0 0 */1 * * ?")
     public void execute() {
         log.info("Start found goods, please wait .....");
 

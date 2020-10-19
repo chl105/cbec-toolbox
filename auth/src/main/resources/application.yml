@@ -24,3 +24,8 @@ eureka:
     registry-fetch-interval-seconds: 10
     service-url:
       defaultZone: http://registry:29000/eureka/
+
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000

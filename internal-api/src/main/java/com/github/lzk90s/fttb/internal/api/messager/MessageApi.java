@@ -1,10 +1,15 @@
 package com.github.lzk90s.fttb.internal.api.messager;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/internal/message")
 public interface MessageApi {
-    void sendMail(String dstMail, String message);
+    @PostMapping("/mail")
+    void sendMail(@RequestBody MessageDTO message);
 
-    void sendWechat(String wechatNumber, String message);
+    @PostMapping("/wechat")
+    void sendWechat(@RequestBody MessageDTO message);
 }
