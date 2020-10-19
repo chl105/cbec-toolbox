@@ -1,6 +1,6 @@
-# 跨境电商外贸工具箱
+# 跨境电商工具箱
 
-[![Build Status](https://travis-ci.org/lzk90s/foreign-trade-toolbox.svg?branch=master)](https://travis-ci.org/lzk90s/foreign-trade-toolbox)
+[![Build Status](https://travis-ci.org/lzk90s/cbec-toolbox.svg?branch=master)](https://travis-ci.org/lzk90s/cbec-toolbox)
 
 
 ## 功能特性
