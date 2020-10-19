@@ -1,0 +1,34 @@
+server:
+  port: 22338
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: messager
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
+  mail:
+    host: smtp.exmail.qq.com
+    username: test@163.com
+    password: 123456
+    default-encoding: UTF-8
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/gateway/routes
+  client:
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://registry:29000/eureka/
+
+security:
+  oauth2:
+    resource:
+      loadBalanced: true
+      prefer-token-info: false
+      user-info-uri: http://auth/user

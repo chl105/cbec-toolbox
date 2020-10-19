@@ -11,11 +11,12 @@ title 容器图
 Person(user, "用户")
 
 System_Boundary(thisSystem, "外贸系统"){
+    Container(authContainer, "用户认证服务", "Java, springmvc", "用户认证")
     Container(orderContainer, "订单服务", "Java, springmvc", "未发货订单自动通知，订单处理等")
     Container(goodsContainer, "商品服务", "Java, springmvc", "爬取商品")
     Container(logisticsContainer,"物流服务","Java, springmvc", "物流管理")
     Container(spiderContainer, "爬虫服务", "Python", "爬取电商平台的产品等")
-    Container(notifyRobotContainer, "通知机器人", "Python", "通知推送机器人，推送消息到用户")
+    Container(messagerContainer, "通知机器人", "Python", "通知推送机器人，推送消息到用户")
 
     Rel(goodsContainer, spiderContainer, "获取爬虫数据", "HTTPS")
 }
@@ -41,7 +42,7 @@ System_Boundary(platform, "商品采集平台"){
 
 Rel(user, orderContainer, "订单处理", "HTTPS")
 Rel(user, logisticsContainer, "物流查询，成本预估","HTTPS")
-Rel_Back(notifyRobotContainer, user, "推送消息", "邮件，微信等")
+Rel_Back(messagerContainer, user, "推送消息", "邮件，微信等")
 
 
 Rel_L(orderContainer, vova, "查询订单")

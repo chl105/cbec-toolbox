@@ -1,9 +1,6 @@
-FROM python:alpine
+FROM registry.cn-hangzhou.aliyuncs.com/gosun/openjdk-11-openj9:1.0.0
 
-WORKDIR /root/notify-robot
+ARG JAR_FILE_NAME
+ADD target/$JAR_FILE_NAME /
 
-ADD . .
-
-RUN pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple 
-
-CMD python /root/notify-robot/main.py
+ENTRYPOINT java -Dspring.profiles.active=prod $PARAMS -jar /*.jar

@@ -23,7 +23,7 @@
         <module>gateway</module>
         <module>dbbackup</module>
         <module>spider</module>
-        <module>notify-robot</module>
+        <module>messager</module>
         <module>logistics</module>
         <module>goods</module>
         <module>order</module>
