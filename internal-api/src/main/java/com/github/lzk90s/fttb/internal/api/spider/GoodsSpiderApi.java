@@ -1,15 +1,12 @@
-package com.github.lzk90s.fttb.goods.feign;
+package com.github.lzk90s.fttb.internal.api.spider;
 
-import com.github.lzk90s.fttb.goods.feign.dto.CategoryDTO;
-import com.github.lzk90s.fttb.goods.feign.dto.GoodsInfoDTO;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "goodsSpider", url = "${SPIDER_HOST:http://spider:33023}/goods")
-public interface GoodsSpiderFeign {
+
+public interface GoodsSpiderApi {
     @GetMapping("/list_all_category")
     List<CategoryDTO> listAllCategory();
 

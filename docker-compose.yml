@@ -63,6 +63,12 @@ services:
     networks:
       - toolbox
 
+  messager:
+    restart: always
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.messager:1.0.0-SNAPSHOT
+    networks:
+      - toolbox
+
   goods:
     restart: always
     image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.goods:1.0.0-SNAPSHOT

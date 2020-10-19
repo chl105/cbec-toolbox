@@ -76,7 +76,7 @@ export default {
             client_secret: "web-secret"
           };
           axios
-            .post("/auth/oauth/token", "", { params: data })
+            .post("/api/auth/oauth/token", "", { params: data })
             .then(response => {
               let token = response.data.access_token;
               if (token) {

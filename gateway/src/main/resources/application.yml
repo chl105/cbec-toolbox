@@ -26,9 +26,9 @@ spring:
           lowerCaseServiceId: true
           enabled: true
           predicates:
-            - Path='/' + serviceId + '/**'
+            - Path='/api/' + serviceId + '/**'
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
       httpclient:
         pool:
           max-connections: ${MAX_CONNECTIONS:500}
@@ -43,7 +43,7 @@ spring:
             fallbackUri: 'forward:/fallback'
         - name: Retry
           args:
-            retries: 3
+            retries: 1
             series:
               - SERVER_ERROR
             statuses:

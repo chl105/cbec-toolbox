@@ -3,8 +3,8 @@ package com.github.lzk90s.fttb.goods.task;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.github.lzk90s.fttb.goods.dao.entity.GoodsEntity;
-import com.github.lzk90s.fttb.goods.feign.GoodsSpiderFeign;
-import com.github.lzk90s.fttb.goods.feign.dto.GoodsInfoDTO;
+import com.github.lzk90s.fttb.goods.feign.GoodsSpiderApiFeign;
+import com.github.lzk90s.fttb.goods.model.Goods;
 import com.github.lzk90s.fttb.goods.service.EcommercePlatformService;
 import com.github.lzk90s.fttb.goods.service.GoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class GoodsSpiderTask {
     private GoodsService goodsService;
 
     @Autowired
-    private GoodsSpiderFeign goodsSpiderFeign;
+    private GoodsSpiderApiFeign goodsSpiderFeign;
 
     //@Scheduled(cron = "0 0 */1 * * ?")
     @Scheduled(fixedDelay = 300000)
@@ -69,7 +69,7 @@ public class GoodsSpiderTask {
                 return;
             }
             var goodsListDO = goodsList.stream()
-                    .map(s -> GoodsInfoDTO.getEntityConverter().doForward(s))
+                    .map(s -> Goods.getEntityConverter().doForward(s))
                     .peek(s -> s.setPlatform(platformName))
                     .peek(s -> s.setCategory(category.getName()))
                     .collect(Collectors.toList());

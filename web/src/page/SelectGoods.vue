@@ -209,7 +209,7 @@ export default {
   methods: {
     searchCategoryList(platform) {
       getList(
-        "/goods/goods/list_all_category/" + platform,
+        "/api/goods/goods/list_all_category/" + platform,
         {},
         (total, data) => {
           this.categoryList = data;
@@ -240,7 +240,7 @@ export default {
     listCategoryGoods(params, that) {
       that.loading = true;
       getList(
-        "/goods/goods/list_category_goods",
+        "/api/goods/goods/list_category_goods",
         params,
         (total, data) => {
           that.loading = false;
@@ -269,7 +269,7 @@ export default {
       params.imageUrl = imageUrl;
       params.maxPrice = maxPrice;
       getList(
-        "/goods/goods/search_goods_by_image",
+        "/api/goods/goods/search_goods_by_image",
         params,
         (total, data) => {
           goods.supplier1 = data[0].subject;

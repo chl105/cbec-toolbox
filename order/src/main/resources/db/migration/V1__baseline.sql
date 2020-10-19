@@ -1,25 +1,14 @@
-DROP TABLE IF EXISTS `t_goods`;
-CREATE TABLE `t_goods`  (
+DROP TABLE IF EXISTS `t_order`;
+CREATE TABLE `t_order`  (
   `id` varchar(16) NOT NULL COMMENT 'id',
-  `subject` varchar(512) NOT NULL COMMENT '名字',
-  `category` varchar(128) NOT NULL DEFAULT '' COMMENT '类别',
-  `platform` varchar(128) NOT NULL COMMENT '商品所在平台',
-  `detail_url` varchar(512) NOT NULL COMMENT 'url',
-  `image_url` varchar(512) NOT NULL COMMENT '图片url',
-  `price` DECIMAL(5,2) NOT NULL COMMENT '价格',
-  `seller_name` varchar(128) DEFAULT '' COMMENT '卖家名',
-  `seller_shop_url` varchar(512) DEFAULT '' COMMENT '卖家店铺url',
-  `purchased` tinyint(1) DEFAULT 0 COMMENT '是否已经采购',
+  `platform` varchar(64) NOT NULL COMMENT '名字',
+  `type` varchar(64) NOT NULL DEFAULT '' COMMENT '类型',
+  `confirm_time` datetime NOT NULL COMMENT '确认时间',
+  `sn` varchar(128) NOT NULL COMMENT 'sn',
+  `num` int(10) DEFAULT 0 COMMENT '数量',
+  `price` float(5,2) DEFAULT '' COMMENT '价格',
+  `last_notify_time` datetime DEFAULT 0 COMMENT '最后通知时间',
   `add_time` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '添加时间',
   `update_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '商品表';
-
-DROP TABLE IF EXISTS `t_ecommerce_platform`;
-CREATE TABLE `t_ecommerce_platform` (
-  `name` varchar(36) NOT NULL COMMENT '电子商务平台名称',
-  `description` varchar(128) NOT NULL DEFAULT '' COMMENT '描述',
-  PRIMARY KEY (`name`) USING BTREE
-) ENGINE = InnoDB COMMENT = '电商平台表';
-
-INSERT INTO t_ecommerce_platform(`name`, `description`) VALUES ('VOVA', 'VOVA');

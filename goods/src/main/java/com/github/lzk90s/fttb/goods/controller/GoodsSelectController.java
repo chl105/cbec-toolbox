@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.github.lzk90s.fttb.common.rest.Result;
 import com.github.lzk90s.fttb.goods.dao.entity.GoodsEntity;
-import com.github.lzk90s.fttb.goods.feign.GoodsSpiderFeign;
-import com.github.lzk90s.fttb.goods.feign.dto.CategoryDTO;
-import com.github.lzk90s.fttb.goods.feign.dto.GoodsInfoDTO;
+import com.github.lzk90s.fttb.goods.feign.GoodsSpiderApiFeign;
 import com.github.lzk90s.fttb.goods.model.Category;
 import com.github.lzk90s.fttb.goods.model.Goods;
 import com.github.lzk90s.fttb.goods.service.GoodsService;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/goods")
 public class GoodsSelectController {
     @Autowired
-    private GoodsSpiderFeign goodsSpiderFeign;
+    private GoodsSpiderApiFeign goodsSpiderFeign;
 
     @Autowired
     private GoodsService goodsService;
@@ -37,7 +35,7 @@ public class GoodsSelectController {
             return Result.ok();
         }
         var result = list.stream()
-                .map(s -> CategoryDTO.getConverter().doForward(s))
+                .map(s -> Category.getConverter().doBackward(s))
                 .collect(Collectors.toList());
         return Result.ok(result);
     }
@@ -60,7 +58,7 @@ public class GoodsSelectController {
             return Result.ok();
         }
         var result = list.stream()
-                .map(s -> GoodsInfoDTO.getConverter().doForward(s))
+                .map(s -> Goods.getConverter().doBackward(s))
                 .collect(Collectors.toList());
         return Result.ok(result);
     }

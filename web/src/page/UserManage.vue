@@ -52,7 +52,7 @@ import { getList, put, post } from "../http/index";
 
 function users(params, that) {
   getList(
-    "/auth/admin/users",
+    "/api/auth/admin/users",
     params,
     (total, data) => {
       that.loading = false;
@@ -84,7 +84,7 @@ function save(index, that) {
   params.append("phone", that.edtPhone);
   params.append("name", that.edtName);
   put(
-    `/auth/admin/users/${id}`,
+    `/api/auth/admin/users/${id}`,
     params,
     () => {
       that.editIndex = -1;
@@ -103,7 +103,7 @@ function resetPassword(that) {
   let row = that.data[that.resetIndex];
   let id = row.id;
   post(
-    `/auth/admin/users/${id}/reset_password`,
+    `/api/auth/admin/users/${id}/reset_password`,
     null,
     () => {
       that.reseting = false;

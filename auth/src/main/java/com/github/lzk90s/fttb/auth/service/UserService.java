@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserInfoService extends ServiceImpl<UserMapper, UserEntity> {
+public class UserService extends ServiceImpl<UserMapper, UserEntity> {
 }

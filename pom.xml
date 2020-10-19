@@ -28,6 +28,7 @@
         <module>goods</module>
         <module>order</module>
         <module>web</module>
+        <module>internal-api</module>
     </modules>
 
     <properties>

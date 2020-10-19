@@ -24,19 +24,3 @@ eureka:
     registry-fetch-interval-seconds: 10
     service-url:
       defaultZone: http://registry:29000/eureka/
-
-mybatis-plus:
-  global-config:
-    db-config:
-      id-type: auto
-      field-strategy: not_empty
-        #驼峰下划线转换
-      column-underline: true
-        #逻辑删除配置
-      logic-delete-value: 0
-      logic-not-delete-value: 1
-      db-type: mysql
-    refresh: false
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: false
