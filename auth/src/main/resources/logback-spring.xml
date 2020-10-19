@@ -59,7 +59,7 @@
 
     <logger name="org.springframework.web.servlet.mvc" level="info"/>
 
-    <logger name="com.github.lzk90s.fttb.auth.dao" level="debug">
+    <logger name="com.github.lzk90s.cbec.auth.dao" level="debug">
         <appender-ref ref="SQL"/>
     </logger>
 

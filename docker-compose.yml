@@ -4,7 +4,7 @@ services:
 
   registry:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.registry:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.registry:1.0.0-SNAPSHOT
     environment:
       - PARAMS
     networks:
@@ -14,7 +14,7 @@ services:
 
   gateway:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.gateway:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.gateway:1.0.0-SNAPSHOT
     environment:
       - PARAMS
     ports:
@@ -36,7 +36,7 @@ services:
 
   dbbackup:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.dbbackup:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.dbbackup:1.0.0-SNAPSHOT
     networks:
       - toolbox
     environment:
@@ -48,7 +48,7 @@ services:
 
   auth:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.auth:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.auth:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
@@ -59,19 +59,19 @@ services:
 
   spider:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.spider:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.spider:1.0.0-SNAPSHOT
     networks:
       - toolbox
 
   messager:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.messager:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.messager:1.0.0-SNAPSHOT
     networks:
       - toolbox
 
   goods:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.goods:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.goods:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
@@ -82,7 +82,7 @@ services:
 
   logistics:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.logistics:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.logistics:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
@@ -93,7 +93,7 @@ services:
 
   order:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.order:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.order:1.0.0-SNAPSHOT
     networks:
       - toolbox
     depends_on:
@@ -104,7 +104,7 @@ services:
 
   web:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.fttb.web:1.0.0-SNAPSHOT
+    image: registry.cn-hangzhou.aliyuncs.com/lzk90s/com.github.lzk90s.cbec.web:1.0.0-SNAPSHOT
     networks:
       - toolbox
     ports:
