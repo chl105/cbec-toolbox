@@ -16,7 +16,7 @@ System_Boundary(thisSystem, "外贸系统"){
     Container(goodsContainer, "商品服务", "Java, springmvc", "爬取商品")
     Container(logisticsContainer,"物流服务","Java, springmvc", "物流管理")
     Container(spiderContainer, "爬虫服务", "Python", "爬取电商平台的产品等")
-    Container(messagerContainer, "通知机器人", "Python", "通知推送机器人，推送消息到用户")
+    Container(messagerContainer, "信使服务", "Python", "通知推送机器人，推送消息到用户")
 
     Rel(goodsContainer, spiderContainer, "获取爬虫数据", "HTTPS")
 }
