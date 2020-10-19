@@ -12,6 +12,7 @@ import com.github.lzk90s.fttb.order.service.OrderService;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -50,6 +51,9 @@ public class UnhandledOrderScanTask {
     private FreeMarkerConfig freeMarkerConfig;
 
     private String templateName = "unhandled-order.html";
+
+    @Value("${notify.internalHour:1}")
+    private int notifyInternalHour;
 
     @GetMapping("/execute")
     @Scheduled(cron = "0 0 */1 * * ?")
@@ -93,7 +97,7 @@ public class UnhandledOrderScanTask {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) - 1);
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) - notifyInternalHour);
         Date time = calendar.getTime();
 
         log.info("Time = {}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
