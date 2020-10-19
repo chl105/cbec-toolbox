@@ -3,7 +3,7 @@
 MYSQL_HOST=mysql
 MYSQL_PORT=3306
 DB_USER=root
-DB_PASSWORD=${MYSQL_ROOT_PASSWORD:123456}
+DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
 for f in /docker-entrypoint-initdb.d/*.sql; do
   echo "Execute SQL script $f"
