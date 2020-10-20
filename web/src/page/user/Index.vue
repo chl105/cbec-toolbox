@@ -1,30 +1,31 @@
 <template>
   <div class="app">
     <div class="header">
-      <div class="title">工具箱</div>
-      <div class="user">
-        <Icon type="md-person" color="#fff" size="24" />
-        {{this.$store.state.user}}
-        <Icon type="ios-exit-outline" color="#fff" size="24" @click="logout" />
-      </div>
+      <div class="title">用户配置</div>
     </div>
     <div class="main">
       <div class="sider">
         <Sider>
           <Menu :active-name="$route.meta.key" theme="dark" width="auto">
             <MenuItem
-              v-for="(item,index) in menus"
+              v-for="(item, index) in menus"
               :key="index"
               :name="item.index"
               :to="item.path"
-            >{{item.name}}</MenuItem>
+              >{{ item.name }}</MenuItem
+            >
           </Menu>
         </Sider>
       </div>
       <div class="content-wrapper">
         <div class="breadcrumb">
-          <Breadcrumb :style="{margin: '10px 0'}">
-            <BreadcrumbItem v-for="item in crumbs" :key="item.index" :to="item.path">{{item.name}}</BreadcrumbItem>
+          <Breadcrumb :style="{ margin: '10px 0' }">
+            <BreadcrumbItem
+              v-for="item in crumbs"
+              :key="item.index"
+              :to="item.path"
+              >{{ item.name }}</BreadcrumbItem
+            >
           </Breadcrumb>
         </div>
         <div class="content">
@@ -46,22 +47,23 @@ export default {
         {
           name: "用户管理",
           index: "user-manage",
-          path: "/admin/user-manage"
-        }
+          path: "/user/user-manage",
+        },
+        {
+          name: "平台帐号管理",
+          index: "platform-account-manage",
+          path: "/user/platform-account-manage",
+        },
       ],
-      crumbs: this.buildCrumbs(this.$route.path)
+      crumbs: this.buildCrumbs(this.$route.path),
     };
   },
   watch: {
     $route(cur) {
       this.crumbs = this.buildCrumbs(cur.path);
-    }
+    },
   },
   methods: {
-    logout() {
-      this.$store.commit("setToken", "");
-      this.$router.replace("/login");
-    },
     name(key) {
       switch (key) {
         case "user-manage":
@@ -78,7 +80,7 @@ export default {
         let c1 = {
           name: name(k1),
           index: k1,
-          path: `/admin/${k1}`
+          path: `/admin/${k1}`,
         };
         let arr = [c1];
         let k2 = res[2];
@@ -86,7 +88,7 @@ export default {
           let c2 = {
             name: name(k2),
             index: k2,
-            path: path
+            path: path,
           };
           arr.push(c2);
         }
@@ -94,8 +96,12 @@ export default {
         return arr;
       }
       return [];
-    }
-  }
+    },
+    userInfo(name) {
+      console.log(name);
+      this.$router.replace("/admin");
+    },
+  },
 };
 </script>
 

@@ -38,11 +38,14 @@ CREATE TABLE `t_user`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 COMMENT = '后台用户表';
 
 INSERT INTO `t_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', 1, 'admin@test.com', '2018-09-01 00:00:00', '2018-09-01 00:00:00');
+INSERT INTO `t_user` VALUES (2, 'demo', 'e10adc3949ba59abbe56e057f20f883e', '', 1, 'demo@test.com', '2018-09-01 00:00:00', '2018-09-01 00:00:00');
 
 DROP TABLE IF EXISTS `t_platform_account`;
 CREATE TABLE `t_platform_account` (
-  `user_name` varchar(64) NOT NULL COMMENT '用户名',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user` varchar(64) NOT NULL COMMENT '用户名',
   `platform` varchar(32) NOT NULL COMMENT '平台名称',
-  `user` varchar(64) NOT NULL COMMENT '平台用户名',
-  `password` varchar(64) NOT NULL COMMENT '平台密码'
+  `platform_user` varchar(64) NOT NULL COMMENT '平台用户名',
+  `platform_password` varchar(64) NOT NULL COMMENT '平台密码',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '平台账户表';

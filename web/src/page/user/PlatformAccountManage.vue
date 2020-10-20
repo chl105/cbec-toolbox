@@ -8,39 +8,54 @@
         clearable
         @keyup.enter.native="search"
       />
-      <Button icon="ios-search" style="margin-left:10px" @click="search">搜索</Button>
+      <Button icon="ios-search" style="margin-left: 10px" @click="search"
+        >搜索</Button
+      >
     </div>
     <div class="list-content">
-      <Table border :columns="columns" :data="data" :loading="loading" style="margin-top:10px">
+      <Table
+        border
+        :columns="columns"
+        :data="data"
+        :loading="loading"
+        style="margin-top: 10px"
+      >
         <template slot-scope="{ row }" slot="id">
           <span>{{ row.id }}</span>
         </template>
-        <template slot-scope="{ row,index }" slot="phone">
-          <Input type="text" v-model="edtPhone" v-if="editIndex === index" />
-          <span v-else>{{ row.phone }}</span>
+        <template slot-scope="{ row, index }" slot="platformPassword">
+          <Input
+            type="text"
+            v-model="editPassword"
+            v-if="editIndex === index"
+          />
+          <span v-else>{{ row.platformPassword }}</span>
         </template>
-        <template slot-scope="{ row}" slot="name">
-          <span>{{ row.name }}</span>
-        </template>
-        <template slot-scope="{ row,index }" slot="operation">
+        <template slot-scope="{ row, index }" slot="operation">
           <div v-if="editIndex === index">
-            <Button @click="handleSave(row,index)" :loading="saving">保存</Button>
-            <Button @click="editIndex = -1" style="margin-left:10px">取消</Button>
+            <Button @click="handleSave(row, index)" :loading="saving"
+              >保存</Button
+            >
+            <Button @click="editIndex = -1" style="margin-left: 10px"
+              >取消</Button
+            >
           </div>
           <div v-else>
-            <Button @click="handleEdit(row,index)">操作</Button>
-            <Button @click="showReset(row,index)" style="margin-left:10px">重置密码</Button>
+            <Button @click="handleEdit(row, index)">操作</Button>
+            <Button @click="showReset(row, index)" style="margin-left: 10px"
+              >删除</Button
+            >
           </div>
         </template>
       </Table>
-      <Modal v-model="isShowReset" title="重置密码" @on-ok="resetPassword">
-        <p>确定重置【{{resetUserName}}】的密码！</p>
+      <Modal v-model="isShowReset" title="删除" @on-ok="deletePlatformAccount">
+        <p>确定删除【{{ deleteUserName }}】账户！</p>
       </Modal>
     </div>
     <div class="page-bar">
       <Page
         :total="total"
-        style="margin-top:10px;float:right;"
+        style="margin-top: 10px; float: right"
         @on-change="changePage"
         :page-size="pageSize"
       />
@@ -48,11 +63,11 @@
   </div>
 </template>
 <script>
-import { getList, put, post } from "../http/index";
+import { getList, put } from "@/http/index";
 
 function users(params, that) {
   getList(
-    "/api/auth/admin/users",
+    "/api/auth/platform_account",
     params,
     (total, data) => {
       that.loading = false;
@@ -76,49 +91,11 @@ function initParams(that) {
   return params;
 }
 
-function save(index, that) {
-  that.saving = true;
-  let row = that.data[index];
-  let id = row.id;
-  let params = new URLSearchParams();
-  params.append("phone", that.edtPhone);
-  params.append("name", that.edtName);
-  put(
-    `/api/auth/admin/users/${id}`,
-    params,
-    () => {
-      that.editIndex = -1;
-      that.saving = false;
-      row.name = that.edtName;
-      row.phone = that.edtPhone;
-    },
-    () => {
-      that.saving = false;
-    }
-  );
-}
-
-function resetPassword(that) {
-  that.reseting = true;
-  let row = that.data[that.resetIndex];
-  let id = row.id;
-  post(
-    `/api/auth/admin/users/${id}/reset_password`,
-    null,
-    () => {
-      that.reseting = false;
-    },
-    () => {
-      that.reseting = false;
-    }
-  );
-}
-
 export default {
   data() {
     return {
       resetIndex: 0,
-      resetUserName: "",
+      deleteUserName: "",
       isShowReset: false,
       saving: false,
       reseting: false,
@@ -132,29 +109,34 @@ export default {
         {
           type: "index",
           width: 60,
-          align: "center"
+          align: "center",
         },
         {
           title: "ID",
           slot: "id",
-          width: 120
+          width: 120,
         },
         {
-          title: "用户名",
-          slot: "name",
-          width: 180
+          title: "平台名称",
+          key: "platform",
+          width: 150,
         },
         {
-          title: "手机号",
-          slot: "phone",
-          minWidth: 200
+          title: "平台用户名",
+          key: "platformUser",
+          width: 200,
+        },
+        {
+          title: "平台密码",
+          slot: "platformPassword",
+          minWidth: 200,
         },
         {
           title: "编辑",
           slot: "operation",
-          width: 240
-        }
-      ]
+          width: 240,
+        },
+      ],
     };
   },
   mounted() {
@@ -176,7 +158,7 @@ export default {
     },
     handleSave(row, index) {
       if (this.edtName != row.name || this.edtPhone != row.phone) {
-        save(index, this);
+        this.save(index, this);
       } else {
         this.editIndex = -1;
         this.saving = false;
@@ -189,13 +171,31 @@ export default {
     },
     showReset(row, index) {
       this.resetIndex = index;
-      this.resetUserName = row.name;
+      this.deleteUserName = row.name;
       this.isShowReset = true;
     },
-    resetPassword() {
-      resetPassword(this);
-    }
-  }
+    save(index) {
+      this.saving = true;
+      let row = this.data[index];
+      let id = row.id;
+      let params = new URLSearchParams();
+      params.append("phone", this.edtPhone);
+      params.append("name", this.edtName);
+      put(
+        `/api/auth/admin/users/${id}`,
+        params,
+        () => {
+          this.editIndex = -1;
+          this.saving = false;
+          row.name = this.edtName;
+          row.phone = this.edtPhone;
+        },
+        () => {
+          this.saving = false;
+        }
+      );
+    },
+  },
 };
 </script>
 <style lang='less' scoped>

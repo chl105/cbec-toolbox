@@ -9,10 +9,11 @@ import org.springframework.beans.BeanUtils;
 @Data
 @TableName("t_platform_account")
 public class PlatformAccountEntity {
-    private String userName;
-    private String platform;
+    private Long id;
     private String user;
-    private String password;
+    private String platform;
+    private String platformUser;
+    private String platformPassword;
 
     public static ConverterImpl getConverter() {
         return new ConverterImpl();

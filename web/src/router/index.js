@@ -1,66 +1,66 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "@/page/Login";
-import Admin from "@/page/Admin";
-import Trade from "@/page/Trade";
 import store from "@/store/index";
 
 Vue.use(Router);
 
 const routes = [
   {
-    path: "/login",
-    component: Login,
-  },
-  {
     path: "/",
-    component: Trade,
+    redirect: "/cbec",
   },
   {
-    path: "/trade",
-    component: Trade,
+    path: "/login",
+    component: () => import("@/page/login/Index"),
+  },
+  {
+    path: "/cbec",
+    component: () => import("@/page/cbec/Index"),
     children: [
-      {
-        path: "",
-        redirects: "cost-calculator",
-      },
       {
         path: "cost-calculator",
         meta: {
           key: "cost-calculator",
         },
-        component: () => import("@/page/CostCalculator"),
+        component: () => import("@/page/cbec/CostCalculator"),
       },
       {
         path: "logistics",
         meta: {
           key: "logistics",
         },
-        component: () => import("@/page/Logistics"),
+        component: () => import("@/page/cbec/Logistics"),
       },
       {
         path: "select-goods",
         meta: {
           key: "select-goods",
         },
-        component: () => import("@/page/SelectGoods"),
+        component: () => import("@/page/cbec/SelectGoods"),
       },
     ],
   },
   {
-    path: "/admin",
-    component: Admin,
+    path: "/user",
+    component: () => import("@/page/user/Index"),
     children: [
       {
         path: "/",
-        redirects: "user-manage",
+        redirect: "user-manage",
       },
       {
         path: "user-manage",
         meta: {
           key: "user-manage",
         },
-        component: () => import("@/page/UserManage"),
+        component: () => import("@/page/user/UserManage"),
+      },
+      {
+        path: "platform-account-manage",
+        meta: {
+          key: "platform-account-manage",
+        },
+        component: () => import("@/page/user/PlatformAccountManage"),
       },
     ],
   },

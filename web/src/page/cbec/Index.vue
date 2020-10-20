@@ -1,11 +1,19 @@
 <template>
   <div class="app">
     <div class="header">
-      <div class="title">外贸工具箱</div>
+      <div class="title">跨境电商工具箱</div>
       <div class="user">
         <Icon type="md-person" color="#fff" size="24" />
-        {{ this.$store.state.user }}
-        <Icon type="ios-exit-outline" color="#fff" size="24" @click="logout" />
+        <Dropdown trigger="click" @on-click="userInfo">
+          <a href="javascript:void(0)">
+            {{ this.$store.state.user }}
+            <Icon type="ios-arrow-down"></Icon>
+          </a>
+          <DropdownMenu slot="list">
+            <DropdownItem name="userConfig">用户配置</DropdownItem>
+            <DropdownItem divided name="logout">退出</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
     </div>
     <div class="main">
@@ -93,17 +101,17 @@ export default {
         {
           name: "成本预估",
           index: "cost-calculator",
-          path: "/trade/cost-calculator",
+          path: "/cbec/cost-calculator",
         },
         {
           name: "自动选品",
           index: "select-goods",
-          path: "/trade/select-goods",
+          path: "/cbec/select-goods",
         },
         // {
         //   name: "地址管理",
         //   index: "address-manage",
-        //   path: "/trade/address-manage"
+        //   path: "/cbec/address-manage"
         // }
       ],
       crumbs: crumbs(this.$route.path),
@@ -118,6 +126,16 @@ export default {
     logout() {
       this.$store.commit("setToken", "");
       this.$router.replace("/login");
+    },
+    userConfig() {
+      this.$router.replace("/user");
+    },
+    userInfo(name) {
+      if (name == "userConfig") {
+        this.userConfig();
+      } else if (name == "logout") {
+        this.logout();
+      }
     },
   },
 };
