@@ -25,6 +25,7 @@ script:
 after_success:
 #  - bash <(curl -s https://codecov.io/bash)
   - echo "build succeed"
+  - $SSH_PASS  cd /root/cbec-toolbox && docker-compose pull && docker-compose up -d
 
 after_failure:
   - echo "build failed!"
