@@ -8,7 +8,11 @@
         clearable
         @keyup.enter.native="search"
       />
-      <Button icon="ios-search" style="margin-left: 10px" @click="search"
+      <Button
+        type="primary"
+        icon="ios-search"
+        style="margin-left: 10px"
+        @click="search"
         >搜索</Button
       >
     </div>
