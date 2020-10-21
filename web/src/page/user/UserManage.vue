@@ -27,21 +27,34 @@
           <Input type="text" v-model="edtPhone" v-if="editIndex === index" />
           <span v-else>{{ row.phone }}</span>
         </template>
+        <template slot-scope="{ row, index }" slot="email">
+          <Input type="text" v-model="editEmail" v-if="editIndex === index" />
+          <span v-else>{{ row.email }}</span>
+        </template>
         <template slot-scope="{ row }" slot="name">
           <span>{{ row.name }}</span>
         </template>
         <template slot-scope="{ row, index }" slot="operation">
           <div v-if="editIndex === index">
-            <Button @click="handleSave(row, index)" :loading="saving"
+            <Button
+              type="primary"
+              @click="handleSave(row, index)"
+              :loading="saving"
               >保存</Button
             >
-            <Button @click="editIndex = -1" style="margin-left: 10px"
+            <Button
+              type="error"
+              @click="editIndex = -1"
+              style="margin-left: 10px"
               >取消</Button
             >
           </div>
           <div v-else>
-            <Button @click="handleEdit(row, index)">操作</Button>
-            <Button @click="showReset(row, index)" style="margin-left: 10px"
+            <Button type="primary" @click="handleEdit(row, index)">操作</Button>
+            <Button
+              type="error"
+              @click="showReset(row, index)"
+              style="margin-left: 10px"
               >重置密码</Button
             >
           </div>
@@ -61,72 +74,10 @@
     </div>
   </div>
 </template>
+
+
 <script>
 import { getList, put, post } from "@/http/index";
-
-function users(params, that) {
-  getList(
-    "/api/auth/admin/users",
-    params,
-    (total, data) => {
-      that.loading = false;
-      that.data = data;
-      that.total = total;
-    },
-    () => {
-      that.loading = false;
-      that.data = [];
-      that.total = 0;
-    }
-  );
-}
-
-function initParams(that) {
-  let params = {};
-  if (that.searchKey) {
-    params.keyword = that.searchKey;
-  }
-
-  return params;
-}
-
-function save(index, that) {
-  that.saving = true;
-  let row = that.data[index];
-  let id = row.id;
-  let params = new URLSearchParams();
-  params.append("phone", that.edtPhone);
-  params.append("name", that.edtName);
-  put(
-    `/api/auth/admin/users/${id}`,
-    params,
-    () => {
-      that.editIndex = -1;
-      that.saving = false;
-      row.name = that.edtName;
-      row.phone = that.edtPhone;
-    },
-    () => {
-      that.saving = false;
-    }
-  );
-}
-
-function resetPassword(that) {
-  that.reseting = true;
-  let row = that.data[that.resetIndex];
-  let id = row.id;
-  post(
-    `/api/auth/admin/users/${id}/reset_password`,
-    null,
-    () => {
-      that.reseting = false;
-    },
-    () => {
-      that.reseting = false;
-    }
-  );
-}
 
 export default {
   data() {
@@ -151,46 +102,49 @@ export default {
         {
           title: "ID",
           key: "id",
-          width: 120,
         },
         {
           title: "用户名",
           slot: "name",
-          width: 180,
         },
         {
           title: "手机号",
           slot: "phone",
-          minWidth: 200,
         },
         {
-          title: "编辑",
+          title: "",
+          slot: "email",
+        },
+        {
+          title: "操作",
           slot: "operation",
-          width: 240,
+          width: 200,
         },
       ],
     };
   },
   mounted() {
-    let params = initParams(this);
-    users(params, this);
+    let params = this.initParams();
+    params.pageNo = 1;
+    params.pageSize = this.pageSize;
+    this.listUsers(params, this);
   },
   methods: {
     changePage(page) {
-      let params = initParams(this);
-      params.start = (page - 1) * this.pageSize;
-      params.limit = this.pageSize;
-      users(params, this);
+      let params = this.initParams();
+      params.pageNo = page;
+      params.pageSize = this.pageSize;
+      this.listUsers(params, this);
     },
     search() {
-      let params = initParams(this);
-      params.start = 0;
-      params.limit = this.pageSize;
-      users(params, this);
+      let params = this.initParams();
+      params.pageNo = 1;
+      params.pageSize = this.pageSize;
+      this.listUsers(params, this);
     },
     handleSave(row, index) {
       if (this.edtName != row.name || this.edtPhone != row.phone) {
-        save(index, this);
+        this.save(index, this);
       } else {
         this.editIndex = -1;
         this.saving = false;
@@ -200,14 +154,72 @@ export default {
       this.editIndex = index;
       this.edtName = row.name;
       this.edtPhone = row.phone;
+      this.editEmail = row.email;
     },
     showReset(row, index) {
       this.resetIndex = index;
       this.resetUserName = row.name;
       this.isShowReset = true;
     },
+    listUsers(params, that) {
+      getList(
+        "/api/auth/admin/users",
+        params,
+        (total, data) => {
+          that.loading = false;
+          that.data = data;
+          that.total = total;
+        },
+        () => {
+          that.loading = false;
+          that.data = [];
+          that.total = 0;
+        }
+      );
+    },
+    initParams() {
+      let params = {};
+      if (this.searchKey) {
+        params.keyword = this.searchKey;
+      }
+
+      return params;
+    },
+    save(index, that) {
+      that.saving = true;
+      let row = that.data[index];
+      let id = row.id;
+      let params = new URLSearchParams();
+      params.append("phone", that.edtPhone);
+      params.append("name", that.edtName);
+      put(
+        `/api/auth/admin/users/${id}`,
+        params,
+        () => {
+          that.editIndex = -1;
+          that.saving = false;
+          row.name = that.edtName;
+          row.phone = that.edtPhone;
+        },
+        () => {
+          that.saving = false;
+        }
+      );
+    },
     resetPassword() {
-      resetPassword(this);
+      this.reseting = true;
+      let row = this.data[this.resetIndex];
+      let id = row.id;
+      post(
+        `/api/auth/admin/users/${id}/reset_password`,
+        null,
+        () => {
+          this.reseting = false;
+        },
+        () => {
+          this.reseting = false;
+        }
+      );
     },
   },
 };

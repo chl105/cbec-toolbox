@@ -52,48 +52,8 @@
   </div>
 </template>
 
+
 <script>
-function name(key) {
-  switch (key) {
-    case "cost-calculator":
-      return "成本计算";
-    case "logistics":
-      return "物流查询";
-    case "select-goods":
-      return "自动选品";
-    case "address-manage":
-      return "地址管理";
-    default:
-      return;
-  }
-}
-
-function crumbs(path) {
-  let regex = /\/admin\/([^/]+)[/]*([^/]+)*/;
-  let res = path.match(regex);
-  if (res) {
-    let k1 = res[1];
-    let c1 = {
-      name: name(k1),
-      index: k1,
-      path: `/trade/${k1}`,
-    };
-    let arr = [c1];
-    let k2 = res[2];
-    if (k2) {
-      let c2 = {
-        name: name(k2),
-        index: k2,
-        path: path,
-      };
-      arr.push(c2);
-    }
-
-    return arr;
-  }
-  return [];
-}
-
 export default {
   data() {
     return {
@@ -114,12 +74,12 @@ export default {
         //   path: "/cbec/address-manage"
         // }
       ],
-      crumbs: crumbs(this.$route.path),
+      crumbs: this.buildCrumbs(this.$route.path),
     };
   },
   watch: {
     $route(cur) {
-      this.crumbs = crumbs(cur.path);
+      this.crumbs = this.buildCrumbs(cur.path);
     },
   },
   methods: {
@@ -136,6 +96,45 @@ export default {
       } else if (name == "logout") {
         this.logout();
       }
+    },
+    getName(key) {
+      switch (key) {
+        case "cost-calculator":
+          return "成本计算";
+        case "logistics":
+          return "物流查询";
+        case "select-goods":
+          return "自动选品";
+        case "address-manage":
+          return "地址管理";
+        default:
+          return;
+      }
+    },
+    buildCrumbs(path) {
+      let regex = /\/admin\/([^/]+)[/]*([^/]+)*/;
+      let res = path.match(regex);
+      if (res) {
+        let k1 = res[1];
+        let c1 = {
+          name: this.getName(k1),
+          index: k1,
+          path: `/trade/${k1}`,
+        };
+        let arr = [c1];
+        let k2 = res[2];
+        if (k2) {
+          let c2 = {
+            name: this.getName(k2),
+            index: k2,
+            path: path,
+          };
+          arr.push(c2);
+        }
+
+        return arr;
+      }
+      return [];
     },
   },
 };

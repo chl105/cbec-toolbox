@@ -1,6 +1,8 @@
 package com.github.lzk90s.cbec.auth.dao.entity;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.github.lzk90s.cbec.internal.api.auth.PlatformAccountDTO;
 import com.google.common.base.Converter;
 import lombok.Data;
@@ -9,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 @Data
 @TableName("t_platform_account")
 public class PlatformAccountEntity {
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String user;
     private String platform;

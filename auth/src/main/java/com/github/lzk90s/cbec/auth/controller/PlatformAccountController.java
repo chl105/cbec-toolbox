@@ -1,6 +1,7 @@
 package com.github.lzk90s.cbec.auth.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.github.lzk90s.cbec.auth.dao.entity.PlatformAccountEntity;
 import com.github.lzk90s.cbec.auth.service.PlatformAccountService;
 import com.github.lzk90s.cbec.common.rest.Result;
@@ -19,6 +20,7 @@ public class PlatformAccountController {
 
     @PostMapping
     public Result<Void> addAccount(@RequestBody PlatformAccountEntity platformAccountEntity) {
+        platformAccountEntity.setId(null);
         platformAccountEntity.setUser(UserUtil.getUserName());
         platformAccountService.insert(platformAccountEntity);
         return Result.ok();
@@ -43,13 +45,11 @@ public class PlatformAccountController {
     }
 
     @GetMapping
-    public Result<List<PlatformAccountEntity>> listAccount() {
+    public Result<List<PlatformAccountEntity>> listAccount(@RequestParam(defaultValue = "1") Integer pageNo,
+                                                           @RequestParam(defaultValue = "20") Integer pageSize) {
         var entityWrapper = new EntityWrapper<PlatformAccountEntity>()
                 .eq("user", UserUtil.getUserName());
-        var list = platformAccountService.selectList(entityWrapper);
-        if (CollectionUtils.isEmpty(list)) {
-            return Result.ok();
-        }
-        return Result.ok(list).total(platformAccountService.selectCount(entityWrapper));
+        var page = platformAccountService.selectPage(new Page<>(pageNo, pageSize), entityWrapper);
+        return Result.ok(page.getRecords()).total(page.getTotal());
     }
 }

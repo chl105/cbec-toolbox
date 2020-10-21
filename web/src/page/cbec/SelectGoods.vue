@@ -60,6 +60,7 @@
   </table-layout>
 </template>
 
+
 <script>
 import TableLayout from "@/components/TableLayout";
 import InputSelect from "@/components/InputSelect";

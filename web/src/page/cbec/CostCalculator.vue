@@ -8,33 +8,54 @@
   >
     <Form
       ref="ratioModelForm"
-      style="padding: 5px;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"
+      style="
+        padding: 5px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      "
       inline
       :label-width="labelWidth"
       :model="ratioModelForm"
       :rules="ratioModelFormRules"
     >
       <form-item label="汇率(￥/$)：" prop="exchangeRate">
-        <InputNumber v-model="ratioModelForm.exchangeRate" class="input-content" />
+        <InputNumber
+          v-model="ratioModelForm.exchangeRate"
+          class="input-content"
+        />
       </form-item>
       <form-item label="佣金点数($)：" prop="commission">
-        <InputNumber v-model="ratioModelForm.commission" class="input-content" />
+        <InputNumber
+          v-model="ratioModelForm.commission"
+          class="input-content"
+        />
       </form-item>
       <form-item label="转账手续费($)：" prop="bankCharge">
-        <InputNumber v-model="ratioModelForm.bankCharge" class="input-content" />
+        <InputNumber
+          v-model="ratioModelForm.bankCharge"
+          class="input-content"
+        />
       </form-item>
     </Form>
 
     <Form
       ref="productModelForm"
-      style="padding: 5px;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"
+      style="
+        padding: 5px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      "
       inline
       :label-width="labelWidth"
       :model="productModelForm"
       :rules="productModelFormRules"
     >
       <form-item label="折后价($)：" prop="salePrice">
-        <InputNumber v-model="productModelForm.salePrice" class="input-content" clearable />
+        <InputNumber
+          v-model="productModelForm.salePrice"
+          class="input-content"
+          clearable
+        />
       </form-item>
       <form-item label="进价(￥)：" prop="inputPriceRMB">
         <InputNumber
@@ -59,7 +80,11 @@
     </Form>
     <Form
       ref="logisticsModelForm"
-      style="padding: 5px;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"
+      style="
+        padding: 5px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      "
       inline
       :label-width="labelWidth"
       :model="logisticsModelForm"
@@ -68,7 +93,12 @@
       <div class="form-group">
         <form-item label="物流：" prop="vendor">
           <Select v-model="logisticsModelForm.vendor" class="input-content">
-            <Option v-for="item in vendorList" :value="item.value" :key="item.value">{{ item.name }}</Option>
+            <Option
+              v-for="item in vendorList"
+              :value="item.value"
+              :key="item.value"
+              >{{ item.name }}</Option
+            >
           </Select>
         </form-item>
         <form-item label="出发地：" prop="srcAddress">
@@ -96,26 +126,44 @@
           ></InputSelect>
         </form-item>
         <form-item label="产品类型" prop="types">
-          <Select v-model="logisticsModelForm.types" multiple class="input-content" clearable>
-            <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.name }}</Option>
+          <Select
+            v-model="logisticsModelForm.types"
+            multiple
+            class="input-content"
+            clearable
+          >
+            <Option
+              v-for="item in typeList"
+              :value="item.value"
+              :key="item.value"
+              >{{ item.name }}</Option
+            >
           </Select>
         </form-item>
         <form-item label="货品属性" prop="goodsAttr">
-          <Select v-model="logisticsModelForm.goodsAttr" class="input-content" clearable>
+          <Select
+            v-model="logisticsModelForm.goodsAttr"
+            class="input-content"
+            clearable
+          >
             <Option
               v-for="item in goodsAttrList"
               :value="item.value"
               :key="item.value"
-            >{{ item.name }}</Option>
+              >{{ item.name }}</Option
+            >
           </Select>
         </form-item>
         <form-item :label-width="50">
-          <Button icon="ios-search" style="margin-left:10px" @click="search">搜索</Button>
+          <Button icon="ios-search" style="margin-left: 10px" @click="search"
+            >搜索</Button
+          >
         </form-item>
       </div>
     </Form>
   </table-layout>
 </template>
+
 
 <script>
 import TableLayout from "@/components/TableLayout";

@@ -8,7 +8,11 @@
   >
     <Form
       ref="logisticsModelForm"
-      style="padding: 5px;border-bottom-left-radius: 0;border-bottom-right-radius: 0;"
+      style="
+        padding: 5px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      "
       inline
       :label-width="90"
       :model="logisticsModelForm"
@@ -85,7 +89,7 @@
           </Select>
         </form-item>
         <form-item :label-width="50">
-          <Button icon="ios-search" style="margin-left:10px" @click="search"
+          <Button icon="ios-search" style="margin-left: 10px" @click="search"
             >搜索</Button
           >
         </form-item>
@@ -93,6 +97,7 @@
     </Form>
   </table-layout>
 </template>
+
 
 <script>
 import TableLayout from "@/components/TableLayout";

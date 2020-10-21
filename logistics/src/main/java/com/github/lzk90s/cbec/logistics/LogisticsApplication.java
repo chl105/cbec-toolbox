@@ -8,7 +8,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.gitlab.lzk90s.logistics")
 @EnableFeignClients
 public class LogisticsApplication {
     public static void main(String[] args) {

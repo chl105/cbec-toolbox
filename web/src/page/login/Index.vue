@@ -2,7 +2,7 @@
 <template>
   <div class="parent">
     <div class="child">
-      <Card style="width:400px">
+      <Card style="width: 400px">
         <p slot="title">工具箱</p>
         <Form ref="formInline" :model="formInline" :rules="ruleInline">
           <FormItem prop="user">
@@ -21,13 +21,16 @@
             </Input>
           </FormItem>
           <FormItem>
-            <Button type="primary" long @click="handleSubmit('formInline')">登录</Button>
+            <Button type="primary" long @click="handleSubmit('formInline')"
+              >登录</Button
+            >
           </FormItem>
         </Form>
       </Card>
     </div>
   </div>
 </template>
+
 
 <script>
 import md5 from "blueimp-md5";
@@ -37,35 +40,35 @@ export default {
     return {
       formInline: {
         user: this.$store.state.user,
-        password: ""
+        password: "",
       },
       ruleInline: {
         user: [
           {
             required: true,
             message: "请输入用户名",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         password: [
           {
             required: true,
             message: "请输入密码",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             type: "string",
             min: 6,
             message: "密码长度最少 6 位",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
+      this.$refs[name].validate((valid) => {
         if (valid) {
           var data = {
             username: this.formInline.user,
@@ -73,11 +76,11 @@ export default {
             grant_type: "password",
             scope: "all",
             client_id: "web",
-            client_secret: "web-secret"
+            client_secret: "web-secret",
           };
           axios
             .post("/api/auth/oauth/token", "", { params: data })
-            .then(response => {
+            .then((response) => {
               let token = response.data.access_token;
               if (token) {
                 // 更新 token
@@ -89,7 +92,7 @@ export default {
                 this.$Message.error("token 解析失败");
               }
             })
-            .catch(error => {
+            .catch((error) => {
               let des = "";
               try {
                 des = "";
@@ -107,8 +110,8 @@ export default {
             });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

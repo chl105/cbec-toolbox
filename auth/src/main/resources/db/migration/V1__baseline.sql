@@ -42,10 +42,10 @@ INSERT INTO `t_user` VALUES (2, 'demo', 'e10adc3949ba59abbe56e057f20f883e', '', 
 
 DROP TABLE IF EXISTS `t_platform_account`;
 CREATE TABLE `t_platform_account` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(10) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user` varchar(64) NOT NULL COMMENT '用户名',
   `platform` varchar(32) NOT NULL COMMENT '平台名称',
   `platform_user` varchar(64) NOT NULL COMMENT '平台用户名',
   `platform_password` varchar(64) NOT NULL COMMENT '平台密码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB COMMENT = '平台账户表';
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '平台账户表';

@@ -41,3 +41,18 @@ security:
 ribbon:
   ReadTimeout: 10000
   ConnectTimeout: 10000
+
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    logic-not-delete-value: 0
+    field-strategy: 2
+    logic-delete-value: -1
+    db-column-underline: true
+    refresh-mapper: true
+    id-type: 0

@@ -8,8 +8,19 @@
         clearable
         @keyup.enter.native="search"
       />
-      <Button icon="ios-search" style="margin-left: 10px" @click="search"
+      <Button
+        type="primary"
+        icon="ios-search"
+        style="margin-left: 10px"
+        @click="search"
         >搜索</Button
+      >
+      <Button
+        type="primary"
+        icon="ios-add"
+        style="margin-left: 10px; float: right; margin-right: 10px"
+        @click="showAddDialog(true)"
+        >新增</Button
       >
     </div>
     <div class="list-content">
@@ -26,14 +37,17 @@
         <template slot-scope="{ row, index }" slot="platformPassword">
           <Input
             type="text"
-            v-model="editPassword"
+            v-model="editPlatformPassword"
             v-if="editIndex === index"
           />
           <span v-else>{{ row.platformPassword }}</span>
         </template>
         <template slot-scope="{ row, index }" slot="operation">
           <div v-if="editIndex === index">
-            <Button @click="handleSave(row, index)" :loading="saving"
+            <Button
+              type="primary"
+              @click="handleUpdate(row, index)"
+              :loading="saving"
               >保存</Button
             >
             <Button @click="editIndex = -1" style="margin-left: 10px"
@@ -41,15 +55,70 @@
             >
           </div>
           <div v-else>
-            <Button @click="handleEdit(row, index)">操作</Button>
-            <Button @click="showReset(row, index)" style="margin-left: 10px"
+            <Button type="primary" @click="handleEdit(row, index)">操作</Button>
+            <Button
+              type="error"
+              @click="showDeleteDialog(true, row, index)"
+              style="margin-left: 10px"
               >删除</Button
             >
           </div>
         </template>
       </Table>
-      <Modal v-model="isShowReset" title="删除" @on-ok="deletePlatformAccount">
-        <p>确定删除【{{ deleteUserName }}】账户！</p>
+
+      <Modal v-model="isshowDeleteDialog" title="删除" @on-ok="handleDelete">
+        <p>确定删除【{{ deletePlatformUser }}】账户！</p>
+      </Modal>
+
+      <Modal
+        title="新增"
+        v-model="isShowAdd"
+        :footer-hide="true"
+        :mask-closable="false"
+        @on-visible-change="handleResetInput(formValidate)"
+      >
+        <Form
+          ref="formValidate"
+          :model="formValidate"
+          :rules="ruleValidate"
+          :label-width="80"
+        >
+          <FormItem label="平台用户名" prop="platform">
+            <Select v-model="formValidate.platform">
+              <Option
+                :value="item.name"
+                v-for="item in platformList"
+                v-bind:key="item.name"
+                >{{ item.name }}</Option
+              >
+            </Select>
+          </FormItem>
+
+          <FormItem label="平台用户名" prop="platformUser">
+            <Input
+              v-model="formValidate.platformUser"
+              placeholder="请输入平台用户名"
+            ></Input>
+          </FormItem>
+
+          <FormItem label="平台密码" prop="platformPassword">
+            <Input
+              v-model="formValidate.platformPassword"
+              placeholder="请输入平台密码"
+            ></Input>
+          </FormItem>
+
+          <FormItem>
+            <Button type="primary" @click="handleAdd(formValidate)"
+              >提交</Button
+            >
+            <Button
+              @click="handleResetInput(formValidate)"
+              style="margin-left: 8px"
+              >重置</Button
+            >
+          </FormItem>
+        </Form>
       </Modal>
     </div>
     <div class="page-bar">
@@ -62,41 +131,18 @@
     </div>
   </div>
 </template>
+
+
 <script>
-import { getList, put } from "@/http/index";
-
-function users(params, that) {
-  getList(
-    "/api/auth/platform_account",
-    params,
-    (total, data) => {
-      that.loading = false;
-      that.data = data;
-      that.total = total;
-    },
-    () => {
-      that.loading = false;
-      that.data = [];
-      that.total = 0;
-    }
-  );
-}
-
-function initParams(that) {
-  let params = {};
-  if (that.searchKey) {
-    params.keyword = that.searchKey;
-  }
-
-  return params;
-}
+import { getList, put, post, del } from "@/http/index";
 
 export default {
   data() {
     return {
-      resetIndex: 0,
-      deleteUserName: "",
-      isShowReset: false,
+      deleteIndex: 0,
+      deletePlatformUser: "",
+      isshowDeleteDialog: false,
+      isShowAdd: false,
       saving: false,
       reseting: false,
       editIndex: -1,
@@ -105,6 +151,27 @@ export default {
       total: 0,
       loading: false,
       data: [],
+      platformList: [
+        {
+          name: "vova",
+        },
+      ],
+      formValidate: {
+        platform: "",
+        platformUser: "",
+        platformPassword: "",
+      },
+      ruleValidate: {
+        platform: [
+          { required: true, message: " ", trigger: "blur", type: "string" },
+        ],
+        platformUser: [
+          { required: true, message: " ", trigger: "blur", type: "string" },
+        ],
+        platformPassword: [
+          { required: true, message: " ", trigger: "blur", type: "string" },
+        ],
+      },
       columns: [
         {
           type: "index",
@@ -113,87 +180,142 @@ export default {
         },
         {
           title: "ID",
-          slot: "id",
-          width: 120,
+          key: "id",
         },
         {
           title: "平台名称",
           key: "platform",
-          width: 150,
         },
         {
           title: "平台用户名",
           key: "platformUser",
-          width: 200,
         },
         {
           title: "平台密码",
           slot: "platformPassword",
-          minWidth: 200,
         },
         {
-          title: "编辑",
+          title: "操作",
           slot: "operation",
-          width: 240,
+          width: 170,
         },
       ],
     };
   },
   mounted() {
-    let params = initParams(this);
-    users(params, this);
+    this.reset();
   },
   methods: {
+    reset() {
+      let params = this.initParams();
+      params.pageNo = 1;
+      params.pageSize = this.pageSize;
+      this.listPlatformAccount(params);
+    },
+    listPlatformAccount(params) {
+      getList(
+        "/api/auth/platform_account",
+        params,
+        (total, data) => {
+          this.loading = false;
+          this.data = data;
+          this.total = total;
+        },
+        () => {
+          this.loading = false;
+          this.data = [];
+          this.total = 0;
+        }
+      );
+    },
+    initParams() {
+      let params = {};
+      if (this.searchKey) {
+        this.keyword = this.searchKey;
+      }
+      return params;
+    },
     changePage(page) {
-      let params = initParams(this);
-      params.start = (page - 1) * this.pageSize;
-      params.limit = this.pageSize;
-      users(params, this);
+      let params = this.initParams();
+      params.pageNo = page;
+      params.pageSize = this.pageSize;
+      this.listPlatformAccount(params, this);
     },
     search() {
-      let params = initParams(this);
-      params.start = 0;
-      params.limit = this.pageSize;
-      users(params, this);
+      let params = this.initParams();
+      params.pageNo = 1;
+      params.pageSize = this.pageSize;
+      this.listPlatformAccount(params);
     },
-    handleSave(row, index) {
-      if (this.edtName != row.name || this.edtPhone != row.phone) {
-        this.save(index, this);
+    showAddDialog(show) {
+      this.isShowAdd = show;
+    },
+    showDeleteDialog(show, row, index) {
+      this.deleteIndex = index;
+      this.deletePlatformId = row.id;
+      this.deletePlatformUser = row.platformUser;
+      this.isshowDeleteDialog = show;
+    },
+    handleAdd(data) {
+      let params = {};
+      params.platform = data.platform;
+      params.platformUser = data.platformUser;
+      params.platformPassword = data.platformPassword;
+      post(
+        "/api/auth/platform_account",
+        params,
+        () => {
+          this.reset();
+        },
+        () => {
+          this.reset();
+        }
+      );
+      this.showAddDialog(false);
+    },
+    handleUpdate(row, index) {
+      if (this.editPlatformPassword != row.platformPassword) {
+        this.saving = true;
+        let row = this.data[index];
+        let params = {};
+        params.id = row.id;
+        params.platformPassword = this.editPlatformPassword;
+        put(
+          `/api/auth/platform_account`,
+          params,
+          () => {
+            this.editIndex = -1;
+            this.saving = false;
+            row.platformPassword = this.editPlatformPassword;
+          },
+          () => {
+            this.saving = false;
+          }
+        );
       } else {
         this.editIndex = -1;
         this.saving = false;
       }
+      this.reset();
+    },
+    handleDelete() {
+      del(
+        `/api/auth/platform_account/${this.deletePlatformId}`,
+        () => {
+          this.reset();
+        },
+        () => {
+          this.reset();
+        }
+      );
     },
     handleEdit(row, index) {
       this.editIndex = index;
-      this.edtName = row.name;
-      this.edtPhone = row.phone;
+      this.editPlatformPassword = row.platformPassword;
     },
-    showReset(row, index) {
-      this.resetIndex = index;
-      this.deleteUserName = row.name;
-      this.isShowReset = true;
-    },
-    save(index) {
-      this.saving = true;
-      let row = this.data[index];
-      let id = row.id;
-      let params = new URLSearchParams();
-      params.append("phone", this.edtPhone);
-      params.append("name", this.edtName);
-      put(
-        `/api/auth/admin/users/${id}`,
-        params,
-        () => {
-          this.editIndex = -1;
-          this.saving = false;
-          row.name = this.edtName;
-          row.phone = this.edtPhone;
-        },
-        () => {
-          this.saving = false;
-        }
-      );
+    handleResetInput(data) {
+      data.platformUser = "";
+      data.platformPassword = "";
     },
   },
 };

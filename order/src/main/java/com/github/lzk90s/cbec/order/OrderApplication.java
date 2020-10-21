@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.gitlab.lzk90s.order")
 @EnableFeignClients
 @EnableScheduling
 public class OrderApplication {
