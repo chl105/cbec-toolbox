@@ -8,8 +8,8 @@ from ecommerce.vova import vova
 goods = Blueprint('goods', __name__)
 
 
-@goods.route('/list_all_category', methods=['GET'])
-def list_all_category():
+@goods.route('/list_all_category/<platform>', methods=['GET'])
+def list_all_category(platform):
     category_list = vova.get_all_category()
     response = json_util.obj2json(category_list)
     return Response(response, mimetype='application/json')
