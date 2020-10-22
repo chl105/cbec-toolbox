@@ -7,7 +7,6 @@ import com.github.lzk90s.cbec.common.rest.Result;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsEntity;
 import com.github.lzk90s.cbec.goods.feign.GoodsSpiderApiFeign;
 import com.github.lzk90s.cbec.goods.model.Category;
-import com.github.lzk90s.cbec.goods.model.Goods;
 import com.github.lzk90s.cbec.goods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -31,7 +30,7 @@ public class GoodsSelectController {
 
     @GetMapping("/list_all_category/{platform}")
     public Result<List<Category>> listAllCategory(@PathVariable String platform) {
-        var list = goodsSpiderFeign.listAllCategory();
+        var list = goodsSpiderFeign.listAllCategory(platform);
         if (CollectionUtils.isEmpty(list)) {
             return Result.ok();
         }
@@ -52,13 +51,13 @@ public class GoodsSelectController {
     }
 
     @GetMapping("/search_goods_by_image")
-    public Result<List<Goods>> searchGoodsByImage(@RequestParam String imageUrl, @RequestParam Float maxPrice) {
+    public Result<List<GoodsEntity>> searchGoodsByImage(@RequestParam String imageUrl, @RequestParam Float maxPrice) {
         var list = goodsSpiderFeign.searchGoodsByImage(imageUrl, maxPrice);
         if (CollectionUtils.isEmpty(list)) {
             return Result.ok();
         }
         var result = list.stream()
-                .map(s -> Goods.getConverter().doBackward(s))
+                .map(s -> GoodsEntity.getConverter().doForward(s))
                 .collect(Collectors.toList());
         return Result.ok(result);
     }

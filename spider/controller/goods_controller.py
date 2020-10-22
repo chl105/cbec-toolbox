@@ -15,8 +15,8 @@ def list_all_category(platform):
     return Response(response, mimetype='application/json')
 
 
-@goods.route('/list_category_goods', methods=['GET'])
-def list_category_goods():
+@goods.route('/list_category_goods/<platform>', methods=['GET'])
+def list_category_goods(platform):
     category_name = request.args.get("category")
     if not category_name:
         raise exception.BizException("类目不能为空")
@@ -25,11 +25,11 @@ def list_category_goods():
     if not sort:
         sort = "recommended"
 
-    category = vova.get_category_by_name(category_name)
-    if not category:
+    category_info = vova.get_category_by_name(category_name)
+    if not category_info:
         raise exception.BizException("无效的类目")
 
-    response = json_util.obj2json(vova.get_category_goods(category, sort, 1))
+    response = json_util.obj2json(vova.get_category_goods(category_info, sort, 1))
     return Response(response, mimetype='application/json')
 
 

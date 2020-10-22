@@ -19,21 +19,23 @@ def search_goods_by_image(image_url, max_price=0.0, max_seller=5):
     result = alibaba_client.search(image_url, need_products=True)
     _check_result(result)
 
+    res_goods_list = []
+
     data = result["data"]
     if not data:
-        return None
+        return res_goods_list
     size = data["offerSize"]
     total = data["totalCount"]
     page_count = data["pageCount"]
+    if size <= 0 or "offerList" not in data:
+        return res_goods_list
+
     goods_list = data["offerList"]
-    if size <= 0:
-        return None
 
     # 多加两个，后面会丢弃一个价格最高的和最低的，求取平均价格
     max_seller = max_seller + 2
 
     seller_count = 0
-    res_goods_list = []
     for goods in goods_list:
         information_obj = dict_util.dict2obj(goods["information"])
         image_obj = dict_util.dict2obj(goods["image"])
@@ -58,14 +60,16 @@ def search_goods_by_image(image_url, max_price=0.0, max_seller=5):
         seller_count = seller_count + 1
 
         res_goods_list.append(goods_model.GoodsInfo(
-            goods["id"], information_obj.subject,
+            goods["id"],
+            information_obj.subject,
+            "NO",
             information_obj.detailUrl,
             price,
             image_obj.imgUrl,
             company_obj.name,
             company_obj.url,
             trade_quantity_obj.number,
-            "1688"
+            platform="1688"
         ))
 
     # 少于两个时，直接返回

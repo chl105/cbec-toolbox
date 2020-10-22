@@ -1,6 +1,5 @@
 package com.github.lzk90s.cbec.goods.model;
 
-import com.github.lzk90s.cbec.goods.dao.entity.GoodsEntity;
 import com.github.lzk90s.cbec.internal.api.spider.GoodsInfoDTO;
 import com.google.common.base.Converter;
 import lombok.Data;
@@ -22,9 +21,6 @@ public class Goods {
         return new ConverterImpl();
     }
 
-    public static ConverterImpl1 getEntityConverter() {
-        return new ConverterImpl1();
-    }
 
     public static class ConverterImpl extends Converter<Goods, GoodsInfoDTO> {
 
@@ -41,18 +37,5 @@ public class Goods {
         }
     }
 
-    public static class ConverterImpl1 extends Converter<GoodsInfoDTO, GoodsEntity> {
 
-        @Override
-        public GoodsEntity doForward(GoodsInfoDTO goodsInfoDTO) {
-            GoodsEntity goodsEntity = new GoodsEntity();
-            BeanUtils.copyProperties(goodsInfoDTO, goodsEntity);
-            return goodsEntity;
-        }
-
-        @Override
-        public GoodsInfoDTO doBackward(GoodsEntity goodsEntity) {
-            throw new UnsupportedOperationException();
-        }
-    }
 }

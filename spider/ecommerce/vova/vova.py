@@ -66,6 +66,7 @@ def get_category_goods(category, sort="recommended", max_page=5):
             goods_list.append(goods_model.GoodsInfo(
                 product_obj.virtual_goods_id,
                 product_obj.name,
+                category.name,
                 _build_vova_url(product_obj.url),
                 product_obj.shop_price_exchange,
                 "",

@@ -18,4 +18,6 @@ public class GoodsInfoDTO {
     private String sellerShopUrl;
     @JsonProperty("sell_count")
     private String sellCount;
+    private String platform;
+    private String category;
 }

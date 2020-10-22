@@ -7,8 +7,8 @@ from ecommerce.vova import vova_merchant
 order = Blueprint('order', __name__)
 
 
-@order.route('/list_unhandled_order', methods=['GET'])
-def list_unhandled_order():
+@order.route('/list_unhandled_order/<platform>', methods=['GET'])
+def list_unhandled_order(platform):
     user = request.args.get("user")
     password = request.args.get("password")
     if not user or not password:
