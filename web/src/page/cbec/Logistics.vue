@@ -33,7 +33,7 @@
           <InputSelect
             label-name="name"
             v-bind:options="srcAddressList"
-            @onSelected="
+            @on-selected="
               (v) => {
                 logisticsModelForm.srcAddress = v;
               }
@@ -45,7 +45,7 @@
             label-name="name"
             v-bind:options="dstAddressList"
             v-bind:searchFunc="searchCountryList"
-            @onSelected="
+            @on-selected="
               (v) => {
                 logisticsModelForm.dstAddress = v;
               }

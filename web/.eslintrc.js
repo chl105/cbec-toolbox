@@ -12,6 +12,7 @@ module.exports = {
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
+        "parser": "babel-eslint",
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
@@ -48,6 +49,6 @@ module.exports = {
         // 要求使用分号代替 ASI
         "semi":["warn","always"],
         // 要求操作符周围有空格
-        "space-infix-ops":1
+        "space-infix-ops":1,
     }
 };

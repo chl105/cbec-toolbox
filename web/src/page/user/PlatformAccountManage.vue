@@ -98,14 +98,14 @@
             <Input
               v-model="formValidate.platformUser"
               placeholder="请输入平台用户名"
-            ></Input>
+            />
           </FormItem>
 
           <FormItem label="平台密码" prop="platformPassword">
             <Input
               v-model="formValidate.platformPassword"
               placeholder="请输入平台密码"
-            ></Input>
+            />
           </FormItem>
 
           <FormItem>

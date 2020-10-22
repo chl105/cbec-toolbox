@@ -1,11 +1,13 @@
 <template>
-  <div v-bind:id="componentId" class="cw-input-select_wrap" onselectstart="return false">
+  <div
+    v-bind:id="componentId"
+    class="cw-input-select_wrap"
+    onselectstart="return false"
+  >
     <div class="cw-input-select">
       <div class="cw-input-select_box" v-on:click="selectHandle">
         <span v-if="typeof selectedValue == 'object'">
-          {{
-          selectedValue[labelName]
-          }}
+          {{ selectedValue[labelName] }}
         </span>
         <span v-else>{{ selectedValue || "请选择" }}</span>
         <i class="cw-arrow" v-bind:class="{ up: isShowPop }"></i>
@@ -44,11 +46,13 @@
           </span>
         </div>
         <ul class="cw-input-select_options">
-          <li v-for="(option, index) in optionsList" v-on:click="selected(option)" :key="index">
+          <li
+            v-for="(option, index) in optionsList"
+            v-on:click="selected(option)"
+            :key="index"
+          >
             <span v-if="typeof option == 'object'">
-              {{
-              option[labelName]
-              }}
+              {{ option[labelName] }}
             </span>
             <span v-else>{{ option }}</span>
           </li>

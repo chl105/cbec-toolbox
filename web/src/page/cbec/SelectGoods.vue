@@ -34,7 +34,7 @@
             label-name="description"
             v-bind:options="categoryList"
             v-bind:searchFunc="searchCategoryList"
-            @onSelected="
+            @on-selected="
               (v) => {
                 form.category = v.name;
               }

@@ -106,7 +106,7 @@
             label-name="name"
             v-bind:options="srcAddressList"
             v-bind:searchFunc="searchCityList"
-            @onSelected="
+            @on-selected="
               (v) => {
                 logisticsModelForm.srcAddress = v.id;
               }
@@ -118,7 +118,7 @@
             label-name="name"
             v-bind:options="dstAddressList"
             v-bind:searchFunc="searchCountryList"
-            @onSelected="
+            @on-selected="
               (v) => {
                 logisticsModelForm.dstAddress = v.id;
               }
