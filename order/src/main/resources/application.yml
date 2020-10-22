@@ -42,7 +42,7 @@ security:
 
 
 ribbon:
-  ReadTimeout: 20000
+  ReadTimeout: 30000
   ConnectTimeout: 20000
 
 

@@ -5,6 +5,11 @@ language: java
 
 sudo: true
 
+addons:
+  apt:
+    packages:
+      - sshpass
+
 jdk:
   - openjdk11
 

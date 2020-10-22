@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
@@ -43,6 +44,7 @@ public class UnhandledOrderNotifyService {
     @Value("${notify.internalHour:3}")
     private int notifyInternalHour;
 
+    @Transactional(rollbackFor = Exception.class)
     public void scanOrder(){
         log.info("Start scan......");
 
@@ -54,7 +56,7 @@ public class UnhandledOrderNotifyService {
 
         accountList.forEach(account -> {
             syncUserUnhandledOrder(account);
-            notifyUserNewOrder(account.getPlatformUser());
+            notifyUserNewOrder(account.getUser());
         });
     }
 

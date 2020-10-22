@@ -2,6 +2,7 @@ package com.github.lzk90s.cbec.order.dao.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.github.lzk90s.cbec.internal.api.spider.OrderDTO;
 import com.google.common.base.Converter;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.Date;
 @Data
 @TableName("t_order")
 public class OrderEntity {
-    @TableId
+    @TableId(value = "id", type = IdType.INPUT)
     private String id;
     private String platform;
     private String user;
