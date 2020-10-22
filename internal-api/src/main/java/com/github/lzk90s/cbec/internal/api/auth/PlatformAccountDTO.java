@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class PlatformAccountDTO {
-    private String userName;
-    private String platform;
     private String user;
-    private String password;
+    private String platform;
+    private String platformUser;
+    private String platformPassword;
 }

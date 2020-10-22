@@ -213,8 +213,7 @@ export default {
       this.listPlatformAccount(params);
     },
     listPlatformAccount(params) {
-      getList(
-        "/api/auth/platform_account",
+      getList("/api/auth/platform_account",
         params,
         (total, data) => {
           this.loading = false;
@@ -225,8 +224,7 @@ export default {
           this.loading = false;
           this.data = [];
           this.total = 0;
-        }
-      );
+        });
     },
     initParams() {
       let params = {};
@@ -261,16 +259,14 @@ export default {
       params.platform = data.platform;
       params.platformUser = data.platformUser;
       params.platformPassword = data.platformPassword;
-      post(
-        "/api/auth/platform_account",
+      post("/api/auth/platform_account",
         params,
         () => {
           this.reset();
         },
         () => {
           this.reset();
-        }
-      );
+        });
       this.showAddDialog(false);
     },
     handleUpdate(row, index) {
@@ -280,8 +276,7 @@ export default {
         let params = {};
         params.id = row.id;
         params.platformPassword = this.editPlatformPassword;
-        put(
-          `/api/auth/platform_account`,
+        put(`/api/auth/platform_account`,
           params,
           () => {
             this.editIndex = -1;
@@ -290,8 +285,7 @@ export default {
           },
           () => {
             this.saving = false;
-          }
-        );
+          });
       } else {
         this.editIndex = -1;
         this.saving = false;
@@ -299,15 +293,13 @@ export default {
       this.reset();
     },
     handleDelete() {
-      del(
-        `/api/auth/platform_account/${this.deletePlatformId}`,
+      del(`/api/auth/platform_account/${this.deletePlatformId}`,
         () => {
           this.reset();
         },
         () => {
           this.reset();
-        }
-      );
+        });
     },
     handleEdit(row, index) {
       this.editIndex = index;

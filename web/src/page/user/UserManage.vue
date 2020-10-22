@@ -166,8 +166,7 @@ export default {
       this.isShowReset = true;
     },
     listUsers(params, that) {
-      getList(
-        "/api/auth/admin/users",
+      getList("/api/auth/admin/users",
         params,
         (total, data) => {
           that.loading = false;
@@ -178,8 +177,7 @@ export default {
           that.loading = false;
           that.data = [];
           that.total = 0;
-        }
-      );
+        });
     },
     initParams() {
       let params = {};
@@ -196,8 +194,7 @@ export default {
       let params = new URLSearchParams();
       params.append("phone", that.edtPhone);
       params.append("name", that.edtName);
-      put(
-        `/api/auth/admin/users/${id}`,
+      put(`/api/auth/admin/users/${id}`,
         params,
         () => {
           that.editIndex = -1;
@@ -207,23 +204,20 @@ export default {
         },
         () => {
           that.saving = false;
-        }
-      );
+        });
     },
     resetPassword() {
       this.reseting = true;
       let row = this.data[this.resetIndex];
       let id = row.id;
-      post(
-        `/api/auth/admin/users/${id}/reset_password`,
+      post(`/api/auth/admin/users/${id}/reset_password`,
         null,
         () => {
           this.reseting = false;
         },
         () => {
           this.reseting = false;
-        }
-      );
+        });
     },
   },
 };

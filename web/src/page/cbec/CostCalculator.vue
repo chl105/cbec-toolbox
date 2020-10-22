@@ -312,67 +312,59 @@ export default {
   },
   methods: {
     initProductTypeList() {
-      getList(
-        "/api/logistics/logistics/product_type_list",
+      getList("/api/logistics/logistics/product_type_list",
         null,
         (total, data) => {
           this.typeList = data;
         },
         () => {
           this.typeList = [];
-        }
-      );
+        });
     },
     initGoodsAttrbuteList() {
-      getList(
-        "/api/logistics/logistics/goods_attribute_list",
+      getList("/api/logistics/logistics/goods_attribute_list",
         null,
         (total, data) => {
           this.goodsAttrList = data;
         },
         () => {
           this.goodsAttrList = [];
-        }
-      );
+        });
     },
     searchCityList(val) {
       let params = {};
       params.fuzzy = val;
-      getList(
-        "/api/logistics/address/city_list",
+      getList("/api/logistics/address/city_list",
         params,
         (total, data) => {
           this.srcAddressList = data;
         },
         () => {
           this.srcAddressList = [];
-        }
-      );
+        });
     },
     searchCountryList(val) {
       let params = {};
       params.fuzzy = val;
-      getList(
-        "/api/logistics/address/country_list",
+      getList("/api/logistics/address/country_list",
         params,
         (total, data) => {
           this.dstAddressList = data;
         },
         () => {
           this.dstAddressList = [];
-        }
-      );
+        });
     },
     search() {
       let validateSucceed = true;
       this.$refs["ratioModelForm"].validate((v) => {
-        if (!v) validateSucceed = false;
+        if (!v) {validateSucceed = false;}
       });
       this.$refs["productModelForm"].validate((v) => {
-        if (!v) validateSucceed = false;
+        if (!v) {validateSucceed = false;}
       });
       this.$refs["logisticsModelForm"].validate((v) => {
-        if (!v) validateSucceed = false;
+        if (!v) {validateSucceed = false;}
       });
 
       if (!validateSucceed) {
@@ -386,8 +378,7 @@ export default {
     },
     getLogisticsPrice(params, that) {
       that.loading = true;
-      getList(
-        "/api/logistics/logistics/price",
+      getList("/api/logistics/logistics/price",
         params,
         (total, data) => {
           that.loading = false;
@@ -400,10 +391,8 @@ export default {
 
           for (var idx in data) {
             //把物流价格转换为美元
-            var logisticsPrice = this.exchangeRmb2Dollor(
-              data[idx].expense,
-              this.ratioModelForm.exchangeRate
-            );
+            var logisticsPrice = this.exchangeRmb2Dollor(data[idx].expense,
+              this.ratioModelForm.exchangeRate);
 
             //利润 = 售价-进价-物流价格-佣金-银行手续费
             var profit =
@@ -426,8 +415,7 @@ export default {
           that.loading = false;
           that.data = [];
           that.total = 0;
-        }
-      );
+        });
     },
     buildQueryParam(that) {
       let form = that.logisticsModelForm;

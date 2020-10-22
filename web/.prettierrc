@@ -1,0 +1,5 @@
+{
+    "semi": true,//在代码尾部添加分号
+    "singleQuote": true,//把双引号换成单引号
+    "trailingComma": "es5"//在代码尾部添加逗号
+}

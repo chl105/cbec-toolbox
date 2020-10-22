@@ -1,29 +1,29 @@
-import axios from 'axios'
-import router from '@/router/index'
-import Vue from 'vue'
+import axios from 'axios';
+import router from '@/router/index';
+import Vue from 'vue';
 
 function isSuccess(res) {
-    return res.data && res.data.status == 0
+    return res.data && res.data.status == 0;
 }
 
 function getList(url, params, onSuccess, onError) {
     axios.get(url, {
         params: params
     }).then(res => {
-        let data = res.data.data
-        let total = res.data.total
-        data = data ? data : []
-        total = total ? total : 0
+        let data = res.data.data;
+        let total = res.data.total;
+        data = data ? data : [];
+        total = total ? total : 0;
         if (onSuccess) {
             if (isSuccess(res)) {
-                onSuccess(total, data)
+                onSuccess(total, data);
             } else {
                 Vue.prototype.$Message.error(res.data.message);
             }
         }
     }).catch(err => {
         if (onError) {
-            onError(err)
+            onError(err);
         }
 
         let res = err.response;
@@ -36,7 +36,7 @@ function getList(url, params, onSuccess, onError) {
         } else {
             Vue.prototype.$Message.error(`${res.status}请求失败`);
         }
-    })
+    });
 }
 
 function put(url, params, onSuccess, onError) {
@@ -44,14 +44,14 @@ function put(url, params, onSuccess, onError) {
         if (onSuccess) {
             if (isSuccess(res)) {
 
-                onSuccess(res.data)
+                onSuccess(res.data);
             } else {
-                Vue.prototype.$Message.error(res.data.message)
+                Vue.prototype.$Message.error(res.data.message);
             }
         }
     }).catch(err => {
         if (onError) {
-            onError(err)
+            onError(err);
         }
 
         let res = err.response;
@@ -64,7 +64,7 @@ function put(url, params, onSuccess, onError) {
         } else {
             Vue.prototype.$Message.error(`${res.status}请求失败`);
         }
-    })
+    });
 }
 
 function post(url, params, onSuccess, onError) {
@@ -72,9 +72,9 @@ function post(url, params, onSuccess, onError) {
         if (onSuccess) {
             if (isSuccess(res)) {
 
-                onSuccess(res.data)
+                onSuccess(res.data);
             } else {
-                Vue.prototype.$Message.error(res.data.message)
+                Vue.prototype.$Message.error(res.data.message);
             }
         }
     }).catch(err => {
@@ -84,14 +84,14 @@ function post(url, params, onSuccess, onError) {
             return;
         }
         if (onError) {
-            onError(err)
+            onError(err);
         }
         if (res.data.message) {
             Vue.prototype.$Message.error(res.data.message);
         } else {
             Vue.prototype.$Message.error(`${res.status}请求失败`);
         }
-    })
+    });
 }
 
 function del(url, params, onSuccess, onError) {
@@ -99,14 +99,14 @@ function del(url, params, onSuccess, onError) {
         if (onSuccess) {
             if (isSuccess(res)) {
 
-                onSuccess(res.data)
+                onSuccess(res.data);
             } else {
-                Vue.prototype.$Message.error(res.data.message)
+                Vue.prototype.$Message.error(res.data.message);
             }
         }
     }).catch(err => {
         if (onError) {
-            onError(err)
+            onError(err);
         }
 
         let res = err.response;
@@ -119,7 +119,7 @@ function del(url, params, onSuccess, onError) {
         } else {
             Vue.prototype.$Message.error(`${res.status}请求失败`);
         }
-    })
+    });
 }
 
 export {
@@ -127,4 +127,4 @@ export {
     put,
     post,
     del
-}
+};

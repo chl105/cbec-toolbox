@@ -115,8 +115,7 @@ export default {
           key: "detailUrl",
           width: 200,
           render: (h, params) => {
-            return h(
-              "a",
+            return h("a",
               {
                 attrs: {
                   href: params.row.detailUrl,
@@ -124,8 +123,7 @@ export default {
                   title: params.row.detailUrl,
                 },
               },
-              params.row.subject
-            );
+              params.row.subject);
           },
         },
         {
@@ -209,22 +207,22 @@ export default {
   },
   methods: {
     searchCategoryList(platform) {
-      getList(
-        "/api/goods/goods/list_all_category/" + platform,
+      getList("/api/goods/goods/list_all_category/" + platform,
         {},
         (total, data) => {
           this.categoryList = data;
         },
         () => {
           this.categoryList = [];
-        }
-      );
+        });
     },
 
     searchCategoryGoods() {
       let validateSucceed = true;
       this.$refs["form"].validate((v) => {
-        if (!v) validateSucceed = false;
+        if (!v) {
+          validateSucceed = false;
+        }
       });
 
       if (!validateSucceed) {
@@ -240,8 +238,7 @@ export default {
     },
     listCategoryGoods(params, that) {
       that.loading = true;
-      getList(
-        "/api/goods/goods/list_category_goods",
+      getList("/api/goods/goods/list_category_goods",
         params,
         (total, data) => {
           that.loading = false;
@@ -249,11 +246,9 @@ export default {
             var predictPurchasePrice =
               (data[idx].price * that.form.exchangeRate) / 3;
             data[idx].predictPurchasePrice = predictPurchasePrice.toFixed(2);
-            that.searchGoodsByImage(
-              data[idx].imageUrl,
+            that.searchGoodsByImage(data[idx].imageUrl,
               predictPurchasePrice,
-              data[idx]
-            );
+              data[idx]);
           }
           that.data = data;
           that.total = total;
@@ -262,15 +257,13 @@ export default {
           that.loading = false;
           that.data = [];
           that.total = 0;
-        }
-      );
+        });
     },
     searchGoodsByImage(imageUrl, maxPrice, goods) {
       let params = {};
       params.imageUrl = imageUrl;
       params.maxPrice = maxPrice;
-      getList(
-        "/api/goods/goods/search_goods_by_image",
+      getList("/api/goods/goods/search_goods_by_image",
         params,
         (total, data) => {
           goods.supplier1 = data[0].subject;
@@ -278,8 +271,7 @@ export default {
           goods.supplier3 = data[2].subject;
           goods.supplier4 = data[3].subject;
         },
-        () => {}
-      );
+        () => {});
     },
     exchangeRmb2Dollor(rmb, exchangeRate) {
       return rmb / exchangeRate;

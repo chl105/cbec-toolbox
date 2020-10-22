@@ -145,14 +145,12 @@ export default {
           parentTagList.push(startTag.parentElement);
         }
         // 再上一层寻找
-        return this.getParentTagWithClass(
-          startTag.parentElement,
+        return this.getParentTagWithClass(startTag.parentElement,
           className,
-          parentTagList
-        );
+          parentTagList);
       }
       // 返回集合,结束
-      else return parentTagList;
+      else {return parentTagList;}
     },
   },
 };

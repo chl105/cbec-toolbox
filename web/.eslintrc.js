@@ -20,10 +20,9 @@ module.exports = {
         "vue"
     ],
     "rules": {
-        // 强制使用一致的缩进
-        "indent": ["warn", "space"],
+        'no-unused-vars': 'warn',
         // 禁止空格和 tab 的混合缩进
-        "no-mixed-spaces-and-tabs":1,
+        "no-mixed-spaces-and-tabs": 1,
         // 禁用 debugger
         "no-debugger": 1,
         // 禁止不必要的布尔转换
@@ -41,14 +40,14 @@ module.exports = {
         // 强制在对象字面量的属性中键和值之间使用一致的间距
         "key-spacing": 1,
         // 强制在关键字前后使用一致的空格
-        "keyword-spacing":1,
+        "keyword-spacing": 1,
         // 要求调用无参构造函数时有圆括号
-        "new-parens":1,
+        "new-parens": 1,
         // 禁止出现多行空行
-        "no-multiple-empty-lines":1,
+        "no-multiple-empty-lines": 1,
         // 要求使用分号代替 ASI
-        "semi":["warn","always"],
+        "semi": ["warn","always"],
         // 要求操作符周围有空格
-        "space-infix-ops":1,
+        "space-infix-ops": 1,
     }
 };
