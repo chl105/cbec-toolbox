@@ -105,7 +105,7 @@ export default {
       // 根据选项类型给名称赋值
       this.selectedValue = val;
       this.isShowPop = false;
-      this.$emit("onSelected", val);
+      this.$emit("on-selected", val);
     },
     // 选项搜索
     searchHandle(val) {

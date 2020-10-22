@@ -21,7 +21,7 @@ module.exports = {
     ],
     "rules": {
         // 强制使用一致的缩进
-        "indent": ["warn", "tab"],
+        "indent": ["warn", "space"],
         // 禁止空格和 tab 的混合缩进
         "no-mixed-spaces-and-tabs":1,
         // 禁用 debugger
