@@ -33,8 +33,6 @@ public class AdminController {
         var entityWrapper = new EntityWrapper<UserEntity>();
         // admin用户可以查询列表，其他用户只能查询自己
         if (!ADMIN.equals(UserUtil.getUserName())){
-            entityWrapper.ne("name", ADMIN);
-        } else {
             entityWrapper.eq("name", UserUtil.getUserName());
         }
         Page<UserEntity> result = userService.selectPage(new Page<>(start, limit), entityWrapper);
