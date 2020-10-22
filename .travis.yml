@@ -3,7 +3,7 @@ services:
 
 language: java
 
-sudo: false # faster builds
+sudo: true
 
 jdk:
   - openjdk11
@@ -26,8 +26,7 @@ script:
 after_success:
 #  - bash <(curl -s https://codecov.io/bash)
   - echo "build succeed"
-  - echo "$SSH_PASS cd /root/cbec-toolbox && docker-compose pull && docker-compose up -d" >/tmp/cmd.sh
-  - sh /tmp/cmd.sh
+  - $SSH_PASS cd /root/cbec-toolbox && docker-compose pull && docker-compose up -d
 
 after_failure:
   - echo "build failed!"
