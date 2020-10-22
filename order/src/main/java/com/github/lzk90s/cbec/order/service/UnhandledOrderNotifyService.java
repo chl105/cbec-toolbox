@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UnhandledOrderNotifyService {
+    private static final String TEMPLATE_NAME = "unhandled-order.html";
+
     @Autowired
     private PlatformAccountApiFeign platformAccountApiFeign;
     @Autowired
@@ -38,10 +40,9 @@ public class UnhandledOrderNotifyService {
     @Autowired
     private FreeMarkerConfig freeMarkerConfig;
 
-    private final String templateName = "unhandled-order.html";
-
-    @Value("${notify.internalHour:1}")
+    @Value("${notify.internalHour:3}")
     private int notifyInternalHour;
+
     public void scanOrder(){
         log.info("Start scan......");
 
@@ -114,7 +115,7 @@ public class UnhandledOrderNotifyService {
         model.put("orders", orderDTOList);
 
         try {
-            var template = freeMarkerConfig.getConfiguration().getTemplate(templateName);
+            var template = freeMarkerConfig.getConfiguration().getTemplate(TEMPLATE_NAME);
             return FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         } catch (IOException | TemplateException e) {
             e.printStackTrace();
