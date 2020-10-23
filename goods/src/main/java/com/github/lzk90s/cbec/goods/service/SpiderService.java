@@ -6,14 +6,12 @@ import com.github.lzk90s.cbec.common.util.JsonUtil;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsEntity;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsSupplierEntity;
 import com.github.lzk90s.cbec.goods.feign.GoodsSpiderApiFeign;
-import com.github.lzk90s.cbec.internal.api.spider.GoodsInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -79,42 +77,41 @@ public class SpiderService {
             goodsService.insertOrUpdateBatch(goodsListDO);
             log.info("Found {} goods in category {}", goodsListDO.size(), category.getName());
 
-            // 同步商品供应商
-            goodsListDO.forEach(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()));
+            // 抓取商品供应商
+            goodsListDO.forEach(goods -> {
+                if (!grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice())) {
+                    // 没有找到供应商时，删除商品
+                    goodsService.deleteById(goods.getId());
+                }
+            });
         });
     }
 
-    private void grabSupplier4Goods(String goodsId, String goodsImageUrl, float goodsPriceUSD) {
+    private boolean grabSupplier4Goods(String goodsId, String goodsImageUrl, float goodsPriceUSD) {
         float maxPrice = calculateBuyPriceCNY(goodsPriceUSD);
-        var goodsList = goodsSpiderFeign.searchGoodsByImage(goodsImageUrl, maxPrice);
-        if (CollectionUtils.isEmpty(goodsList)) {
-            return;
+        try {
+            var goodsList = goodsSpiderFeign.searchGoodsByImage(goodsImageUrl, maxPrice);
+            if (CollectionUtils.isEmpty(goodsList)) {
+                return false;
+            }
+
+            log.info("GoodsId = {}, priceUSD = {}, buyPriceCNY = {}, supplier = {}",
+                    goodsId, goodsPriceUSD, maxPrice, JsonUtil.obj2json(goodsList));
+
+            var goodsEntityList = goodsList.stream()
+                    .map(s -> GoodsSupplierEntity.getConverter().doBackward(s))
+                    .peek(s -> s.setGoodsId(goodsId))
+                    .collect(Collectors.toList());
+            goodsSupplierService.insertOrUpdateBatch(goodsEntityList);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
         }
-
-        var supplierGoods = calculateBestSupplier(goodsList);
-        if (null == supplierGoods) {
-            log.warn("No suitable supplier for goods {}", goodsId);
-            return;
-        }
-
-        log.info("Goods = {}, priceUSD = {}, buyPriceCNY = {}, supplier = {}",
-                goodsId, goodsPriceUSD, maxPrice, JsonUtil.obj2json(supplierGoods));
-
-        goodsSupplierService.insertOrUpdate(GoodsSupplierEntity.getConverter().doBackward(supplierGoods, goodsId));
     }
 
     private float calculateBuyPriceCNY(float goodsPriceUSD) {
         float usd = (goodsPriceUSD > logisticsFeeUSD) ? goodsPriceUSD - logisticsFeeUSD : goodsPriceUSD;
         return (usd * cny2UsdExchangeRate) / buy2SellPriceRate;
-    }
-
-    private GoodsInfoDTO calculateBestSupplier(List<GoodsInfoDTO> goodsSupplierList) {
-        if (goodsSupplierList.isEmpty()) {
-            return null;
-        } else if (goodsSupplierList.size() == 1) {
-            return goodsSupplierList.get(0);
-        } else {
-            return goodsSupplierList.get(goodsSupplierList.size() / 2);
-        }
     }
 }

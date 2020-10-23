@@ -1,59 +1,44 @@
 <template>
-  <table-layout
-    :data="data"
-    :columns="columns"
-    :total="total"
-    :pageSize="pageSize"
-    :loading="loading"
-  >
-    <Form
-      ref="form"
-      style="
+  <table-layout :data="data"
+                :columns="columns"
+                :total="total"
+                :pageSize="pageSize"
+                :loading="loading">
+    <Form ref="form"
+          style="
         padding: 5px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       "
-      inline
-      :label-width="labelWidth"
-      :model="form"
-      :rules="formRule"
-    >
+          inline
+          :label-width="labelWidth"
+          :model="form"
+          :rules="formRule">
       <div class="form-group">
-        <form-item label="平台：" prop="platform">
-          <Select v-model="form.platform" class="input-content">
-            <Option
-              v-for="item in platformList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+        <form-item label="平台："
+                   prop="platform">
+          <Select v-model="form.platform"
+                  class="input-content">
+            <Option v-for="item in platformList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
-        <form-item label="类目：" prop="category">
-          <InputSelect
-            label-name="description"
-            v-bind:options="categoryList"
-            v-bind:searchFunc="searchCategoryList"
-            @on-selected="
+        <form-item label="类目："
+                   prop="category">
+          <InputSelect label-name="description"
+                       v-bind:options="categoryList"
+                       v-bind:searchFunc="listCategory"
+                       @on-selected="
               (v) => {
                 form.category = v.name;
               }
-            "
-          ></InputSelect>
-        </form-item>
-        <form-item label="汇率(￥/$)：" prop="exchangeRate">
-          <InputNumber v-model="form.exchangeRate" class="input-content" />
-        </form-item>
-        <form-item label="价格公式：" prop="priceFormula">
-          <Input v-model="form.priceFormula" class="input-content" />
+            "></InputSelect>
         </form-item>
         <form-item :label-width="50">
-          <Button
-            icon="ios-search"
-            style="margin-left: 10px"
-            @click="searchCategoryGoods"
-            >搜索</Button
-          >
+          <Button icon="ios-search"
+                  style="margin-left: 10px"
+                  @click="searchCategoryGoods(1)">搜索</Button>
         </form-item>
       </div>
     </Form>
@@ -73,25 +58,20 @@ export default {
   },
   data() {
     return {
+      imgWidth: 140,
       labelWidth: 125,
       total: 0,
-      pageSize: 12,
+      page: 1,
+      pageSize: 8,
       loading: true,
       form: {
         platform: "",
         category: "",
         goodsAttr: [],
         types: [],
-        exchangeRate: 7,
-        priceFormula: "售价=进价*3",
       },
       formRule: {
         platform: [{ required: true, message: "数据错误", type: "string" }],
-        exchangeRate: {
-          required: true,
-          message: "数据错误",
-          type: "number",
-        },
         category: [{ required: true, message: "数据错误", type: "string" }],
       },
       platformList: [
@@ -113,7 +93,7 @@ export default {
         {
           title: "商品名称",
           key: "detailUrl",
-          width: 200,
+          width: 300,
           render: (h, params) => {
             return h("a",
               {
@@ -129,7 +109,7 @@ export default {
         {
           title: "图片",
           key: "imageUrl",
-          width: 140,
+          width: this.imgWidth,
           align: "center",
           render: (h, params) => {
             return h("img", {
@@ -159,32 +139,83 @@ export default {
         {
           title: "供应商1",
           key: "supplier1",
-          width: 150,
+          width: this.imgWidth,
           align: "center",
+          render: (h, params) => {
+            return h("div", [
+              h("a", {
+                style: {
+                  display: (params.row.supplier1.detailUrl != undefined) ? "inline" : "none",
+                },
+                attrs: { href: params.row.supplier1.detailUrl, target: '_blank', title: params.row.supplier1.detailUrl }
+              }, "￥: " + params.row.supplier1.price),
+              h("img", {
+                style: {
+                  width: "100px",
+                  height: "80px",
+                  "border-radius": "5%",
+                  display: (params.row.supplier1.imageUrl != undefined) ? "inline" : "none",
+                },
+                attrs: {
+                  src: params.row.supplier1.imageUrl,
+                },
+              })
+            ]);
+          },
         },
         {
           title: "供应商2",
           key: "supplier2",
-          width: 150,
+          width: this.imgWidth,
           align: "center",
+          render: (h, params) => {
+            return h("div", [
+              h("a", {
+                style: {
+                  display: (params.row.supplier2.detailUrl != undefined) ? "inline" : "none",
+                },
+                attrs: { href: params.row.supplier2.detailUrl, target: '_blank', title: params.row.supplier2.detailUrl }
+              }, "￥: " + params.row.supplier2.price),
+              h("img", {
+                style: {
+                  width: "100px",
+                  height: "80px",
+                  "border-radius": "5%",
+                  display: (params.row.supplier2.imageUrl != undefined) ? "inline" : "none",
+                },
+                attrs: {
+                  src: params.row.supplier2.imageUrl,
+                },
+              })
+            ]);
+          },
         },
         {
           title: "供应商3",
           key: "supplier3",
-          width: 150,
+          width: this.imgWidth,
           align: "center",
-        },
-        {
-          title: "供应商4",
-          key: "supplier4",
-          width: 150,
-          align: "center",
-        },
-        {
-          title: "供应商5",
-          key: "supplier5",
-          width: 150,
-          align: "center",
+          render: (h, params) => {
+            return h("div", [
+              h("a", {
+                style: {
+                  display: (params.row.supplier3.detailUrl != undefined) ? "inline" : "none",
+                },
+                attrs: { href: params.row.supplier3.detailUrl, target: '_blank', title: params.row.supplier3.detailUrl }
+              }, "￥: " + params.row.supplier3.price),
+              h("img", {
+                style: {
+                  width: "100px",
+                  height: "80px",
+                  "border-radius": "5%",
+                  display: (params.row.supplier3.imageUrl != undefined) ? "inline" : "none",
+                },
+                attrs: {
+                  src: params.row.supplier3.imageUrl,
+                },
+              })
+            ]);
+          },
         },
         {
           title: "平均进价(￥)",
@@ -203,21 +234,13 @@ export default {
   mounted() {
     this.loading = false;
     this.form.platform = this.platformList[0].value;
-    this.searchCategoryList(this.form.platform);
+    this.listCategory(this.form.platform);
   },
   methods: {
-    searchCategoryList(platform) {
-      getList("/api/goods/goods/list_all_category/" + platform,
-        {},
-        (total, data) => {
-          this.categoryList = data;
-        },
-        () => {
-          this.categoryList = [];
-        });
+    changePage(page) {
+      this.searchCategoryGoods(page);
     },
-
-    searchCategoryGoods() {
+    searchCategoryGoods(pageNo) {
       let validateSucceed = true;
       this.$refs["form"].validate((v) => {
         if (!v) {
@@ -230,54 +253,65 @@ export default {
       }
 
       let params = {};
-      params.start = 0;
-      params.limit = this.pageSize;
+      params.pageNo = pageNo;
+      params.pageSize = this.pageSize;
       params.category = this.form.category;
-      params.sort = "most-popular";
-      this.listCategoryGoods(params, this);
+      this.listGoods(params);
     },
-    listCategoryGoods(params, that) {
-      that.loading = true;
+    listCategory(platform) {
+      getList("/api/goods/goods/list_all_category/" + platform,
+        {},
+        (total, data) => {
+          this.categoryList = data;
+        },
+        () => {
+          this.categoryList = [];
+        });
+    },
+    listGoods(params) {
+      this.loading = true;
       getList("/api/goods/goods/list_category_goods",
         params,
         (total, data) => {
-          that.loading = false;
+          this.loading = false;
           for (var idx in data) {
-            var predictPurchasePrice =
-              (data[idx].price * that.form.exchangeRate) / 3;
-            data[idx].predictPurchasePrice = predictPurchasePrice.toFixed(2);
-            that.searchGoodsByImage(data[idx].imageUrl,
-              predictPurchasePrice,
-              data[idx]);
+            // var predictPurchasePrice =
+            //   (data[idx].price * this.form.exchangeRate) / 3;
+            // data[idx].predictPurchasePrice = predictPurchasePrice.toFixed(2);
+            //初始化空的供应商
+            data[idx].supplier1 = {};
+            data[idx].supplier2 = {};
+            data[idx].supplier3 = {};
+            this.listGoodsSupplier(data[idx].id, idx);
           }
-          that.data = data;
-          that.total = total;
+          this.data = data;
+          this.total = total;
         },
         () => {
-          that.loading = false;
-          that.data = [];
-          that.total = 0;
+          this.loading = false;
+          this.data = [];
+          this.total = 0;
         });
     },
-    searchGoodsByImage(imageUrl, maxPrice, goods) {
-      let params = {};
-      params.imageUrl = imageUrl;
-      params.maxPrice = maxPrice;
-      getList("/api/goods/goods/search_goods_by_image",
-        params,
+    listGoodsSupplier(goodsId, idx) {
+      getList(`/api/goods/goods/list_goods_supplier/${goodsId}`,
+        {},
         (total, data) => {
-          goods.supplier1 = data[0].subject;
-          goods.supplier2 = data[1].subject;
-          goods.supplier3 = data[2].subject;
-          goods.supplier4 = data[3].subject;
+          if (total >= 1) {
+            this.data[idx].supplier1 = data[0];
+          }
+          if (total >= 2) {
+            this.data[idx].supplier2 = data[1];
+          }
+          if (total >= 3) {
+            this.data[idx].supplier3 = data[2];
+          }
         },
-        () => {});
-    },
-    exchangeRmb2Dollor(rmb, exchangeRate) {
-      return rmb / exchangeRate;
-    },
-    exchangeDollor2Rmb(dollor, exchangeRate) {
-      return dollor * exchangeRate;
+        () => {
+          this.data[idx].supplier1 = {};
+          this.data[idx].supplier2 = {};
+          this.data[idx].supplier3 = {};
+        });
     },
   },
 };

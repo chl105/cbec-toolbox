@@ -4,16 +4,19 @@
       <slot></slot>
     </div>
     <div class="list-content">
-      <Table border :columns="columns" :data="data" :loading="loading" style="margin-top:10px"></Table>
+      <Table border
+             :columns="columns"
+             :data="data"
+             :loading="loading"
+             style="margin-top:10px"></Table>
     </div>
 
     <div class="page-bar">
-      <Page
-        :total="total"
-        style="margin-top:10px;float:right;"
-        @on-change="changePage"
-        :page-size="pageSize"
-      />
+      <Page :total="total"
+            style="margin-top:10px;float:right;"
+            :page="page"
+            @on-change="changePage"
+            :page-size="pageSize" />
     </div>
   </div>
 </template>

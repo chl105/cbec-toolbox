@@ -1,133 +1,106 @@
 <template>
   <div class="main">
     <div class="search-bar">
-      <Input
-        v-model="searchKey"
-        placeholder="请输入关键字搜索"
-        style="width: 300px"
-        clearable
-        @keyup.enter.native="search"
-      />
-      <Button
-        type="primary"
-        icon="ios-search"
-        style="margin-left: 10px"
-        @click="search"
-        >搜索</Button
-      >
-      <Button
-        type="primary"
-        icon="ios-add"
-        style="margin-left: 10px; float: right; margin-right: 10px"
-        @click="showAddDialog(true)"
-        >新增</Button
-      >
+      <Input v-model="searchKey"
+             placeholder="请输入关键字搜索"
+             style="width: 300px"
+             clearable
+             @keyup.enter.native="search" />
+      <Button type="primary"
+              icon="ios-search"
+              style="margin-left: 10px"
+              @click="search">搜索</Button>
+      <Button type="primary"
+              icon="ios-add"
+              style="margin-left: 10px; float: right; margin-right: 10px"
+              @click="showAddDialog(true)">新增</Button>
     </div>
     <div class="list-content">
-      <Table
-        border
-        :columns="columns"
-        :data="data"
-        :loading="loading"
-        style="margin-top: 10px"
-      >
-        <template slot-scope="{ row }" slot="id">
+      <Table border
+             :columns="columns"
+             :data="data"
+             :loading="loading"
+             style="margin-top: 10px">
+        <template slot-scope="{ row }"
+                  slot="id">
           <span>{{ row.id }}</span>
         </template>
-        <template slot-scope="{ row, index }" slot="platformPassword">
-          <Input
-            type="text"
-            v-model="editPlatformPassword"
-            v-if="editIndex === index"
-          />
+        <template slot-scope="{ row, index }"
+                  slot="platformPassword">
+          <Input type="text"
+                 v-model="editPlatformPassword"
+                 v-if="editIndex === index" />
           <span v-else>{{ row.platformPassword }}</span>
         </template>
-        <template slot-scope="{ row, index }" slot="operation">
+        <template slot-scope="{ row, index }"
+                  slot="operation">
           <div v-if="editIndex === index">
-            <Button
-              type="primary"
-              @click="handleUpdate(row, index)"
-              :loading="saving"
-              >保存</Button
-            >
-            <Button @click="editIndex = -1" style="margin-left: 10px"
-              >取消</Button
-            >
+            <Button type="primary"
+                    @click="handleUpdate(row, index)"
+                    :loading="saving">保存</Button>
+            <Button @click="editIndex = -1"
+                    style="margin-left: 10px">取消</Button>
           </div>
           <div v-else>
-            <Button type="primary" @click="handleEdit(row, index)">操作</Button>
-            <Button
-              type="error"
-              @click="showDeleteDialog(true, row, index)"
-              style="margin-left: 10px"
-              >删除</Button
-            >
+            <Button type="primary"
+                    @click="handleEdit(row, index)">操作</Button>
+            <Button type="error"
+                    @click="showDeleteDialog(true, row, index)"
+                    style="margin-left: 10px">删除</Button>
           </div>
         </template>
       </Table>
 
-      <Modal v-model="isshowDeleteDialog" title="删除" @on-ok="handleDelete">
+      <Modal v-model="isshowDeleteDialog"
+             title="删除"
+             @on-ok="handleDelete">
         <p>确定删除【{{ deletePlatformUser }}】账户！</p>
       </Modal>
 
-      <Modal
-        title="新增"
-        v-model="isShowAdd"
-        :footer-hide="true"
-        :mask-closable="false"
-        @on-visible-change="handleResetInput(formValidate)"
-      >
-        <Form
-          ref="formValidate"
-          :model="formValidate"
-          :rules="ruleValidate"
-          :label-width="80"
-        >
-          <FormItem label="平台用户名" prop="platform">
+      <Modal title="新增"
+             v-model="isShowAdd"
+             :footer-hide="true"
+             :mask-closable="false"
+             @on-visible-change="handleResetInput(formValidate)">
+        <Form ref="formValidate"
+              :model="formValidate"
+              :rules="ruleValidate"
+              :label-width="80">
+          <FormItem label="平台用户名"
+                    prop="platform">
             <Select v-model="formValidate.platform">
-              <Option
-                :value="item.name"
-                v-for="item in platformList"
-                v-bind:key="item.name"
-                >{{ item.name }}</Option
-              >
+              <Option :value="item.name"
+                      v-for="item in platformList"
+                      v-bind:key="item.name">{{ item.name }}</Option>
             </Select>
           </FormItem>
 
-          <FormItem label="平台用户名" prop="platformUser">
-            <Input
-              v-model="formValidate.platformUser"
-              placeholder="请输入平台用户名"
-            />
+          <FormItem label="平台用户名"
+                    prop="platformUser">
+            <Input v-model="formValidate.platformUser"
+                   placeholder="请输入平台用户名" />
           </FormItem>
 
-          <FormItem label="平台密码" prop="platformPassword">
-            <Input
-              v-model="formValidate.platformPassword"
-              placeholder="请输入平台密码"
-            />
+          <FormItem label="平台密码"
+                    prop="platformPassword">
+            <Input v-model="formValidate.platformPassword"
+                   placeholder="请输入平台密码" />
           </FormItem>
 
           <FormItem>
-            <Button type="primary" @click="handleAdd(formValidate)"
-              >提交</Button
-            >
-            <Button
-              @click="handleResetInput(formValidate)"
-              style="margin-left: 8px"
-              >重置</Button
-            >
+            <Button type="primary"
+                    @click="handleAdd(formValidate)">提交</Button>
+            <Button @click="handleResetInput(formValidate)"
+                    style="margin-left: 8px">重置</Button>
           </FormItem>
         </Form>
       </Modal>
     </div>
     <div class="page-bar">
-      <Page
-        :total="total"
-        style="margin-top: 10px; float: right"
-        @on-change="changePage"
-        :page-size="pageSize"
-      />
+      <Page :total="total"
+            style="margin-top: 10px; float: right"
+            @on-change="changePage"
+            :page-size="pageSize" />
     </div>
   </div>
 </template>

@@ -39,10 +39,18 @@ public class AdminController {
         return Result.ok(result.getRecords()).total(result.getTotal());
     }
 
+    @PostMapping("/users")
+    Result<Void> addUser(@RequestBody UserEntity userEntity){
+        userEntity.setState(true);
+        userService.insert(userEntity);
+        return Result.ok();
+    }
+
     @PutMapping("/users/{id}")
     Result<Void> updateUser(@PathVariable("id") Long id,
-                            @RequestParam @NotBlank String phone) {
-        userService.updateById(new UserEntity().setId(id).setPhone(phone));
+                            @RequestParam @NotBlank String phone,
+                            @RequestParam @NotBlank String email) {
+        userService.updateById(new UserEntity().setId(id).setPhone(phone).setEmail(email));
         return Result.ok();
     }
 

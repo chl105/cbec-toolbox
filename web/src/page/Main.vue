@@ -9,8 +9,8 @@ export default {
   data() {
     return {};
   },
-  created() {},
-  mounted() {},
+  created() { },
+  mounted() { },
   methods: {},
   computed: {},
   watch: {},

@@ -70,7 +70,7 @@
         <appender-ref ref="ACCESS"/>
     </logger>
 
-    <logger name="com.gosun.basic.gateway.filter" level="debug">
+    <logger name="com.github.lzk90s.cbec.gateway.filter" level="debug">
         <appender-ref ref="ACCESS"/>
     </logger>
 

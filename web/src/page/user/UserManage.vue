@@ -1,80 +1,74 @@
 <template>
   <div class="main">
     <div class="search-bar">
-      <Input
-        v-model="searchKey"
-        placeholder="请输入关键字搜索"
-        style="width: 300px"
-        clearable
-        @keyup.enter.native="search"
-      />
-      <Button
-        type="primary"
-        icon="ios-search"
-        style="margin-left: 10px"
-        @click="search"
-        >搜索</Button
-      >
+      <Input v-model="searchKey"
+             placeholder="请输入关键字搜索"
+             style="width: 300px"
+             clearable
+             @keyup.enter.native="search" />
+      <Button type="primary"
+              icon="ios-search"
+              style="margin-left: 10px"
+              @click="search">搜索</Button>
     </div>
     <div class="list-content">
-      <Table
-        border
-        :columns="columns"
-        :data="data"
-        :loading="loading"
-        style="margin-top: 10px"
-      >
-        <template slot-scope="{ row }" slot="id">
+      <Table border
+             :columns="columns"
+             :data="data"
+             :loading="loading"
+             style="margin-top: 10px">
+        <template slot-scope="{ row }"
+                  slot="id">
           <span>{{ row.id }}</span>
         </template>
-        <template slot-scope="{ row, index }" slot="phone">
-          <Input type="text" v-model="edtPhone" v-if="editIndex === index" />
+        <template slot-scope="{ row, index }"
+                  slot="phone">
+          <Input type="text"
+                 v-model="editPhone"
+                 v-if="editIndex === index" />
           <span v-else>{{ row.phone }}</span>
         </template>
-        <template slot-scope="{ row, index }" slot="email">
-          <Input type="text" v-model="editEmail" v-if="editIndex === index" />
+        <template slot-scope="{ row, index }"
+                  slot="email">
+          <Input type="text"
+                 v-model="editEmail"
+                 v-if="editIndex === index" />
           <span v-else>{{ row.email }}</span>
         </template>
-        <template slot-scope="{ row }" slot="name">
-          <span>{{ row.name }}</span>
+        <template slot-scope="{ row }"
+                  slot="name">
+          <span> {{ row.name }}</span>
         </template>
-        <template slot-scope="{ row, index }" slot="operation">
+        <template slot-scope="{ row, index }"
+                  slot="operation">
           <div v-if="editIndex === index">
-            <Button
-              type="primary"
-              @click="handleSave(row, index)"
-              :loading="saving"
-              >保存</Button
-            >
-            <Button
-              type="error"
-              @click="editIndex = -1"
-              style="margin-left: 10px"
-              >取消</Button
-            >
+            <Button type="primary"
+                    @click="handleSave(row, index)"
+                    :loading="saving">保存</Button>
+            <Button type="error"
+                    @click="editIndex = -1"
+                    style="margin-left: 10px">取消</Button>
           </div>
           <div v-else>
-            <Button type="primary" @click="handleEdit(row, index)">操作</Button>
-            <Button
-              type="error"
-              @click="showReset(row, index)"
-              style="margin-left: 10px"
-              >重置密码</Button
-            >
+            <Button type="primary"
+                    @click="handleEdit(row, index)">操作</Button>
+            <Button type="error"
+                    @click="showReset(row, index)"
+                    style="margin-left: 10px">重置密码</Button>
           </div>
         </template>
       </Table>
-      <Modal v-model="isShowReset" title="重置密码" @on-ok="resetPassword">
+      <Modal v-model="isShowReset"
+             title="重置密码"
+             @on-ok="resetPassword">
         <p>确定重置【{{ resetUserName }}】的密码！</p>
       </Modal>
     </div>
     <div class="page-bar">
-      <Page
-        :total="total"
-        style="margin-top: 10px; float: right"
-        @on-change="changePage"
-        :page-size="pageSize"
-      />
+      <Page :total="total"
+            style="margin-top: 10px; float: right"
+            @on-change="changePage"
+            :page-size="pageSize" />
     </div>
   </div>
 </template>
@@ -147,8 +141,8 @@ export default {
       this.listUsers(params, this);
     },
     handleSave(row, index) {
-      if (this.edtName != row.name || this.edtPhone != row.phone) {
-        this.save(index, this);
+      if (this.editName != row.name || this.editPhone != row.phone || this.editEmail != row.email) {
+        this.save(index);
       } else {
         this.editIndex = -1;
         this.saving = false;
@@ -156,8 +150,8 @@ export default {
     },
     handleEdit(row, index) {
       this.editIndex = index;
-      this.edtName = row.name;
-      this.edtPhone = row.phone;
+      this.editName = row.name;
+      this.editPhone = row.phone;
       this.editEmail = row.email;
     },
     showReset(row, index) {
@@ -187,23 +181,25 @@ export default {
 
       return params;
     },
-    save(index, that) {
-      that.saving = true;
-      let row = that.data[index];
+    save(index) {
+      this.saving = true;
+      let row = this.data[index];
       let id = row.id;
       let params = new URLSearchParams();
-      params.append("phone", that.edtPhone);
-      params.append("name", that.edtName);
+      params.append("phone", this.editPhone);
+      params.append("name", this.editName);
+      params.append("email", this.editEmail);
       put(`/api/auth/admin/users/${id}`,
         params,
         () => {
-          that.editIndex = -1;
-          that.saving = false;
-          row.name = that.edtName;
-          row.phone = that.edtPhone;
+          this.editIndex = -1;
+          this.saving = false;
+          row.name = this.editName;
+          row.phone = this.editPhone;
+          row.email = this.editEmail;
         },
         () => {
-          that.saving = false;
+          this.saving = false;
         });
     },
     resetPassword() {

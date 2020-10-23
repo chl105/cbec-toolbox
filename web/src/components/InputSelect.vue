@@ -1,56 +1,49 @@
 <template>
-  <div
-    v-bind:id="componentId"
-    class="cw-input-select_wrap"
-    onselectstart="return false"
-  >
+  <div v-bind:id="componentId"
+       class="cw-input-select_wrap"
+       onselectstart="return false">
     <div class="cw-input-select">
-      <div class="cw-input-select_box" v-on:click="selectHandle">
+      <div class="cw-input-select_box"
+           v-on:click="selectHandle">
         <span v-if="typeof selectedValue == 'object'">
           {{ selectedValue[labelName] }}
         </span>
         <span v-else>{{ selectedValue || "请选择" }}</span>
-        <i class="cw-arrow" v-bind:class="{ up: isShowPop }"></i>
+        <i class="cw-arrow"
+           v-bind:class="{ up: isShowPop }"></i>
       </div>
-      <div class="cw-input-select_pop" v-if="isShowPop">
+      <div class="cw-input-select_pop"
+           v-if="isShowPop">
         <div class="cw-input-select_ipt_wrap">
-          <input
-            type="text"
-            v-model.trim="searchTxt"
-            v-on:input="searchHandle(searchTxt)"
-            class="cw-input-select_ipt"
-            placeholder="搜索"
-          />
-          <span class="icon-clear" v-if="searchTxt" v-on:click="clearHandle">
-            <svg
-              t="1575258400555"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2468"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M509.866667 32C245.333333 32 32 247.466667 32 512s213.333333 480 477.866667 480S987.733333 776.533333 987.733333 512 774.4 32 509.866667 32z m0 896C281.6 928 96 742.4 96 512S281.6 96 509.866667 96 923.733333 281.6 923.733333 512s-185.6 416-413.866666 416z"
-                fill="#8a8a8a"
-                p-id="2469"
-              />
-              <path
-                d="M693.333333 330.666667c-12.8-12.8-32-12.8-44.8 0L512 467.2l-136.533333-136.533333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l136.533333 136.533333-136.533333 136.533333c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533334s17.066667-2.133333 23.466667-8.533334l136.533333-136.533333 136.533334 136.533333c6.4 6.4 14.933333 8.533333 23.466666 8.533334s17.066667-2.133333 23.466667-8.533334c12.8-12.8 12.8-32 0-44.8L556.8 512l136.533333-136.533333c12.8-12.8 12.8-32 0-44.8z"
-                fill="#8a8a8a"
-                p-id="2470"
-              />
+          <input type="text"
+                 v-model.trim="searchTxt"
+                 v-on:input="searchHandle(searchTxt)"
+                 class="cw-input-select_ipt"
+                 placeholder="搜索" />
+          <span class="icon-clear"
+                v-if="searchTxt"
+                v-on:click="clearHandle">
+            <svg t="1575258400555"
+                 class="icon"
+                 viewBox="0 0 1024 1024"
+                 version="1.1"
+                 xmlns="http://www.w3.org/2000/svg"
+                 p-id="2468"
+                 width="16"
+                 height="16">
+              <path d="M509.866667 32C245.333333 32 32 247.466667 32 512s213.333333 480 477.866667 480S987.733333 776.533333 987.733333 512 774.4 32 509.866667 32z m0 896C281.6 928 96 742.4 96 512S281.6 96 509.866667 96 923.733333 281.6 923.733333 512s-185.6 416-413.866666 416z"
+                    fill="#8a8a8a"
+                    p-id="2469" />
+              <path d="M693.333333 330.666667c-12.8-12.8-32-12.8-44.8 0L512 467.2l-136.533333-136.533333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l136.533333 136.533333-136.533333 136.533333c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533334s17.066667-2.133333 23.466667-8.533334l136.533333-136.533333 136.533334 136.533333c6.4 6.4 14.933333 8.533333 23.466666 8.533334s17.066667-2.133333 23.466667-8.533334c12.8-12.8 12.8-32 0-44.8L556.8 512l136.533333-136.533333c12.8-12.8 12.8-32 0-44.8z"
+                    fill="#8a8a8a"
+                    p-id="2470" />
             </svg>
           </span>
         </div>
         <ul class="cw-input-select_options">
-          <li
-            v-for="(option, index) in optionsList"
-            v-on:click="selected(option)"
-            :key="index"
-          >
+          <li v-for="(option, index) in optionsList"
+              v-on:click="selected(option)"
+              :key="index">
             <span v-if="typeof option == 'object'">
               {{ option[labelName] }}
             </span>
@@ -150,7 +143,7 @@ export default {
           parentTagList);
       }
       // 返回集合,结束
-      else {return parentTagList;}
+      else { return parentTagList; }
     },
   },
 };

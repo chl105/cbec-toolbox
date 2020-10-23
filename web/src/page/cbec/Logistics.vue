@@ -1,97 +1,80 @@
 <template>
-  <table-layout
-    :data="data"
-    :columns="columns"
-    :total="total"
-    :pageSize="pageSize"
-    :loading="loading"
-  >
-    <Form
-      ref="logisticsModelForm"
-      style="
+  <table-layout :data="data"
+                :columns="columns"
+                :total="total"
+                :pageSize="pageSize"
+                :loading="loading">
+    <Form ref="logisticsModelForm"
+          style="
         padding: 5px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       "
-      inline
-      :label-width="90"
-      :model="logisticsModelForm"
-      :rules="logisticsModelFormRules"
-    >
+          inline
+          :label-width="90"
+          :model="logisticsModelForm"
+          :rules="logisticsModelFormRules">
       <div class="form-group">
         <form-item label="物流：">
-          <Select v-model="logisticsModelForm.vendor" class="input-content">
-            <Option
-              v-for="item in vendorList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+          <Select v-model="logisticsModelForm.vendor"
+                  class="input-content">
+            <Option v-for="item in vendorList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
-        <form-item label="出发地：" prop="srcAddress">
-          <InputSelect
-            label-name="name"
-            v-bind:options="srcAddressList"
-            @on-selected="
+        <form-item label="出发地："
+                   prop="srcAddress">
+          <InputSelect label-name="name"
+                       v-bind:options="srcAddressList"
+                       @on-selected="
               (v) => {
                 logisticsModelForm.srcAddress = v;
               }
-            "
-          ></InputSelect>
+            "></InputSelect>
         </form-item>
-        <form-item label="目的地：" prop="dstAddress">
-          <InputSelect
-            label-name="name"
-            v-bind:options="dstAddressList"
-            v-bind:searchFunc="searchCountryList"
-            @on-selected="
+        <form-item label="目的地："
+                   prop="dstAddress">
+          <InputSelect label-name="name"
+                       v-bind:options="dstAddressList"
+                       v-bind:searchFunc="searchCountryList"
+                       @on-selected="
               (v) => {
                 logisticsModelForm.dstAddress = v;
               }
-            "
-          ></InputSelect>
+            "></InputSelect>
         </form-item>
-        <form-item label="重量(克)" prop="weight">
-          <Input
-            v-model="logisticsModelForm.weight"
-            class="input-content"
-            clearable
-          />
+        <form-item label="重量(克)"
+                   prop="weight">
+          <Input v-model="logisticsModelForm.weight"
+                 class="input-content"
+                 clearable />
         </form-item>
-        <form-item label="产品类型" prop="types">
-          <Select
-            v-model="logisticsModelForm.types"
-            multiple
-            class="input-content"
-            clearable
-          >
-            <Option
-              v-for="item in typeList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+        <form-item label="产品类型"
+                   prop="types">
+          <Select v-model="logisticsModelForm.types"
+                  multiple
+                  class="input-content"
+                  clearable>
+            <Option v-for="item in typeList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
-        <form-item label="货品属性" prop="goodsAttr">
-          <Select
-            v-model="logisticsModelForm.goodsAttr"
-            class="input-content"
-            clearable
-          >
-            <Option
-              v-for="item in goodsAttrList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+        <form-item label="货品属性"
+                   prop="goodsAttr">
+          <Select v-model="logisticsModelForm.goodsAttr"
+                  class="input-content"
+                  clearable>
+            <Option v-for="item in goodsAttrList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
         <form-item :label-width="50">
-          <Button icon="ios-search" style="margin-left: 10px" @click="search"
-            >搜索</Button
-          >
+          <Button icon="ios-search"
+                  style="margin-left: 10px"
+                  @click="search">搜索</Button>
         </form-item>
       </div>
     </Form>

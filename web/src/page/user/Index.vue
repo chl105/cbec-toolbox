@@ -6,26 +6,22 @@
     <div class="main">
       <div class="sider">
         <Sider>
-          <Menu :active-name="$route.meta.key" theme="dark" width="auto">
-            <MenuItem
-              v-for="(item, index) in menus"
-              :key="index"
-              :name="item.index"
-              :to="item.path"
-              >{{ item.name }}</MenuItem
-            >
+          <Menu :active-name="$route.meta.key"
+                theme="dark"
+                width="auto">
+            <MenuItem v-for="(item, index) in menus"
+                      :key="index"
+                      :name="item.index"
+                      :to="item.path">{{ item.name }}</MenuItem>
           </Menu>
         </Sider>
       </div>
       <div class="content-wrapper">
         <div class="breadcrumb">
           <Breadcrumb :style="{ margin: '10px 0' }">
-            <BreadcrumbItem
-              v-for="item in crumbs"
-              :key="item.index"
-              :to="item.path"
-              >{{ item.name }}</BreadcrumbItem
-            >
+            <BreadcrumbItem v-for="item in crumbs"
+                            :key="item.index"
+                            :to="item.path">{{ item.name }}</BreadcrumbItem>
           </Breadcrumb>
         </div>
         <div class="content">

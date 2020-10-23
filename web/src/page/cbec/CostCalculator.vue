@@ -1,163 +1,143 @@
 <template>
-  <table-layout
-    :data="data"
-    :columns="columns"
-    :total="total"
-    :pageSize="pageSize"
-    :loading="loading"
-  >
-    <Form
-      ref="ratioModelForm"
-      style="
+  <table-layout :data="data"
+                :columns="columns"
+                :total="total"
+                :pageSize="pageSize"
+                :loading="loading">
+    <Form ref="ratioModelForm"
+          style="
         padding: 5px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       "
-      inline
-      :label-width="labelWidth"
-      :model="ratioModelForm"
-      :rules="ratioModelFormRules"
-    >
-      <form-item label="汇率(￥/$)：" prop="exchangeRate">
-        <InputNumber
-          v-model="ratioModelForm.exchangeRate"
-          class="input-content"
-        />
+          inline
+          :label-width="labelWidth"
+          :model="ratioModelForm"
+          :rules="ratioModelFormRules">
+      <form-item label="汇率(￥/$)："
+                 prop="exchangeRate">
+        <InputNumber v-model="ratioModelForm.exchangeRate"
+                     class="input-content" />
       </form-item>
-      <form-item label="佣金点数($)：" prop="commission">
-        <InputNumber
-          v-model="ratioModelForm.commission"
-          class="input-content"
-        />
+      <form-item label="佣金点数($)："
+                 prop="commission">
+        <InputNumber v-model="ratioModelForm.commission"
+                     class="input-content" />
       </form-item>
-      <form-item label="转账手续费($)：" prop="bankCharge">
-        <InputNumber
-          v-model="ratioModelForm.bankCharge"
-          class="input-content"
-        />
+      <form-item label="转账手续费($)："
+                 prop="bankCharge">
+        <InputNumber v-model="ratioModelForm.bankCharge"
+                     class="input-content" />
       </form-item>
     </Form>
 
-    <Form
-      ref="productModelForm"
-      style="
+    <Form ref="productModelForm"
+          style="
         padding: 5px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       "
-      inline
-      :label-width="labelWidth"
-      :model="productModelForm"
-      :rules="productModelFormRules"
-    >
-      <form-item label="折后价($)：" prop="salePrice">
-        <InputNumber
-          v-model="productModelForm.salePrice"
-          class="input-content"
-          clearable
-        />
+          inline
+          :label-width="labelWidth"
+          :model="productModelForm"
+          :rules="productModelFormRules">
+      <form-item label="折后价($)："
+                 prop="salePrice">
+        <InputNumber v-model="productModelForm.salePrice"
+                     class="input-content"
+                     clearable />
       </form-item>
-      <form-item label="进价(￥)：" prop="inputPriceRMB">
-        <InputNumber
-          v-model="productModelForm.inputPriceRMB"
-          class="input-content"
-          @on-change="
+      <form-item label="进价(￥)："
+                 prop="inputPriceRMB">
+        <InputNumber v-model="productModelForm.inputPriceRMB"
+                     class="input-content"
+                     @on-change="
             () => {
               productModelForm.inputPrice = exchangeRmb2Dollor(
                 productModelForm.inputPriceRMB,
                 ratioModelForm.exchangeRate
               );
             }
-          "
-        />
+          " />
       </form-item>
-      <form-item label="单重(g)：" prop="weight">
-        <InputNumber v-model="productModelForm.weight" class="input-content" />
+      <form-item label="单重(g)："
+                 prop="weight">
+        <InputNumber v-model="productModelForm.weight"
+                     class="input-content" />
       </form-item>
-      <form-item label="数量：" prop="num">
-        <InputNumber v-model="productModelForm.num" class="input-content" />
+      <form-item label="数量："
+                 prop="num">
+        <InputNumber v-model="productModelForm.num"
+                     class="input-content" />
       </form-item>
     </Form>
-    <Form
-      ref="logisticsModelForm"
-      style="
+    <Form ref="logisticsModelForm"
+          style="
         padding: 5px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       "
-      inline
-      :label-width="labelWidth"
-      :model="logisticsModelForm"
-      :rules="logisticsModelFormRules"
-    >
+          inline
+          :label-width="labelWidth"
+          :model="logisticsModelForm"
+          :rules="logisticsModelFormRules">
       <div class="form-group">
-        <form-item label="物流：" prop="vendor">
-          <Select v-model="logisticsModelForm.vendor" class="input-content">
-            <Option
-              v-for="item in vendorList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+        <form-item label="物流："
+                   prop="vendor">
+          <Select v-model="logisticsModelForm.vendor"
+                  class="input-content">
+            <Option v-for="item in vendorList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
-        <form-item label="出发地：" prop="srcAddress">
-          <InputSelect
-            label-name="name"
-            v-bind:options="srcAddressList"
-            v-bind:searchFunc="searchCityList"
-            @on-selected="
+        <form-item label="出发地："
+                   prop="srcAddress">
+          <InputSelect label-name="name"
+                       v-bind:options="srcAddressList"
+                       v-bind:searchFunc="searchCityList"
+                       @on-selected="
               (v) => {
                 logisticsModelForm.srcAddress = v.id;
               }
-            "
-          ></InputSelect>
+            "></InputSelect>
         </form-item>
-        <form-item label="目的地：" prop="dstAddress">
-          <InputSelect
-            label-name="name"
-            v-bind:options="dstAddressList"
-            v-bind:searchFunc="searchCountryList"
-            @on-selected="
+        <form-item label="目的地："
+                   prop="dstAddress">
+          <InputSelect label-name="name"
+                       v-bind:options="dstAddressList"
+                       v-bind:searchFunc="searchCountryList"
+                       @on-selected="
               (v) => {
                 logisticsModelForm.dstAddress = v.id;
               }
-            "
-          ></InputSelect>
+            "></InputSelect>
         </form-item>
-        <form-item label="产品类型" prop="types">
-          <Select
-            v-model="logisticsModelForm.types"
-            multiple
-            class="input-content"
-            clearable
-          >
-            <Option
-              v-for="item in typeList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+        <form-item label="产品类型"
+                   prop="types">
+          <Select v-model="logisticsModelForm.types"
+                  multiple
+                  class="input-content"
+                  clearable>
+            <Option v-for="item in typeList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
-        <form-item label="货品属性" prop="goodsAttr">
-          <Select
-            v-model="logisticsModelForm.goodsAttr"
-            class="input-content"
-            clearable
-          >
-            <Option
-              v-for="item in goodsAttrList"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.name }}</Option
-            >
+        <form-item label="货品属性"
+                   prop="goodsAttr">
+          <Select v-model="logisticsModelForm.goodsAttr"
+                  class="input-content"
+                  clearable>
+            <Option v-for="item in goodsAttrList"
+                    :value="item.value"
+                    :key="item.value">{{ item.name }}</Option>
           </Select>
         </form-item>
         <form-item :label-width="50">
-          <Button icon="ios-search" style="margin-left: 10px" @click="search"
-            >搜索</Button
-          >
+          <Button icon="ios-search"
+                  style="margin-left: 10px"
+                  @click="search">搜索</Button>
         </form-item>
       </div>
     </Form>
@@ -358,13 +338,13 @@ export default {
     search() {
       let validateSucceed = true;
       this.$refs["ratioModelForm"].validate((v) => {
-        if (!v) {validateSucceed = false;}
+        if (!v) { validateSucceed = false; }
       });
       this.$refs["productModelForm"].validate((v) => {
-        if (!v) {validateSucceed = false;}
+        if (!v) { validateSucceed = false; }
       });
       this.$refs["logisticsModelForm"].validate((v) => {
-        if (!v) {validateSucceed = false;}
+        if (!v) { validateSucceed = false; }
       });
 
       if (!validateSucceed) {

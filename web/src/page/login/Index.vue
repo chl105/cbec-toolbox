@@ -4,26 +4,30 @@
     <div class="child">
       <Card style="width: 400px">
         <p slot="title">工具箱</p>
-        <Form ref="formInline" :model="formInline" :rules="ruleInline">
+        <Form ref="formInline"
+              :model="formInline"
+              :rules="ruleInline">
           <FormItem prop="user">
-            <Input type="text" v-model="formInline.user" placeholder="用户名">
-              <Icon type="ios-person-outline" slot="prepend"></Icon>
+            <Input type="text"
+                   v-model="formInline.user"
+                   placeholder="用户名">
+            <Icon type="ios-person-outline"
+                  slot="prepend"></Icon>
             </Input>
           </FormItem>
           <FormItem prop="password">
-            <Input
-              type="password"
-              v-model="formInline.password"
-              placeholder="密码"
-              @keyup.enter.native="handleSubmit('formInline')"
-            >
-              <Icon type="ios-lock-outline" slot="prepend"></Icon>
+            <Input type="password"
+                   v-model="formInline.password"
+                   placeholder="密码"
+                   @keyup.enter.native="handleSubmit('formInline')">
+            <Icon type="ios-lock-outline"
+                  slot="prepend"></Icon>
             </Input>
           </FormItem>
           <FormItem>
-            <Button type="primary" long @click="handleSubmit('formInline')"
-              >登录</Button
-            >
+            <Button type="primary"
+                    long
+                    @click="handleSubmit('formInline')">登录</Button>
           </FormItem>
         </Form>
       </Card>
@@ -103,7 +107,7 @@ export default {
                 }
                 this.$Message.error(des);
                 // eslint-disable-next-line no-empty
-              } catch (error) {}
+              } catch (error) { }
               if (!des) {
                 this.$Message.error(error);
               }
