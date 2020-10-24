@@ -118,6 +118,7 @@ export default {
                 width: "100px",
                 height: "80px",
                 "border-radius": "5%",
+                "margin": "auto",
               },
               attrs: {
                 //设置属性
@@ -154,6 +155,7 @@ export default {
                   width: "100px",
                   height: "80px",
                   "border-radius": "5%",
+                  "margin": "auto",
                   display: (params.row.supplier1.imageUrl != undefined) ? "inline" : "none",
                 },
                 attrs: {
@@ -181,6 +183,7 @@ export default {
                   width: "100px",
                   height: "80px",
                   "border-radius": "5%",
+                  "margin": "auto",
                   display: (params.row.supplier2.imageUrl != undefined) ? "inline" : "none",
                 },
                 attrs: {
@@ -208,6 +211,7 @@ export default {
                   width: "100px",
                   height: "80px",
                   "border-radius": "5%",
+                  "margin": "auto",
                   display: (params.row.supplier3.imageUrl != undefined) ? "inline" : "none",
                 },
                 attrs: {

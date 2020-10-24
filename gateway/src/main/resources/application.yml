@@ -1,6 +1,8 @@
 server:
   port: 28888
 
+apiPrefix: /api
+
 spring:
   application:
     name: gateway
@@ -18,15 +20,20 @@ spring:
     gateway:
       globalcors:
         corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods: "*"
+          - '[/websocket/**]':
+              #allowedOrigins: "*"  ## websocket会自带allow origins,这里需要去掉
+              allowedMethods: "*"
+              allowedHeaders: "*"
+          - '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
       discovery:
         locator:
           lowerCaseServiceId: true
           enabled: true
           predicates:
-            - Path='/api/' + serviceId + '/**'
+            - Path='${apiPrefix}/' + serviceId + '/**'
           filters:
             - StripPrefix=2
       httpclient:

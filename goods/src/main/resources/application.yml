@@ -14,11 +14,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: Asia/Shanghai
 
-logistics:
-  yw56:
-    enable: true
-    vendor: 燕文物流
-
 eureka:
   instance:
     prefer-ip-address: true
@@ -35,6 +30,10 @@ security:
       loadBalanced: true
       prefer-token-info: false
       user-info-uri: http://auth/user
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 10000
 
 mybatis-plus:
   configuration:

@@ -19,6 +19,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,10 +83,13 @@ public class UnhandledOrderNotifyService {
     }
 
     private void notifyUserNewOrder(String user) {
-        // 查询没有通知过，或者已经过期的订单
+        if (!hasUnNotifyOrder(user)){
+            return;
+        }
+
+        // 查询用户订单
         var orderList = orderService.selectList(new EntityWrapper<OrderEntity>()
-                .eq("user", user).le("last_notify_time", getTimeBeforeNow(notifyInternalHour))
-                .or().isNull("last_notify_time"));
+                .eq("user", user));
         if (CollectionUtils.isEmpty(orderList)) {
             return;
         }
@@ -101,6 +105,11 @@ public class UnhandledOrderNotifyService {
                 .peek(s -> s.setLastNotifyTime(new Date()))
                 .collect(Collectors.toList());
         orderService.updateBatchById(newOrderList);
+    }
+
+    private boolean hasUnNotifyOrder(String user){
+        return orderService.selectCount(new EntityWrapper<OrderEntity>()
+                .eq("user", user).isNull("last_notify_time")) > 0;
     }
 
     private Date getTimeBeforeNow(int hour) {

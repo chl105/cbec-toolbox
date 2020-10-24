@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.stream.Collectors;
 
@@ -45,17 +46,7 @@ public class SpiderService {
             return;
         }
 
-        platformList.forEach(platform -> {
-            Wrapper<GoodsEntity> queryWrapper = new EntityWrapper<>(new GoodsEntity());
-            queryWrapper.eq("purchased", false).and().eq("platform", platform.getName());
-            int count = goodsService.selectCount(queryWrapper);
-            if (count > maxGoodsNum) {
-                log.info("Max goods reached, ignore!");
-                return;
-            }
-
-            grabPlatformGoods(platform.getName());
-        });
+        platformList.forEach(platform -> grabPlatformGoods(platform.getName()));
     }
 
     private void grabPlatformGoods(String platformName) {
@@ -66,31 +57,65 @@ public class SpiderService {
         }
 
         categoryList.forEach(category -> {
-            var goodsList = goodsSpiderFeign.listCategoryGoods(platformName, category.getName(), defaultSort);
-            if (CollectionUtils.isEmpty(goodsList)) {
+            // 如果已经达到最大数量，停止爬取
+            int grabNum = getGrabNum4Category(category.getName(), platformName);
+            if (grabNum <= 0) {
+                log.info("Max goods reached, skip the category {}!", category.getName());
                 return;
             }
 
-            var goodsListDO = goodsList.stream()
-                    .map(s -> GoodsEntity.getConverter().doForward(s))
-                    .collect(Collectors.toList());
-            goodsService.insertOrUpdateBatch(goodsListDO);
-            log.info("Found {} goods in category {}", goodsListDO.size(), category.getName());
+            int count = 0;
+            String cursor = "";
+            boolean hasMoreData = true;
 
-            // 抓取商品供应商
-            goodsListDO.forEach(goods -> {
-                if (!grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice())) {
-                    // 没有找到供应商时，删除商品
-                    goodsService.deleteById(goods.getId());
+            // 循环爬取商品，直到达到要求的数量
+            while (count < grabNum && hasMoreData) {
+                var scrollResult = goodsSpiderFeign.listCategoryGoods(platformName,
+                        category.getName(), defaultSort, cursor);
+
+                // 已经爬取完了，退出
+                if (CollectionUtils.isEmpty(scrollResult.getResults())) {
+                    break;
                 }
-            });
+                // 下一页没有了，标记没有数据了
+                if (StringUtils.isEmpty(scrollResult.getNextCursor())) {
+                    hasMoreData = false;
+                }
+
+                cursor = scrollResult.getNextCursor();
+
+                // 抓取商品供应商
+                var goodsList = scrollResult.getResults().stream()
+                        .filter(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()))
+                        .collect(Collectors.toList());
+
+                if (CollectionUtils.isEmpty(goodsList)) {
+                    continue;
+                }
+
+                // 保存商品信息
+                var goodsEntityList = goodsList.stream()
+                        .map(s -> GoodsEntity.getConverter().doForward(s))
+                        .collect(Collectors.toList());
+                goodsService.insertOrUpdateBatch(goodsEntityList);
+                log.info("Found {} goods in category {}", goodsEntityList.size(), category.getName());
+
+                count += goodsEntityList.size();
+            }
         });
+    }
+
+    private int getGrabNum4Category(String category, String platform) {
+        Wrapper<GoodsEntity> queryWrapper = new EntityWrapper<>(new GoodsEntity());
+        queryWrapper.eq("category", category).and().eq("platform", platform);
+        int count = goodsService.selectCount(queryWrapper);
+        return maxGoodsNum - count;
     }
 
     private boolean grabSupplier4Goods(String goodsId, String goodsImageUrl, float goodsPriceUSD) {
         float maxPrice = calculateBuyPriceCNY(goodsPriceUSD);
         try {
-            var goodsList = goodsSpiderFeign.searchGoodsByImage(goodsImageUrl, maxPrice);
+            var goodsList = goodsSpiderFeign.searchGoodsByImage(goodsImageUrl, maxPrice, 3);
             if (CollectionUtils.isEmpty(goodsList)) {
                 return false;
             }

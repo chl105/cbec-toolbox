@@ -148,7 +148,7 @@ class Alibaba(object):
         else:
             return 'fail', None
 
-    def search(self, filename, need_products=False):
+    def search(self, filename, need_products=False, begin_page=1):
         status, data = self.get_dateset()
 
         # json 直接解析
@@ -166,7 +166,7 @@ class Alibaba(object):
             if not need_products:
                 return url_res
             else:
-                status_desc, data = self.img_search(key, data_set)
+                status_desc, data = self.img_search(key, data_set, begin_page)
                 if status_desc == 'succ':
                     return data
                 return None

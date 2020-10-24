@@ -25,11 +25,13 @@ def list_category_goods(platform):
     if not sort:
         sort = "recommended"
 
+    cursor = request.args.get("cursor")
+
     category_info = vova.get_category_by_name(category_name)
     if not category_info:
         raise exception.BizException("无效的类目")
 
-    response = json_util.obj2json(vova.get_category_goods(category_info, sort, 1))
+    response = json_util.obj2json(vova.get_category_goods(category_info, sort, cursor))
     return Response(response, mimetype='application/json')
 
 
@@ -40,13 +42,18 @@ def search_goods_by_image():
     if not image_url or not max_price:
         raise ValueError("无效参数")
 
-    response = json_util.obj2json(ali1688.search_goods_by_image(image_url, max_price))
+    num = request.args.get("num")
+    if not num:
+        num = 5
+
+    response = json_util.obj2json(ali1688.search_goods_by_image(image_url, float(max_price), int(num)))
     return Response(response, mimetype='application/json')
 
 
 if __name__ == '__main__':
     category = vova.get_category_by_name("bags-watches-accessories")
-    goods_list = vova.get_category_goods(category, sort="most-popular")
+    scroll_result = vova.get_category_goods(category, sort="most-popular")
+    goods_list = scroll_result.results
     for goods in goods_list:
         print("----------------------------------------------")
         print(json_util.obj2json(goods))

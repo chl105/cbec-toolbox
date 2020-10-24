@@ -41,48 +41,42 @@ def get_all_category():
     ]
 
 
-def get_category_goods(category, sort="recommended", max_page=5):
+def get_category_goods(category, sort="recommended", cursor=None, page_size=20):
     assert isinstance(category, goods_model.Category)
 
-    next_page_cursor = None
     goods_list = []
 
-    while max_page > 0:
-        url = category.url + "?limit=60&is_ajax=1"
-        if next_page_cursor:
-            url += "&after=" + next_page_cursor
-        res = requests.get(url + "/" + sort)
-        _check_response(res)
+    url = category.url + "?limit=" + str(page_size) + "&is_ajax=1"
+    if cursor:
+        url += "&after=" + cursor
+    res = requests.get(url + "/" + sort)
+    _check_response(res)
 
-        res_dict = json_util.json2dict(res.text)
+    res_dict = json_util.json2dict(res.text)
 
-        next_page_cursor = res_dict["data"]["pagination"]["cursors"]["after"]
-        if not next_page_cursor:
-            break
+    next_page_cursor = res_dict["data"]["pagination"]["cursors"]["after"]
 
-        product_list = res_dict["data"]["productList"]
-        for product_dict in product_list:
-            product_obj = dict_util.dict2obj(product_dict)
-            goods_list.append(goods_model.GoodsInfo(
-                product_obj.virtual_goods_id,
-                product_obj.name,
-                category.name,
-                _build_vova_url(product_obj.url),
-                product_obj.shop_price_exchange,
-                "",
-                platform="vova"
-            ))
+    product_list = res_dict["data"]["productList"]
+    for product_dict in product_list:
+        product_obj = dict_util.dict2obj(product_dict)
+        goods_list.append(goods_model.GoodsInfo(
+            product_obj.virtual_goods_id,
+            product_obj.name,
+            category.name,
+            _build_vova_url(product_obj.url),
+            product_obj.shop_price_exchange,
+            "",
+            platform="vova"
+        ))
 
-        idx = 0
-        product_list_ext = dict_util.dict2obj(res_dict["data"]["arEcommerce"]["listProducts"][0]["product_list"])
-        for product_ext_dict in product_list_ext:
-            product_ext_obj = dict_util.dict2obj(product_ext_dict)
-            goods_list[idx].image_url = "https://" + product_ext_obj.picture
-            idx = idx + 1
+    idx = 0
+    product_list_ext = dict_util.dict2obj(res_dict["data"]["arEcommerce"]["listProducts"][0]["product_list"])
+    for product_ext_dict in product_list_ext:
+        product_ext_obj = dict_util.dict2obj(product_ext_dict)
+        goods_list[idx].image_url = "https://" + product_ext_obj.picture
+        idx = idx + 1
 
-        max_page = max_page - 1
-
-    return goods_list
+    return goods_model.ScrollResult(cursor, next_page_cursor, goods_list)
 
 
 def _check_response(response):

@@ -1,9 +1,9 @@
 server:
-  port: 22334
+  port: 22339
 
 spring:
   application:
-    name: goods
+    name: order
   profiles:
     active: dev
   main:
@@ -18,10 +18,6 @@ spring:
   freemarker:
     template-loader-path: classpath:/templates/
 
-logistics:
-  yw56:
-    enable: true
-    vendor: 燕文物流
 
 eureka:
   instance:

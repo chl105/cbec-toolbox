@@ -12,11 +12,13 @@ public interface GoodsSpiderApi {
     List<CategoryDTO> listAllCategory(@PathVariable("platform") String platform);
 
     @GetMapping("/list_category_goods/{platform}")
-    List<GoodsInfoDTO> listCategoryGoods(@PathVariable("platform") String platform,
+    ScrollResult<GoodsInfoDTO> listCategoryGoods(@PathVariable("platform") String platform,
                                          @RequestParam("category") String category,
-                                         @RequestParam("sort") String sort);
+                                         @RequestParam("sort") String sort,
+                                         @RequestParam("cursor") String cursor);
 
     @GetMapping("/search_goods_by_image")
     List<GoodsInfoDTO> searchGoodsByImage(@RequestParam("image_url") String imageUrl,
-                                          @RequestParam("max_price") Float maxPrice);
+                                          @RequestParam("max_price") Float maxPrice,
+                                          @RequestParam("num") Integer num);
 }

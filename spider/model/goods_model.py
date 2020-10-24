@@ -6,6 +6,13 @@ class Category:
         self.vendor = vendor
 
 
+class ScrollResult:
+    def __init__(self, current_cursor, next_cursor, results):
+        self.current_cursor = current_cursor
+        self.next_cursor = next_cursor
+        self.results = results
+
+
 class GoodsInfo:
     def __init__(self, id, subject, category, detail_url, price, image_url, seller_name="", seller_shop_url="", sell_count=-1,
                  platform=""):
