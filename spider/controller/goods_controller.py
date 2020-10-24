@@ -1,9 +1,12 @@
+import datetime
+import logging
+
 from flask import Blueprint, request, Response
 
 from common import exception
-from util import json_util
 from ecommerce.ali1688 import ali1688
 from ecommerce.vova import vova
+from util import json_util
 
 goods = Blueprint('goods', __name__)
 
@@ -31,7 +34,12 @@ def list_category_goods(platform):
     if not category_info:
         raise exception.BizException("无效的类目")
 
+    start_time = datetime.datetime.now()
     response = json_util.obj2json(vova.get_category_goods(category_info, sort, cursor))
+    end_time = datetime.datetime.now()
+
+    logging.info("list_category_goods cost {}(s)".format((end_time - start_time).seconds))
+
     return Response(response, mimetype='application/json')
 
 
@@ -46,7 +54,12 @@ def search_goods_by_image():
     if not num:
         num = 5
 
+    start_time = datetime.datetime.now()
     response = json_util.obj2json(ali1688.search_goods_by_image(image_url, float(max_price), int(num)))
+    end_time = datetime.datetime.now()
+
+    logging.info("search_goods_by_image cost {}(s)".format((end_time - start_time).seconds))
+
     return Response(response, mimetype='application/json')
 
 

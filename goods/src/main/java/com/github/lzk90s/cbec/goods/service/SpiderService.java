@@ -6,7 +6,6 @@ import com.github.lzk90s.cbec.common.util.JsonUtil;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsEntity;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsSupplierEntity;
 import com.github.lzk90s.cbec.goods.feign.GoodsSpiderApiFeign;
-import com.github.lzk90s.cbec.internal.api.spider.CategoryDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class SpiderService {
-    @Value("${maxGoodsNum:100}")
+    @Value("${maxGoodsNum:500}")
     private int maxGoodsNum;
     @Value("${defaultSort:most-popular}")
     private String defaultSort;
@@ -58,13 +57,15 @@ public class SpiderService {
         categoryList.forEach(category -> grabCategoryGoods(category.getName(), platformName));
     }
 
-    private void grabCategoryGoods(String category, String platform){
+    private void grabCategoryGoods(String category, String platform) {
         // 如果已经达到最大数量，停止爬取
         int grabNum = getGrabNum4Category(category, platform);
         if (grabNum <= 0) {
             log.info("Max goods reached, skip the category {}!", category);
             return;
         }
+
+        long start = System.currentTimeMillis();
 
         int count = 0;
         String cursor = "";
@@ -86,8 +87,9 @@ public class SpiderService {
 
             cursor = scrollResult.getNextCursor();
 
-            // 抓取商品供应商
+            // 抓取商品供应商，并过滤出需要保存的商品
             var goodsList = scrollResult.getResults().stream()
+                    .filter(goods -> !hasGraped(goods.getId()))
                     .filter(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()))
                     .collect(Collectors.toList());
 
@@ -104,6 +106,13 @@ public class SpiderService {
 
             count += goodsEntityList.size();
         }
+
+        long end = System.currentTimeMillis();
+        log.info("Grab category {} succeed, cost time is {}(s)", category, (end - start) / 1000);
+    }
+
+    private boolean hasGraped(String goodsId) {
+        return goodsService.selectById(goodsId) != null;
     }
 
     private int getGrabNum4Category(String category, String platform) {

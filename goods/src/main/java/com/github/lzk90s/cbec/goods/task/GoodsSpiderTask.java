@@ -16,7 +16,7 @@ public class GoodsSpiderTask {
     private SpiderService spiderService;
 
     @GetMapping("/execute")
-    @Scheduled(cron = "0 0 */1 * * ?")
+    @Scheduled(fixedDelay = 30*60*1000)
     public void execute() {
         spiderService.grabGoods();
     }

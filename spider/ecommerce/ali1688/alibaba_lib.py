@@ -139,8 +139,8 @@ class Alibaba(object):
             "appName": app_name,
             "appKey": appKey,
             "callback": "",
-            "sortField": "sold_quantity",
-            "sortType": "desc#sm-filtbar"
+            "sortField": "price",
+            "sortType": "asc#sm-filtbar"
         }
         status_desc, data = request_get(self.imageSearch_service_url, request_params, headers=self.headers)
         if status_desc == "succ":

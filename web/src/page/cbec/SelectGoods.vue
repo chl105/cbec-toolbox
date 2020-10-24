@@ -146,7 +146,7 @@ export default {
             return h("div", [
               h("a", {
                 style: {
-                  display: (params.row.supplier1.detailUrl != undefined) ? "inline" : "none",
+                  display: (params.row.supplier1.detailUrl != undefined) ? "block" : "none",
                 },
                 attrs: { href: params.row.supplier1.detailUrl, target: '_blank', title: params.row.supplier1.detailUrl }
               }, "￥: " + params.row.supplier1.price),
@@ -156,7 +156,7 @@ export default {
                   height: "80px",
                   "border-radius": "5%",
                   "margin": "auto",
-                  display: (params.row.supplier1.imageUrl != undefined) ? "inline" : "none",
+                  display: (params.row.supplier1.imageUrl != undefined) ? "block" : "none",
                 },
                 attrs: {
                   src: params.row.supplier1.imageUrl,
@@ -174,7 +174,7 @@ export default {
             return h("div", [
               h("a", {
                 style: {
-                  display: (params.row.supplier2.detailUrl != undefined) ? "inline" : "none",
+                  display: (params.row.supplier2.detailUrl != undefined) ? "block" : "none",
                 },
                 attrs: { href: params.row.supplier2.detailUrl, target: '_blank', title: params.row.supplier2.detailUrl }
               }, "￥: " + params.row.supplier2.price),
@@ -184,7 +184,7 @@ export default {
                   height: "80px",
                   "border-radius": "5%",
                   "margin": "auto",
-                  display: (params.row.supplier2.imageUrl != undefined) ? "inline" : "none",
+                  display: (params.row.supplier2.imageUrl != undefined) ? "block" : "none",
                 },
                 attrs: {
                   src: params.row.supplier2.imageUrl,
@@ -202,7 +202,7 @@ export default {
             return h("div", [
               h("a", {
                 style: {
-                  display: (params.row.supplier3.detailUrl != undefined) ? "inline" : "none",
+                  display: (params.row.supplier3.detailUrl != undefined) ? "block" : "none",
                 },
                 attrs: { href: params.row.supplier3.detailUrl, target: '_blank', title: params.row.supplier3.detailUrl }
               }, "￥: " + params.row.supplier3.price),
@@ -212,7 +212,7 @@ export default {
                   height: "80px",
                   "border-radius": "5%",
                   "margin": "auto",
-                  display: (params.row.supplier3.imageUrl != undefined) ? "inline" : "none",
+                  display: (params.row.supplier3.imageUrl != undefined) ? "block" : "none",
                 },
                 attrs: {
                   src: params.row.supplier3.imageUrl,
