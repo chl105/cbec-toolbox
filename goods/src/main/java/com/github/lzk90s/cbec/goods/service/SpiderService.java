@@ -6,6 +6,7 @@ import com.github.lzk90s.cbec.common.util.JsonUtil;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsEntity;
 import com.github.lzk90s.cbec.goods.dao.entity.GoodsSupplierEntity;
 import com.github.lzk90s.cbec.goods.feign.GoodsSpiderApiFeign;
+import com.github.lzk90s.cbec.internal.api.spider.CategoryDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,6 @@ public class SpiderService {
         if (CollectionUtils.isEmpty(platformList)) {
             return;
         }
-
         platformList.forEach(platform -> grabPlatformGoods(platform.getName()));
     }
 
@@ -55,54 +55,55 @@ public class SpiderService {
             log.warn("No category found for platform {}", platformName);
             return;
         }
+        categoryList.forEach(category -> grabCategoryGoods(category.getName(), platformName));
+    }
 
-        categoryList.forEach(category -> {
-            // 如果已经达到最大数量，停止爬取
-            int grabNum = getGrabNum4Category(category.getName(), platformName);
-            if (grabNum <= 0) {
-                log.info("Max goods reached, skip the category {}!", category.getName());
-                return;
+    private void grabCategoryGoods(String category, String platform){
+        // 如果已经达到最大数量，停止爬取
+        int grabNum = getGrabNum4Category(category, platform);
+        if (grabNum <= 0) {
+            log.info("Max goods reached, skip the category {}!", category);
+            return;
+        }
+
+        int count = 0;
+        String cursor = "";
+        boolean hasMoreData = true;
+
+        // 循环爬取商品，直到达到要求的数量
+        while (count < grabNum && hasMoreData) {
+            var scrollResult = goodsSpiderFeign.listCategoryGoods(platformName,
+                    category, defaultSort, cursor);
+
+            // 已经爬取完了，退出
+            if (CollectionUtils.isEmpty(scrollResult.getResults())) {
+                break;
+            }
+            // 下一页没有了，标记没有数据了
+            if (StringUtils.isEmpty(scrollResult.getNextCursor())) {
+                hasMoreData = false;
             }
 
-            int count = 0;
-            String cursor = "";
-            boolean hasMoreData = true;
+            cursor = scrollResult.getNextCursor();
 
-            // 循环爬取商品，直到达到要求的数量
-            while (count < grabNum && hasMoreData) {
-                var scrollResult = goodsSpiderFeign.listCategoryGoods(platformName,
-                        category.getName(), defaultSort, cursor);
+            // 抓取商品供应商
+            var goodsList = scrollResult.getResults().stream()
+                    .filter(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()))
+                    .collect(Collectors.toList());
 
-                // 已经爬取完了，退出
-                if (CollectionUtils.isEmpty(scrollResult.getResults())) {
-                    break;
-                }
-                // 下一页没有了，标记没有数据了
-                if (StringUtils.isEmpty(scrollResult.getNextCursor())) {
-                    hasMoreData = false;
-                }
-
-                cursor = scrollResult.getNextCursor();
-
-                // 抓取商品供应商
-                var goodsList = scrollResult.getResults().stream()
-                        .filter(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()))
-                        .collect(Collectors.toList());
-
-                if (CollectionUtils.isEmpty(goodsList)) {
-                    continue;
-                }
-
-                // 保存商品信息
-                var goodsEntityList = goodsList.stream()
-                        .map(s -> GoodsEntity.getConverter().doForward(s))
-                        .collect(Collectors.toList());
-                goodsService.insertOrUpdateBatch(goodsEntityList);
-                log.info("Found {} goods in category {}", goodsEntityList.size(), category.getName());
-
-                count += goodsEntityList.size();
+            if (CollectionUtils.isEmpty(goodsList)) {
+                continue;
             }
-        });
+
+            // 保存商品信息
+            var goodsEntityList = goodsList.stream()
+                    .map(s -> GoodsEntity.getConverter().doForward(s))
+                    .collect(Collectors.toList());
+            goodsService.insertOrUpdateBatch(goodsEntityList);
+            log.info("Found {} goods in category {}", goodsEntityList.size(), category);
+
+            count += goodsEntityList.size();
+        }
     }
 
     private int getGrabNum4Category(String category, String platform) {
