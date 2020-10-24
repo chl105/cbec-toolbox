@@ -72,7 +72,7 @@ public class SpiderService {
 
         // 循环爬取商品，直到达到要求的数量
         while (count < grabNum && hasMoreData) {
-            var scrollResult = goodsSpiderFeign.listCategoryGoods(platformName,
+            var scrollResult = goodsSpiderFeign.listCategoryGoods(platform,
                     category, defaultSort, cursor);
 
             // 已经爬取完了，退出
