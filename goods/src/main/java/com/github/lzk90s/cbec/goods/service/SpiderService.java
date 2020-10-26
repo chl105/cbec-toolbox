@@ -38,6 +38,10 @@ public class SpiderService {
     @Autowired
     private GoodsSupplierService goodsSupplierService;
 
+    public SpiderService() {
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
+    }
+
     public void grabGoods() {
         log.info("Start grab goods, please wait .....");
 
@@ -90,10 +94,8 @@ public class SpiderService {
             // 抓取商品供应商，并过滤出需要保存的商品
             var goodsList = scrollResult.getResults().stream()
                     .filter(goods -> !hasGraped(goods.getId()))
-                    .filter(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()))
                     .collect(Collectors.toList());
-
-            if (CollectionUtils.isEmpty(goodsList)) {
+            if (CollectionUtils.isEmpty(goodsList)){
                 continue;
             }
 
@@ -101,7 +103,11 @@ public class SpiderService {
             var goodsEntityList = goodsList.stream()
                     .map(s -> GoodsEntity.getConverter().doForward(s))
                     .collect(Collectors.toList());
-            goodsService.insertOrUpdateBatch(goodsEntityList);
+            goodsService.insertBatch(goodsEntityList);
+
+            goodsList.parallelStream()
+                    .forEach(goods -> grabSupplier4Goods(goods.getId(), goods.getImageUrl(), goods.getPrice()));
+
             log.info("Found {} goods in category {}", goodsEntityList.size(), category);
 
             count += goodsEntityList.size();

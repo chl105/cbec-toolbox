@@ -25,6 +25,13 @@ _CATEGORY_MOBILE_PHONES = goods_model.Category("mobile-phones-accessories", _bui
 _CATEGORY_MEN_CLOTHING = goods_model.Category("men-s-clothing", _build_vova_url("Men-S-Clothing-r9881"), "男士衣服")
 _CATEGORY_HOME_GARDEN = goods_model.Category("home-garden", _build_vova_url("Home-Garden-r9873"), "家庭")
 _CATEGORY_ELECTRONICS = goods_model.Category("electronics", _build_vova_url("Electronics-r9874"), "电子产品")
+_COOKIES_ = {}
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
+    "Accept": "*/*",
+    "Cache-Control": "no-cache",
+}
 
 
 def get_category_by_name(name):
@@ -46,17 +53,17 @@ def get_category_goods(category, sort="recommended", cursor=None, page_size=20):
 
     goods_list = []
 
-    url = category.url + "?limit=" + str(page_size) + "&is_ajax=1"
+    url = category.url + "/" + sort + "?limit=" + str(page_size) + "&is_ajax=1"
     if cursor:
         url += "&after=" + cursor
-    res = requests.get(url + "/" + sort)
+
+    res = requests.get(url, headers=headers)
     _check_response(res)
 
     res_dict = json_util.json2dict(res.text)
-
     next_page_cursor = res_dict["data"]["pagination"]["cursors"]["after"]
-
     product_list = res_dict["data"]["productList"]
+
     for product_dict in product_list:
         product_obj = dict_util.dict2obj(product_dict)
         goods_list.append(goods_model.GoodsInfo(

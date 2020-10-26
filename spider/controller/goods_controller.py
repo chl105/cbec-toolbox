@@ -66,15 +66,20 @@ def search_goods_by_image():
 if __name__ == '__main__':
     category = vova.get_category_by_name("bags-watches-accessories")
     scroll_result = vova.get_category_goods(category, sort="most-popular")
-    goods_list = scroll_result.results
-    for goods in goods_list:
-        print("----------------------------------------------")
-        print(json_util.obj2json(goods))
-        print("##############################################")
-        sum = 0
-        ali_goods_list = ali1688.search_goods_by_image(goods.image_url, goods.price * 3)
-        for g in ali_goods_list:
-            print(json_util.obj2json(g))
-            sum = sum + float(g.price)
-        if len(ali_goods_list) > 0:
-            print("$$$$$$$$$$$$$$- {} -$$$$$$$$$$$$$$$$$$$$".format(sum / len(ali_goods_list)))
+    aa = vova.get_category_goods(category, sort="most-popular", cursor=scroll_result.next_cursor)
+    bb = vova.get_category_goods(category, cursor=aa.next_cursor)
+    if str(aa.next_cursor) == str(bb.next_cursor):
+        print("----ok----")
+    #
+    # goods_list = scroll_result.results
+    # for goods in goods_list:
+    #     print("----------------------------------------------")
+    #     print(json_util.obj2json(goods))
+    #     print("##############################################")
+    #     sum = 0
+    #     ali_goods_list = ali1688.search_goods_by_image(goods.image_url, goods.price * 3)
+    #     for g in ali_goods_list:
+    #         print(json_util.obj2json(g))
+    #         sum = sum + float(g.price)
+    #     if len(ali_goods_list) > 0:
+    #         print("$$$$$$$$$$$$$$- {} -$$$$$$$$$$$$$$$$$$$$".format(sum / len(ali_goods_list)))

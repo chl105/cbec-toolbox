@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO,
 def main():
     app.register_blueprint(order, url_prefix='/order')
     app.register_blueprint(goods, url_prefix='/goods')
-    app.run(host="0.0.0.0", port=33023, debug=False)
+    app.run(host="0.0.0.0", port=33023, debug=False, threaded=True)
 
 
 if __name__ == '__main__':
