@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/platform_account")
@@ -50,6 +51,7 @@ public class PlatformAccountController {
         var entityWrapper = new EntityWrapper<PlatformAccountEntity>()
                 .eq("user", UserUtil.getUserName());
         var page = platformAccountService.selectPage(new Page<>(pageNo, pageSize), entityWrapper);
-        return Result.ok(page.getRecords()).total(page.getTotal());
+        var list = page.getRecords().stream().peek(s->s.setPlatformPassword("******")).collect(Collectors.toList());
+        return Result.ok(list).total(page.getTotal());
     }
 }
