@@ -2,81 +2,13 @@
 <html>
 <head>
     <meta content="text/html;charset=utf8" http-equiv="content-type"/>
-
-    <style type="text/css">
-    html {
-        font-family: sans-serif;
-        -ms-text-size-adjust: 100%;
-        -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-        margin: 10px;
-    }
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-    }
-
-    td,th {
-        padding: 0;
-    }
-
-    .pure-table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        empty-cells: show;
-        border: 1px solid #cbcbcb;
-    }
-
-    .pure-table caption {
-        color: #000;
-        font: italic 85%/1 arial,sans-serif;
-        padding: 1em 0;
-        text-align: center;
-    }
-
-    .pure-table td,.pure-table th {
-        border-left: 1px solid #cbcbcb;
-        border-width: 0 0 0 1px;
-        font-size: inherit;
-        margin: 0;
-        overflow: visible;
-        padding: .5em 1em;
-    }
-
-    .pure-table thead {
-        background-color: #e0e0e0;
-        color: #000;
-        text-align: left;
-        vertical-align: bottom;
-    }
-
-    .pure-table td {
-        background-color: transparent;
-    }
-
-    .pure-table-bordered td {
-        border-bottom: 1px solid #cbcbcb;
-    }
-
-    .pure-table-bordered tbody>tr:last-child>td {
-        border-bottom-width: 0;
-    }
-    .new-order {
-        background-color: #AFEEEE
-    }
-    .old-order {
-        background-color: #FFFFFF
-    }
-    </style>
 </head>
 
 <body>
 <h3>${title}</h3>
-<table class="pure-table pure-table-bordered">
-    <thead>
-    <tr>
+<table border="1">
+    <thead >
+    <tr bgcolor="#FF8F59">
         <th>订单类型</th>
         <th>确认时间(UTC)</th>
         <th>订单SN</th>
@@ -88,9 +20,9 @@
     </thead>
     <tbody>
     <#list orders as order>
-    <tr class="<#if order.lastNotifyTime??>old-order<#else>new-order</#if>">
+    <tr bgcolor="<#if order.lastNotifyTime??>#FFFFFF<#else>#AFEEEE</#if>">
         <td>${order.type!''}</td>
-        <td><#if order.configTime??> ${(order.confirmTime)?string("yyyy-MM-dd HH:mm:ss")} <#else></#if></td>
+        <td><#if order.confirmTime??> ${(order.confirmTime)?string("yyyy-MM-dd HH:mm:ss")} <#else></#if></td>
         <td>${order.sn!''}</td>
         <td><img src="${order.imageUrl!''}"/></td>
         <td>${order.price!''}</td>
