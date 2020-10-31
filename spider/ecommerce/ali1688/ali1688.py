@@ -3,7 +3,16 @@ from ecommerce.ali1688 import alibaba_lib
 from model import goods_model
 from util import dict_util
 
+import  requests
+from bs4 import BeautifulSoup
+
 _BASE_URL = "https://s.1688.com"
+
+
+def __get_real_price(detail_url):
+    detail_data = alibaba_lib.AlibabaDetail().get_detail_data(detail_url)
+
+    return "0"
 
 
 def search_goods_by_image(image_url, max_price=0.0, max_seller=5):
@@ -52,8 +61,15 @@ def search_goods_by_image(image_url, max_price=0.0, max_seller=5):
                 print("no price for subject, {}".format(information_obj.subject))
                 continue
 
+            price = 0
+            if offer_price_obj.quantityPrices:
+                quantity_prices = []
+                quantity_prices.extend([float(p["valueString"]) for p in offer_price_obj.quantityPrices])
+                price = max(quantity_prices)
+            else:
+                price = float(offer_price_obj.valueString)
+
             # 如果商品价格大于最大价格，忽略
-            price = offer_price_obj.valueString
             if float(price) > float(max_price):
                 continue
 
@@ -93,5 +109,6 @@ def _check_result(result):
 
 
 if __name__ == '__main__':
-    image_url = "https://image-tb.vova.com/image/262_262/filler/d5/a1/304ce4f1c049deffaf556a402fd3d5a1.jpg"
-    search_goods_by_image(image_url, 100)
+    #image_url = "https://image-tb.vova.com/image/262_262/filler/6b/cc/1035aa9aefc6b869ad9ce4e985966bcc.jpg"
+    image_url = "https://image-tb.vova.com/image/262_262/filler/89/c5/fdcecee8b782bcc1ac6f726ab4b889c5.jpg"
+    search_goods_by_image(image_url, 40)

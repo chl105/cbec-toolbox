@@ -89,7 +89,7 @@ public class UnhandledOrderNotifyService {
 
         // 查询用户订单
         var orderList = orderService.selectList(new EntityWrapper<OrderEntity>()
-                .eq("user", user));
+                .eq("user", user).orderBy("add_time", false));
         if (CollectionUtils.isEmpty(orderList)) {
             return;
         }
@@ -120,7 +120,7 @@ public class UnhandledOrderNotifyService {
     }
 
     private String buildNotifyMessage(List<OrderEntity> orderDTOList) {
-        String title = "你有" + orderDTOList.size() + "个未处理订单，请及时处理！";
+        String title = "您有" + orderDTOList.size() + "个未处理订单，请及时处理！";
         Map<String, Object> model = new HashMap<>();
         model.put("title", title);
         model.put("orders", orderDTOList);

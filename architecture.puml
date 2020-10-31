@@ -1,14 +1,14 @@
 @startuml container-diagram
-!include https://unpkg.com/plantuml-style-c4@latest/c4_component.puml
+'!include https://unpkg.com/plantuml-style-c4@latest/c4_component.puml
 ' uncomment the following line and comment the first to use locally
-'!include c4_component.puml
+!include /home/lzk/work/document/plantuml-style-c4/c4_component.puml
 
 'LAYOUT_WITH_LEGEND()
 LAYOUT_AS_SKETCH()
 
 title 容器图
 
-Person(user, "用户")
+Actor(user, "用户")
 
 System_Boundary(thisSystem, "外贸系统"){
     Container(authContainer, "用户认证服务", "Java, springmvc", "用户认证")
@@ -18,7 +18,8 @@ System_Boundary(thisSystem, "外贸系统"){
     Container(spiderContainer, "爬虫服务", "Python", "爬取电商平台的产品等")
     Container(messagerContainer, "信使服务", "Python", "通知推送机器人，推送消息到用户")
 
-    Rel(goodsContainer, spiderContainer, "获取爬虫数据", "HTTPS")
+    Rel_D(goodsContainer, spiderContainer, "获取爬虫数据", "HTTPS")
+    Rel(orderContainer, messagerContainer, "发送通知消息")
 }
 
 
@@ -42,16 +43,16 @@ System_Boundary(platform, "商品采集平台"){
 
 Rel(user, orderContainer, "订单处理", "HTTPS")
 Rel(user, logisticsContainer, "物流查询，成本预估","HTTPS")
+Rel(user, authContainer, "登陆、验证")
 Rel_Back(messagerContainer, user, "推送消息", "邮件，微信等")
 
 
-Rel_L(orderContainer, vova, "查询订单")
-Rel(goodsContainer, platform, "采集商品")
-Rel_D(thisSystem, database, "存储持久化数据")
-Rel(spiderContainer, platform, "爬取数据", "html/json")
-Rel(logisticsContainer, logistics, "查询物流", "HTTPS")
+Rel_R(orderContainer, vova, "查询订单")
+Rel_D(goodsContainer, platform, "采集商品")
+Rel_D(spiderContainer, platform, "爬取数据", "html/json")
+Rel_R(logisticsContainer, logistics, "查询物流", "HTTPS")
 
-Lay_D(thisSystem, database)
+Rel_D(thisSystem, storage, "持久化")
 
 
 @enduml
